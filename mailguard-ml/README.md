@@ -14,3 +14,10 @@ This repository is for the **Machine Learning** part of MailGuard AI only.
 
 Raw datasets should be placed in `data/raw/`, but they are **not committed** to
 the repository (see `.gitignore`).
+
+## How to inspect raw datasets
+
+```
+pip install -r requirements.txt
+python src/inspect_datasets.py
+```
