@@ -1,0 +1,107 @@
+﻿Found 6 CSV file(s) in 'data\raw'.
+
+======================================================================
+File: CEAS_08.csv
+======================================================================
+Shape: 39154 rows, 7 columns
+Columns: ['sender', 'receiver', 'date', 'subject', 'body', 'label', 'urls']
+
+First 3 rows:
+                                                sender                      receiver                            date                   subject                                                                                  body label urls
+                      Young Esposito <Young@iworld.de>   user4@gvc.ceas-challenge.cc Tue, 05 Aug 2008 16:31:02 -0700 Never agree to be a loser  Buck up, your troubles caused by small dimension will soon be over!\nBecome a lov...     1    1
+                          Mok <ipline's1983@icable.ph> user2.2@gvc.ceas-challenge.cc Tue, 05 Aug 2008 18:31:03 -0500    Befriend Jenna Jameson \nUpgrade your sex and pleasures with these techniques http://www.brightmade.com\n...     1    1
+Daily Top 10 <Karmandeep-opengevl@universalnet.psi.br> user2.9@gvc.ceas-challenge.cc Tue, 05 Aug 2008 20:28:00 -1200      CNN.com Daily Top 10   >+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+= >THE DAILY TOP 10 ...     1    1
+
+Value counts for likely label column 'label':
+label
+1    21842
+0    17312
+Name: count, dtype: int64
+
+======================================================================
+File: Nazario.csv
+======================================================================
+Shape: 1565 rows, 7 columns
+Columns: ['sender', 'receiver', 'date', 'subject', 'body', 'urls', 'label']
+
+First 3 rows:
+                                              sender        receiver                                  date                                           subject                                                                                                        body urls label
+Mail System Internal Data <MAILER-DAEMON@monkey.org>             nan            28 Sep 2017 09:57:25 -0400 DON'T DELETE THIS MESSAGE -- FOLDER INTERNAL DATA                         This text is part of the internal format of your mail folder, and is not a real ...    1     1
+                         cPanel <service@cpanel.com> jose@monkey.org       Fri, 30 Oct 2015 00:00:48 -0500                               Verify Your Account Business with  \t\t\t\t\t\t\t\tcPanel & WHM \t\t\t\t\t\t\t\tDear client, Our Technical  \t\t\t\t\t\t\t\t...    1     1
+     Microsoft Outlook <recepcao@unimedceara.com.br>             nan Fri, 30 Oct 2015 06:21:59 -0300 (BRT)                         Helpdesk Mailbox Alert!!!                         Your two incoming mails were placed on pending status due to the recent upgrade ...    1     1
+
+Value counts for likely label column 'label':
+label
+1    1565
+Name: count, dtype: int64
+
+======================================================================
+File: Nigerian_Fraud.csv
+======================================================================
+Shape: 3332 rows, 7 columns
+Columns: ['sender', 'receiver', 'date', 'subject', 'body', 'urls', 'label']
+
+First 3 rows:
+                                        sender             receiver                            date                                    subject                                                                                  body urls label
+MR. JAMES NGOLA. <james_ngola2002@maktoob.com> webmaster@aclweb.org Thu, 31 Oct 2002 02:38:20 +0000 URGENT BUSINESS ASSISTANCE AND PARTNERSHIP FROM:MR. JAMES NGOLA.\nCONFIDENTIAL TEL: 233-27-587908.\nE-MAIL: (james_ngola2002@...    0     1
+Mr. Ben Suleman <bensul2004nng@spinfinder.com>                  R@M Thu, 31 Oct 2002 05:10:00 -0000        URGENT ASSISTANCE /RELATIONSHIP (P) Dear Friend,\n\nI am Mr. Ben Suleman a custom officer and work as Assistant contro...    0     1
+     PRINCE OBONG ELEME <obong_715@epatra.com> webmaster@aclweb.org Thu, 31 Oct 2002 22:17:55 +0100                            GOOD DAY TO YOU  FROM HIS ROYAL MAJESTY (HRM) CROWN RULER OF ELEME KINGDOM \nCHIEF DANIEL ELEME, P...    0     1
+
+Value counts for likely label column 'label':
+label
+1    3332
+Name: count, dtype: int64
+
+======================================================================
+File: SpamAssasin.csv
+======================================================================
+Shape: 5809 rows, 7 columns
+Columns: ['sender', 'receiver', 'date', 'subject', 'body', 'label', 'urls']
+
+First 3 rows:
+                                   sender                                                   receiver                            date                   subject                                                                                   body label urls
+           Robert Elz <kre@munnari.OZ.AU> Chris Garrigues <cwg-dated-1030377287.06fa6d@DeepEddy.Com> Thu, 22 Aug 2002 18:26:25 +0700  Re: New Sequences Window    Date:        Wed, 21 Aug 2002 10:54:46 -0500     From:        Chris Garrigues   ...     0    1
+Steve Burt <Steve_Burt@cursor-system.com>  "'zzzzteana@yahoogroups.com'" <zzzzteana@yahoogroups.com> Thu, 22 Aug 2002 12:46:18 +0100 [zzzzteana] RE: Alexander   Martin A posted:\nTassos Papadopoulos, the Greek sculptor behind the plan, judged...     0    1
+            "Tim Chapman" <timc@2ubh.com>                      zzzzteana <zzzzteana@yahoogroups.com> Thu, 22 Aug 2002 13:52:38 +0100 [zzzzteana] Moscow bomber Man Threatens Explosion In Moscow \n\nThursday August 22, 2002 1:40 PM\nMOSCOW (AP)...     0    1
+
+Value counts for likely label column 'label':
+label
+0    4091
+1    1718
+Name: count, dtype: int64
+
+======================================================================
+File: enron_spam_data.csv
+======================================================================
+Shape: 33716 rows, 5 columns
+Columns: ['Unnamed: 0', 'Subject', 'Message', 'Spam/Ham', 'Date']
+
+First 3 rows:
+Unnamed: 0                      Subject                                                                              Message Spam/Ham       Date
+         0 christmas tree farm pictures                                                                                  nan      ham 1999-12-10
+         1     vastar resources , inc . gary , production from the high island larger block a - 1 # 2 commenced on\nsatur...      ham 1999-12-13
+         2 calpine daily gas nomination                                               - calpine daily gas nomination 1 . doc      ham 1999-12-14
+
+Value counts for likely label column 'Spam/Ham':
+Spam/Ham
+spam    17171
+ham     16545
+Name: count, dtype: int64
+
+======================================================================
+File: messages.csv
+======================================================================
+Shape: 2893 rows, 3 columns
+Columns: ['subject', 'message', 'label']
+
+First 3 rows:
+                                           subject                                                                             message label
+           job posting - apple-iss research center content - length : 3386 apple-iss research center a us $ 10 million joint ventur...     0
+                                               nan lang classification grimes , joseph e . and barbara f . grimes ; ethnologue lang...     0
+query : letter frequencies for text identification i am posting this inquiry for sergei atamas ( satamas @ umabnet . ab . umd . edu...     0
+
+Value counts for likely label column 'label':
+label
+0    2412
+1     481
+Name: count, dtype: int64
