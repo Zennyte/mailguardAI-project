@@ -1,0 +1,31 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Environment variables
+.env
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Raw and processed datasets (should not be committed)
+data/raw/*
+data/processed/*
+
+# Generated model files
+*.joblib
+*.pkl
+
+# Keep folder placeholders
+!.gitkeep
