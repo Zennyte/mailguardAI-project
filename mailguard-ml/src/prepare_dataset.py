@@ -79,10 +79,10 @@ def load_ceas(filename="CEAS_08.csv"):
         return None
 
     result = pd.DataFrame()
-    result["source_dataset"] = "CEAS_08"
     result["subject"] = fill_na(df["subject"])
     result["body"] = fill_na(df["body"])
     result["label"] = df["label"].map({0: "safe", 1: "spam"})
+    result["source_dataset"] = "CEAS_08"
 
     unmapped = result["label"].isna().sum()
     if unmapped:
@@ -105,10 +105,10 @@ def load_enron(filename="enron_spam_data.csv"):
         return None
 
     result = pd.DataFrame()
-    result["source_dataset"] = "enron_spam_data"
     result["subject"] = fill_na(df["Subject"])
     result["body"] = fill_na(df["Message"])
     result["label"] = df["Spam/Ham"].map({"ham": "safe", "spam": "spam"})
+    result["source_dataset"] = "enron_spam_data"
 
     unmapped = result["label"].isna().sum()
     if unmapped:
@@ -131,10 +131,10 @@ def load_messages(filename="messages.csv"):
         return None
 
     result = pd.DataFrame()
-    result["source_dataset"] = "messages"
     result["subject"] = fill_na(df["subject"])
     result["body"] = fill_na(df["message"])
     result["label"] = df["label"].map({0: "safe", 1: "spam"})
+    result["source_dataset"] = "messages"
 
     unmapped = result["label"].isna().sum()
     if unmapped:
@@ -157,10 +157,10 @@ def load_spamassassin(filename="SpamAssasin.csv"):
         return None
 
     result = pd.DataFrame()
-    result["source_dataset"] = "SpamAssasin"
     result["subject"] = fill_na(df["subject"])
     result["body"] = fill_na(df["body"])
     result["label"] = df["label"].map({0: "safe", 1: "spam"})
+    result["source_dataset"] = "SpamAssasin"
 
     unmapped = result["label"].isna().sum()
     if unmapped:
@@ -183,10 +183,10 @@ def load_nazario(filename="Nazario.csv"):
         return None
 
     result = pd.DataFrame()
-    result["source_dataset"] = "Nazario"
     result["subject"] = fill_na(df["subject"])
     result["body"] = fill_na(df["body"])
     result["label"] = "phishing"
+    result["source_dataset"] = "Nazario"
 
     print(f"  Loaded {len(result)} rows.")
     return result
@@ -204,10 +204,10 @@ def load_nigerian_fraud(filename="Nigerian_Fraud.csv"):
         return None
 
     result = pd.DataFrame()
-    result["source_dataset"] = "Nigerian_Fraud"
     result["subject"] = fill_na(df["subject"])
     result["body"] = fill_na(df["body"])
     result["label"] = "phishing"
+    result["source_dataset"] = "Nigerian_Fraud"
 
     print(f"  Loaded {len(result)} rows.")
     return result
