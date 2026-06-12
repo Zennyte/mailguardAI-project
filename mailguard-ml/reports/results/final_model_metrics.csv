@@ -1,0 +1,2 @@
+model,best_C,accuracy,precision_macro,recall_macro,f1_macro
+LogisticRegression,10.0,0.9913,0.987,0.9893,0.9882

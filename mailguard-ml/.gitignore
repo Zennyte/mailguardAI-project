@@ -23,9 +23,12 @@ Thumbs.db
 data/raw/*
 data/processed/*
 
-# Generated model files
+# Generated model files (ignored by default)
 *.joblib
 *.pkl
+
+# Allow the final exported pipeline to be committed if needed
+!models/mail_detection_pipeline.joblib
 
 # Keep folder placeholders
 !.gitkeep
