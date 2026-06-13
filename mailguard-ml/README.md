@@ -1,193 +1,144 @@
-# MailGuard ML
+# MailGuard AI - Machine Learning Project
 
-Machine Learning component of the **MailGuard AI** project.
+This is the machine learning part of the MailGuard AI university project.
 
-## Purpose
+The goal is to train a model that can classify emails into three categories:
 
-This repository trains and exports an email classification model that labels
-emails as **safe**, **spam**, or **phishing**. The exported model is used by the
-MailGuard AI platform backend to scan emails submitted by users.
+- **safe** - a normal, legitimate email
+- **spam** - unwanted bulk or promotional email
+- **phishing** - a malicious email trying to steal information
 
-## Requirements
+---
 
-- Python 3.11 or higher
-- Dependencies listed in `requirements.txt`
+## Project Goal
 
-## Setup
+This part of the project covers:
+
+1. Loading and merging several public email datasets into one clean file
+2. Exploring the data and checking class distribution
+3. Training and comparing multiple ML classifiers
+4. Running K-Means clustering on the same dataset
+5. Exporting the best model for use in the MailGuard AI web platform
+
+---
+
+## Datasets
+
+Several public email datasets are used and merged into one unified format.
+
+Raw dataset files are **not committed to GitHub**. You need to place them manually inside:
 
 ```
-pip install -r requirements.txt
+data/raw/
 ```
+
+Expected files:
+- `CEAS_08.csv`
+- `enron_spam_data.csv`
+- `messages.csv`
+- `SpamAssasin.csv`
+- `Nazario.csv`
+- `Nigerian_Fraud.csv`
+
+After running `prepare_dataset.py`, the combined dataset will have these columns:
+
+| Column | Description |
+|---|---|
+| `source_dataset` | Which dataset this row came from |
+| `subject` | Email subject line |
+| `body` | Email body text |
+| `text` | Subject and body combined (used as model input) |
+| `label` | Final label: `safe`, `spam`, or `phishing` |
+
+---
 
 ## Folder Structure
 
 ```
 mailguard-ml/
   data/
-    raw/          Place raw dataset CSV files here (not committed)
-    processed/    Generated combined dataset (not committed)
-  notebooks/      Jupyter notebooks (optional exploration)
-  src/            All Python scripts
-  models/         Exported model file
+    raw/           Place raw dataset CSV files here (not committed)
+    processed/     Combined dataset saved here (not committed)
+  src/             All Python scripts
+  models/          Exported model file saved here
   reports/
-    figures/      Generated charts and confusion matrices
-    results/      Generated summaries and metric files
+    figures/       Charts and confusion matrix images
+    results/       Metric tables, summaries, and the report draft
   README.md
   requirements.txt
-  .gitignore
 ```
 
-## Raw Datasets
+---
 
-Place the following CSV files in `data/raw/` before running any scripts.
-These files are **not committed** to the repository.
+## Installation
 
-- CEAS_08.csv
-- enron_spam_data.csv
-- messages.csv
-- SpamAssasin.csv
-- Nazario.csv
-- Nigerian_Fraud.csv
+Make sure you have Python 3.11 or newer installed.
 
-## How to Run (in order)
-
-Run all scripts from the root of the repository.
-
-### Step 1 — Inspect raw datasets
-
-Prints a summary of each CSV file (shape, columns, label counts).
-
+```bash
+pip install -r requirements.txt
 ```
+
+---
+
+## How to Run the Project
+
+Run the scripts in this order from the root of the repository:
+
+```bash
 python src/inspect_datasets.py
-```
-
-### Step 2 — Prepare combined dataset
-
-Loads, cleans, and merges all raw datasets into one processed CSV.
-
-```
 python src/prepare_dataset.py
-```
-
-Output: `data/processed/email_dataset_combined.csv`
-
-### Step 3 — Explore dataset
-
-Prints statistics and saves distribution charts to `reports/figures/`.
-
-```
 python src/explore_dataset.py
-```
-
-### Step 4 — Preprocessing
-
-Fits TF-IDF on the training set and prints matrix shapes.
-
-```
 python src/preprocess.py
-```
-
-### Step 5 — Train Naive Bayes
-
-Tests alpha values 0.1, 0.5, 1.0. Saves results and confusion matrix.
-
-```
 python src/train_naive_bayes.py
-```
-
-### Step 6 — Train Logistic Regression
-
-Tests C values 0.1, 1, 10. Saves results and confusion matrix.
-
-```
 python src/train_logistic_regression.py
-```
-
-### Step 7 — Train Linear SVM
-
-Tests C values 0.1, 1, 10. Saves results and confusion matrix.
-
-```
 python src/train_linear_svm.py
-```
-
-### Step 8 — Train Random Forest
-
-Tests combinations of n_estimators (100, 200) and max_depth (30, None).
-Uses TF-IDF + TruncatedSVD(300) pipeline.
-
-```
 python src/train_random_forest.py
-```
-
-### Step 9 — Train MLP Neural Network
-
-Tests two architectures: (64,) and (128, 64).
-Uses TF-IDF + TruncatedSVD(300) pipeline.
-
-```
 python src/train_mlp.py
-```
-
-### Step 10 — Compare models
-
-Reads all result CSV files and creates a ranked comparison table.
-
-```
 python src/compare_models.py
-```
-
-Output: `reports/results/model_comparison.csv`
-
-### Step 11 — Run clustering
-
-K-Means clustering for k=2,3,4,5. Saves metrics and scatter plot.
-
-```
 python src/run_clustering.py
-```
-
-### Step 12 — Export final model
-
-Trains the final Logistic Regression pipeline and exports it.
-
-```
 python src/export_model.py
 ```
 
-Output: `models/mail_detection_pipeline.joblib`
+Each script prints progress and saves its output to `reports/`.
 
-## Output Files
+---
 
-| File | Description |
-|---|---|
-| `data/processed/email_dataset_combined.csv` | Merged and cleaned dataset (not committed) |
-| `reports/figures/*.png` | Confusion matrices and distribution charts |
-| `reports/results/*_results.csv` | Per-model metric tables |
-| `reports/results/*_summary.md` | Per-model summaries |
-| `reports/results/model_comparison.csv` | All models ranked by macro F1 |
-| `reports/results/clustering_results.csv` | K-Means metrics for k=2..5 |
-| `reports/results/ml_project_report_draft.md` | Full project report draft |
-| `models/mail_detection_pipeline.joblib` | Final exported model |
+## Models Used
 
-## Exported Model
+- **Multinomial Naive Bayes** - simple probabilistic classifier, good baseline for text
+- **Logistic Regression** - linear classifier, chosen as the final model
+- **Linear SVM** - strong linear classifier for text classification
+- **Random Forest** - ensemble of decision trees, uses TruncatedSVD to reduce features first
+- **MLP Neural Network** - two architectures tested: (64,) and (128, 64) hidden layers
+- **K-Means Clustering** - unsupervised experiment to see if emails naturally group together
 
-The file `models/mail_detection_pipeline.joblib` contains a scikit-learn
-`Pipeline` with TF-IDF vectorization and Logistic Regression combined.
+---
 
-It is tracked by git (the `.gitignore` has an exception for this file).
-If it is not present, regenerate it by running Step 12 above.
+## Final Model
 
-To copy it to the platform backend:
+The final exported model is **Logistic Regression**.
+
+It was chosen because:
+- it is simple and easy to explain
+- it is fast at prediction time
+- it gives a confidence score for each class using `predict_proba()`
+- its performance is competitive with the other models
+
+The exported file is saved to:
 
 ```
-mailguard-platform/backend/app/ml/mail_detection_pipeline.joblib
+models/mail_detection_pipeline.joblib
 ```
 
-## Note on Committed Files
+This file is a scikit-learn `Pipeline` containing the TF-IDF vectorizer and the
+Logistic Regression classifier together. The MailGuard AI platform backend loads
+this file directly to make predictions.
 
-Raw datasets and processed CSV files are **not committed** (listed in `.gitignore`).
-Model result files in `reports/results/` and figures in `reports/figures/` are
-generated by the scripts and are also not committed.
+---
 
-Only source code, documentation, and the final exported model are committed.
+## Notes
+
+- Raw datasets are listed in `.gitignore` and will not be committed
+- The processed dataset (`data/processed/`) is also not committed and must be generated locally by running `prepare_dataset.py`
+- The model file (`models/mail_detection_pipeline.joblib`) can be committed or regenerated locally by running `export_model.py`
+- All generated charts and metric files are saved under `reports/figures/` and `reports/results/`
