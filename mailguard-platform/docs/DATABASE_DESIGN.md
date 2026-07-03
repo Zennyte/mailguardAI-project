@@ -1,32 +1,129 @@
 # Database Design - MailGuard AI Platform
 
-Dizajni i detajuar i databazes do te plotesohet kur te krijohet skema e plote.
+## Two Databases
 
-## Databases
+### PostgreSQL (relational)
 
-- **PostgreSQL** - relational data (users, scans, reports, CMS, ...)
-- **MongoDB** - flexible/NoSQL data (raw email content, logs, ...)
+PostgreSQL stores all structured data with fixed relationships: users, roles,
+scans, results, reports, CMS pages, etc. It is the main database of the platform.
+All 26 tables are normalized (3NF), connected with foreign keys, and indexed on
+the columns that are queried most often.
 
-## Planned Tables (26)
+### MongoDB (NoSQL) - added in a later commit
 
-The full list of planned tables is in [`database/schema.sql`](../database/schema.sql).
+MongoDB will store flexible data that does not fit well in fixed table columns,
+for example the full raw text of scanned emails (which can be very large and
+unstructured). Planned collections:
 
-Groups:
+| Collection             | Content                                              |
+|------------------------|------------------------------------------------------|
+| `raw_email_documents`  | Full raw email text (subject + body) per scan        |
+| `scan_payload_logs`    | Raw ML input/output payload per scan (for debugging) |
+| `imported_batches`     | Raw rows of bulk imports before processing           |
+| `report_snapshots`     | Generated report data as flexible JSON documents     |
+| `cms_revision_logs`    | Old versions of CMS content after edits              |
 
-1. Auth & users (users, roles, user_roles, permissions, role_permissions, refresh_tokens)
-2. System (audit_logs, notifications, settings, files)
-3. Email data (email_messages, email_headers, email_recipients, email_links, email_attachments)
-4. Scanning & ML (scan_requests, scan_results, classification_scores, model_versions, user_feedback)
-5. Import/Export (import_jobs, export_jobs)
-6. Reports (reports, report_filters)
-7. CMS (cms_pages, cms_content_blocks)
+---
 
-## Standards
+## The 26 SQL Tables (grouped by module)
 
-All important tables will have primary keys, foreign keys, indexes where needed,
-`created_at` / `updated_at` timestamps, `created_by` / `updated_by` where it makes
-sense, and a normalized (3NF) structure.
+### 1. Auth & Users (6 tables - required base tables)
 
-## MongoDB Collections
+| Table              | Purpose                                        |
+|--------------------|------------------------------------------------|
+| `users`            | User accounts (username, email, password hash) |
+| `roles`            | Roles: Admin, Manager, User                    |
+| `user_roles`       | Many-to-many: which user has which role        |
+| `permissions`      | Individual permissions (scan_email, ...)       |
+| `role_permissions` | Many-to-many: which role has which permission  |
+| `refresh_tokens`   | JWT refresh tokens per user                    |
 
-_To be defined in a later commit._
+### 2. System (4 tables - required base tables)
+
+| Table           | Purpose                                            |
+|-----------------|----------------------------------------------------|
+| `audit_logs`    | Record of important actions (who did what, when)   |
+| `notifications` | User notifications (also pushed live by WebSocket) |
+| `settings`      | Global key/value application settings              |
+| `files`         | Metadata of uploaded files                         |
+
+### 3. Email Data (5 tables)
+
+| Table               | Purpose                                    |
+|---------------------|--------------------------------------------|
+| `email_messages`    | The scanned email (subject, body preview)  |
+| `email_headers`     | Headers of an email (one row per header)   |
+| `email_recipients`  | Recipients (to/cc/bcc, one row each)       |
+| `email_links`       | Links found in the email body              |
+| `email_attachments` | Attachment metadata                        |
+
+### 4. Scanning & ML (5 tables)
+
+| Table                   | Purpose                                            |
+|-------------------------|----------------------------------------------------|
+| `scan_requests`         | A scan requested by a user (status, input type)    |
+| `scan_results`          | Final result: predicted label + confidence         |
+| `classification_scores` | Probability per class (safe/spam/phishing)         |
+| `model_versions`        | Which ML model version produced the result         |
+| `user_feedback`         | User feedback when a prediction looks wrong        |
+
+### 5. Import / Export (2 tables)
+
+| Table         | Purpose                                     |
+|---------------|---------------------------------------------|
+| `import_jobs` | Bulk email import jobs (progress, status)   |
+| `export_jobs` | Data export jobs (CSV/JSON)                 |
+
+### 6. Reports (2 tables)
+
+| Table            | Purpose                              |
+|------------------|--------------------------------------|
+| `reports`        | Generated reports (name, type)       |
+| `report_filters` | Filters applied to a report          |
+
+### 7. CMS (2 tables)
+
+| Table                | Purpose                                      |
+|----------------------|----------------------------------------------|
+| `cms_pages`          | Simple CMS pages (help, tips, announcements) |
+| `cms_content_blocks` | Ordered content blocks inside a page         |
+
+---
+
+## The 10 Required Base Tables
+
+The course requires these 10 tables, all included above:
+`users`, `roles`, `user_roles`, `permissions`, `role_permissions`,
+`refresh_tokens`, `audit_logs`, `notifications`, `settings`, `files`.
+
+Together they cover authentication (JWT with refresh tokens), authorization
+(role-based access control with permissions), auditing, notifications,
+configuration, and file uploads.
+
+---
+
+## Design Standards
+
+- **Primary keys**: every table has a `BIGSERIAL` primary key named `id`.
+- **Foreign keys**: every relationship uses `REFERENCES`. Child rows of an email
+  or scan are deleted together with their parent (`ON DELETE CASCADE`).
+- **Indexes**: added on foreign key columns that are queried often
+  (e.g. `user_id` on scans and notifications, `status` on scan requests,
+  `predicted_label` on results). `UNIQUE` columns are indexed automatically.
+- **Timestamps**: every table has `created_at` and `updated_at`.
+- **created_by / updated_by**: only on tables managed by an administrator
+  (`roles`, `permissions`, `settings`, `model_versions`, `cms_pages`) —
+  the other tables already track their owner through `user_id`.
+- **Normalization (3NF)**: repeated data is split into separate tables — for
+  example email recipients are one row each instead of a comma-separated string,
+  and per-class probabilities live in `classification_scores` instead of three
+  columns in `scan_results`.
+
+---
+
+## Files
+
+- Full SQL schema: [`database/schema.sql`](../database/schema.sql)
+- Seed data (roles, permissions, settings, ML model row): [`database/seed.sql`](../database/seed.sql)
+- SQLAlchemy models: `backend/app/models/`
+- Relationships overview: [`ERD_NOTES.md`](ERD_NOTES.md)

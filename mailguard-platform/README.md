@@ -115,6 +115,42 @@ Interactive API docs (Swagger): `http://localhost:8000/docs`
 
 ---
 
+## Database Setup (PostgreSQL)
+
+The relational schema with all 26 tables is defined in two equivalent ways:
+
+- `database/schema.sql` — plain SQL, can be run directly with `psql`
+- `backend/app/models/` — SQLAlchemy models used by the backend
+
+Requires PostgreSQL 14+ installed and running locally.
+
+1. Create the database once:
+
+```bash
+psql -U postgres -c "CREATE DATABASE mailguard_platform;"
+```
+
+2. Create all tables with the simple Python script (uses the SQLAlchemy models):
+
+```bash
+cd backend
+python -m app.create_tables
+```
+
+3. Load the seed data (roles, permissions, settings, ML model row):
+
+```bash
+psql -U postgres -d mailguard_platform -f database/seed.sql
+```
+
+If your PostgreSQL user or password is different, change `DATABASE_URL` in
+`backend/.env` first.
+
+Real users and authentication come in the next commit — the seed data contains
+no user accounts.
+
+---
+
 ## Frontend Setup
 
 Requires Node.js 18+.
@@ -133,7 +169,8 @@ live backend status check (Online/Offline).
 
 ## Notes
 
-- Database setup (PostgreSQL + MongoDB), authentication, ML integration, and the
-  remaining features will be completed in later commits.
-- The planned 26 relational tables are listed in `database/schema.sql`.
+- The full relational schema (26 tables) is in `database/schema.sql`; the design
+  is explained in `docs/DATABASE_DESIGN.md` and `docs/ERD_NOTES.md`.
+- Authentication (JWT), MongoDB setup, ML integration, and the remaining
+  features will be completed in later commits.
 - Documentation skeletons are in `docs/`.
