@@ -1,0 +1,31 @@
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+env/
+
+# Node
+node_modules/
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+logs/
+
+# Uploaded files
+uploads/
+
+# Generated model files (except placeholders)
+*.joblib
+*.pkl
+!.gitkeep

@@ -1,0 +1,6 @@
+-- ============================================================
+-- MailGuard AI Platform - Seed Data (PostgreSQL)
+-- ============================================================
+-- Placeholder: te dhenat fillestare (rolet, permissions, admin user)
+-- do te shtohen pasi te krijohet skema e plote.
+-- ============================================================
