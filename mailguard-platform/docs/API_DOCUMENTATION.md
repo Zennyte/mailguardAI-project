@@ -44,6 +44,13 @@ plain text. Register, login, and logout are recorded in `audit_logs`.
 2. Click the **Authorize** button (top right) and paste the token.
 3. Now the protected endpoints like `GET /auth/me` work.
 
+**Testing from the frontend** (`http://localhost:5173`):
+
+- Register a user from the `/register` page — after registration the frontend
+  logs in automatically and opens the dashboard.
+- Login works from the `/login` page.
+- `/dashboard` is protected: without a valid login it redirects to `/login`.
+
 ### Scans
 
 | Method | Path                  | Auth required | Description                                  |

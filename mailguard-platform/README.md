@@ -247,8 +247,19 @@ copy .env.example .env       # Windows (or: cp .env.example .env)
 npm run dev
 ```
 
-The frontend runs at `http://localhost:5173` and shows the starter page with a
-live backend status check (Online/Offline).
+The frontend runs at `http://localhost:5173`. The API URL comes from
+`VITE_API_URL` in `frontend/.env` (default `http://localhost:8000`).
+
+Pages available:
+
+- `/` — home page with the project description
+- `/register` — create an account (auto-login after registration)
+- `/login` — log in with email and password
+- `/dashboard` — protected page; opening it while logged out redirects to `/login`
+
+To test: start the backend first, then register a new account from the frontend —
+you land on the dashboard automatically. Logout from the navbar, then log in
+again with the same credentials.
 
 ---
 
