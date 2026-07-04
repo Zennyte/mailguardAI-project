@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.controllers.health_controller import router as health_router
 from app.controllers.auth_controller import router as auth_router
+from app.controllers.scan_controller import router as scan_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -21,3 +22,4 @@ app.add_middleware(
 
 app.include_router(health_router)
 app.include_router(auth_router)
+app.include_router(scan_router)

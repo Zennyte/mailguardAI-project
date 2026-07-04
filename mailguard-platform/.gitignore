@@ -29,3 +29,6 @@ uploads/
 *.joblib
 *.pkl
 !.gitkeep
+
+# Allow the exported ML pipeline to be committed
+!backend/app/ml/mail_detection_pipeline.joblib

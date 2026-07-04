@@ -43,8 +43,8 @@ classifiers on a combined dataset of ~68,000 emails and exported the best model
 mailguard-ml/models/mail_detection_pipeline.joblib
 ```
 
-In a later commit, this file will be copied to `backend/app/ml/` and the backend
-will load it to classify emails.
+This file is copied to `backend/app/ml/` and the backend loads it to classify
+emails (see "ML Model Setup" below).
 
 ---
 
@@ -148,6 +148,34 @@ If your PostgreSQL user or password is different, change `DATABASE_URL` in
 
 **Important:** run `seed.sql` before registering users — new accounts get the
 default role `User`, which comes from the seed data.
+
+---
+
+## ML Model Setup
+
+The scan feature needs the exported model from the ML project. Copy it into
+the backend (already done if the file is committed in this repository):
+
+```bash
+copy ..\mailguard-ml\models\mail_detection_pipeline.joblib backend\app\ml\
+```
+
+- The platform does **not** retrain the model — it only loads it for predictions.
+- The model is loaded once, on the first scan, and kept in memory.
+- If the file is missing, `POST /scans/analyze` returns `503 ML model is not available`.
+
+---
+
+## Testing the Scan Endpoint
+
+1. Start the backend and open Swagger: `http://localhost:8000/docs`
+2. Register and log in (see Authentication above), click **Authorize** and paste
+   the access token.
+3. Call `POST /scans/analyze` with a subject and body, for example a suspicious
+   text like *"Verify your bank account immediately by clicking this link"*.
+4. The response contains the predicted label (safe/spam/phishing), the
+   confidence score, and the probability of each class.
+5. `GET /scans/{scan_request_id}` returns a saved scan (only your own).
 
 ---
 

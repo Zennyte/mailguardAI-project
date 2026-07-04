@@ -46,7 +46,44 @@ plain text. Register, login, and logout are recorded in `audit_logs`.
 
 ### Scans
 
-_To be added in a later commit._
+| Method | Path                  | Auth required | Description                                  |
+|--------|-----------------------|---------------|----------------------------------------------|
+| POST   | `/scans/analyze`      | Yes (JWT)     | Scan an email with the ML model              |
+| GET    | `/scans/{scan_id}`    | Yes (JWT)     | Get a saved scan result (own scans only)     |
+
+**Note:** the model file must exist at
+`backend/app/ml/mail_detection_pipeline.joblib`, otherwise the endpoint
+returns `503 ML model is not available`.
+
+**Request example** (`POST /scans/analyze`):
+
+```json
+{
+  "subject": "Urgent: your account will be suspended",
+  "body": "Dear customer, verify your bank account immediately by clicking this link.",
+  "input_type": "manual"
+}
+```
+
+**Response example:**
+
+```json
+{
+  "scan_request_id": 1,
+  "predicted_label": "phishing",
+  "confidence_score": 0.9994,
+  "scores": [
+    { "label": "phishing", "score": 0.9994 },
+    { "label": "safe", "score": 0.0001 },
+    { "label": "spam", "score": 0.0005 }
+  ],
+  "message": "Warning: this email looks like a phishing attempt!"
+}
+```
+
+Every scan is saved in PostgreSQL: the email in `email_messages`, the request
+in `scan_requests`, the result in `scan_results`, and the probability of each
+class in `classification_scores`.
 
 ### Notifications
 
