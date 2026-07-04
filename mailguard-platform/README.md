@@ -146,8 +146,27 @@ psql -U postgres -d mailguard_platform -f database/seed.sql
 If your PostgreSQL user or password is different, change `DATABASE_URL` in
 `backend/.env` first.
 
-Real users and authentication come in the next commit — the seed data contains
-no user accounts.
+**Important:** run `seed.sql` before registering users — new accounts get the
+default role `User`, which comes from the seed data.
+
+---
+
+## Authentication
+
+The backend uses JWT authentication:
+
+- `POST /auth/register` — create an account (first name, last name, email, password)
+- `POST /auth/login` — returns an access token (30 min) and a refresh token (7 days)
+- `POST /auth/refresh` — get a new token pair using the refresh token
+- `POST /auth/logout` — revoke the refresh token
+- `GET /auth/me` — returns the current user (protected)
+
+Passwords are hashed with bcrypt. Refresh tokens are stored hashed in the
+database. Auth actions are recorded in `audit_logs`.
+
+To test it: open Swagger at `http://localhost:8000/docs`, register and log in,
+then click **Authorize** and paste the access token to call protected endpoints.
+See `docs/API_DOCUMENTATION.md` for details.
 
 ---
 

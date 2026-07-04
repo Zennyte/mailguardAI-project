@@ -31,7 +31,7 @@ unstructured). Planned collections:
 
 | Table              | Purpose                                        |
 |--------------------|------------------------------------------------|
-| `users`            | User accounts (username, email, password hash) |
+| `users`            | User accounts (name, email, password hash)     |
 | `roles`            | Roles: Admin, Manager, User                    |
 | `user_roles`       | Many-to-many: which user has which role        |
 | `permissions`      | Individual permissions (scan_email, ...)       |
