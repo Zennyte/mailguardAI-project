@@ -11,12 +11,12 @@ router = APIRouter(prefix="/scans", tags=["Scans"])
 
 
 @router.post("/analyze", response_model=ScanResultResponse)
-def analyze_email(
+async def analyze_email(
     data: ScanEmailRequest,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    return scan_service.analyze_email(db, current_user.id, data)
+    return await scan_service.analyze_email(db, current_user.id, data)
 
 
 @router.get("/{scan_request_id}", response_model=ScanResultResponse)

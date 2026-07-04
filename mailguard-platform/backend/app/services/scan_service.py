@@ -1,9 +1,9 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.repositories import scan_repository
+from app.repositories import scan_repository, mongo_log_repository
 from app.schemas.scan import ScanEmailRequest, ScanResultResponse, ClassificationScoreResponse
-from app.services import ml_service
+from app.services import ml_service, notification_service
 
 RESULT_MESSAGES = {
     "safe": "This email looks safe.",
@@ -12,12 +12,23 @@ RESULT_MESSAGES = {
 }
 
 
-def analyze_email(db: Session, user_id: int, data: ScanEmailRequest) -> ScanResultResponse:
+async def analyze_email(db: Session, user_id: int, data: ScanEmailRequest) -> ScanResultResponse:
     prediction = ml_service.predict_email(data.subject, data.body)
 
-    # Ruajme rezultatin e skanimit
+    # Ruajme rezultatin e skanimit ne PostgreSQL
     scan_request = scan_repository.save_scan(
         db, user_id, data.subject, data.body, data.input_type, prediction,
+    )
+
+    # Ne MongoDB ruhet emaili i plote dhe payload-i i parashikimit
+    mongo_log_repository.save_raw_email(user_id, data.subject, data.body, data.input_type)
+    mongo_log_repository.save_scan_payload(
+        user_id, scan_request.id, prediction, scan_request.result.model_version_id,
+    )
+
+    # Njoftimi ruhet ne databaze dhe dergohet live me WebSocket
+    await notification_service.notify_scan_completed(
+        db, user_id, prediction["predicted_label"], prediction["confidence_score"],
     )
 
     return ScanResultResponse(

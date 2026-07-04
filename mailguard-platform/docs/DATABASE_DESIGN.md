@@ -9,19 +9,30 @@ scans, results, reports, CMS pages, etc. It is the main database of the platform
 All 26 tables are normalized (3NF), connected with foreign keys, and indexed on
 the columns that are queried most often.
 
-### MongoDB (NoSQL) - added in a later commit
+### MongoDB (NoSQL)
 
-MongoDB will store flexible data that does not fit well in fixed table columns,
-for example the full raw text of scanned emails (which can be very large and
-unstructured). Planned collections:
+MongoDB stores flexible data that does not fit well in fixed table columns.
+PostgreSQL keeps the structured entities (users, scans, results, notifications);
+MongoDB keeps the raw payloads — the full email text can be very large and
+unstructured, so it fits a document store better than a SQL column.
+
+Collections **in use now**:
 
 | Collection             | Content                                              |
 |------------------------|------------------------------------------------------|
 | `raw_email_documents`  | Full raw email text (subject + body) per scan        |
-| `scan_payload_logs`    | Raw ML input/output payload per scan (for debugging) |
+| `scan_payload_logs`    | ML prediction payload per scan (label, all scores)   |
+
+Planned for later commits:
+
+| Collection             | Content                                              |
+|------------------------|------------------------------------------------------|
 | `imported_batches`     | Raw rows of bulk imports before processing           |
 | `report_snapshots`     | Generated report data as flexible JSON documents     |
 | `cms_revision_logs`    | Old versions of CMS content after edits              |
+
+If MongoDB is not running, the scan still works — only the raw log is skipped
+with a warning. PostgreSQL remains the source of truth.
 
 ---
 

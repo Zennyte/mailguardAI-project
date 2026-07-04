@@ -179,6 +179,44 @@ copy ..\mailguard-ml\models\mail_detection_pipeline.joblib backend\app\ml\
 
 ---
 
+## MongoDB and Real-Time Notifications
+
+Besides PostgreSQL, the platform uses **MongoDB** for flexible log data:
+
+- every scan saves the **full raw email** in the `raw_email_documents` collection
+- and the **ML prediction payload** (label + all class scores) in `scan_payload_logs`
+- structured data (users, scans, results, notifications) stays in PostgreSQL
+- if MongoDB is not running, scans still work — only the raw logs are skipped
+
+After every completed scan the backend also:
+
+1. saves a notification in the `notifications` table (PostgreSQL)
+2. pushes it **live** to the user through the WebSocket at
+   `ws://localhost:8000/ws/notifications?user_id=<id>`
+
+MongoDB must be running locally at `mongodb://localhost:27017` (change
+`MONGODB_URL` in `backend/.env` if different).
+
+**Test flow:**
+
+1. Start PostgreSQL, MongoDB, and the backend
+2. Register/login in Swagger (`http://localhost:8000/docs`) and click **Authorize**
+3. Open a WebSocket client (e.g. the browser console or Postman) and connect to
+   `ws://localhost:8000/ws/notifications?user_id=1`
+
+   Browser console example:
+
+   ```js
+   const ws = new WebSocket("ws://localhost:8000/ws/notifications?user_id=1");
+   ws.onmessage = (event) => console.log("Notification:", JSON.parse(event.data));
+   ```
+
+4. Call `POST /scans/analyze` in Swagger
+5. The WebSocket client instantly receives the scan notification
+6. `GET /notifications` shows the same notification saved in the database
+
+---
+
 ## Authentication
 
 The backend uses JWT authentication:

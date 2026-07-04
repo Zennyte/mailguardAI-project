@@ -87,7 +87,39 @@ class in `classification_scores`.
 
 ### Notifications
 
-_To be added in a later commit._
+| Method | Path                                  | Auth required | Description                          |
+|--------|---------------------------------------|---------------|--------------------------------------|
+| GET    | `/notifications`                      | Yes (JWT)     | List current user notifications      |
+| PATCH  | `/notifications/{notification_id}/read` | Yes (JWT)  | Mark one notification as read        |
+
+Notifications are created automatically when a scan completes, for example:
+
+```json
+{
+  "id": 1,
+  "title": "Email scan completed",
+  "message": "The email was classified as phishing with 99% confidence.",
+  "notification_type": "scan_completed",
+  "is_read": false,
+  "created_at": "2026-07-05T14:30:00"
+}
+```
+
+### WebSocket (real-time notifications)
+
+Connect to:
+
+```
+ws://localhost:8000/ws/notifications?user_id=1
+```
+
+While connected, every completed scan pushes a JSON notification instantly —
+no polling. The same notification is also saved in the `notifications` table,
+so it is not lost if the user was offline.
+
+**Note:** for simplicity in this student project the WebSocket identifies the
+user with a `user_id` query parameter. A production system should validate the
+JWT token in the WebSocket connection as well.
 
 ### Reports
 
