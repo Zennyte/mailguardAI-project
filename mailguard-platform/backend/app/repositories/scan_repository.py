@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.models import (
@@ -59,3 +60,26 @@ def get_scan_for_user(db: Session, scan_request_id: int, user_id: int):
         .filter(ScanRequest.id == scan_request_id, ScanRequest.user_id == user_id)
         .first()
     )
+
+
+def get_history_for_user(db: Session, user_id: int, limit: int = 50):
+    # Skanimet me te rejat te parat
+    return (
+        db.query(ScanRequest)
+        .filter(ScanRequest.user_id == user_id)
+        .order_by(ScanRequest.id.desc())
+        .limit(limit)
+        .all()
+    )
+
+
+def count_labels_for_user(db: Session, user_id: int) -> dict:
+    # Sa skanime ka perdoruesi per cdo etikete (safe/spam/phishing)
+    rows = (
+        db.query(ScanResult.predicted_label, func.count(ScanResult.id))
+        .join(ScanRequest, ScanRequest.id == ScanResult.scan_request_id)
+        .filter(ScanRequest.user_id == user_id)
+        .group_by(ScanResult.predicted_label)
+        .all()
+    )
+    return dict(rows)

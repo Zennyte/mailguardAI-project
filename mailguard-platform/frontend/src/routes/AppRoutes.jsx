@@ -5,6 +5,8 @@ import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import DashboardPage from "../pages/DashboardPage";
+import ScannerPage from "../pages/ScannerPage";
+import ScanHistoryPage from "../pages/ScanHistoryPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
@@ -20,6 +22,22 @@ function AppRoutes() {
             element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/scanner"
+            element={
+              <ProtectedRoute>
+                <ScannerPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <ProtectedRoute>
+                <ScanHistoryPage />
               </ProtectedRoute>
             }
           />

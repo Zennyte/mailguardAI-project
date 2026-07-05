@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, Field
 
 
@@ -18,3 +20,19 @@ class ScanResultResponse(BaseModel):
     confidence_score: float
     scores: list[ClassificationScoreResponse]
     message: str
+
+
+class ScanHistoryItem(BaseModel):
+    scan_request_id: int
+    subject: str | None = None
+    predicted_label: str
+    confidence_score: float
+    created_at: datetime
+
+
+class ScanStatsResponse(BaseModel):
+    total_scans: int
+    safe_count: int
+    spam_count: int
+    phishing_count: int
+    latest_scan_label: str | None = None

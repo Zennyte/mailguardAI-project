@@ -34,7 +34,9 @@ function HomePage() {
 
       <p className="text-slate-300 mb-8">
         Paste an email and our Machine Learning model tells you instantly if it
-        is safe, spam, or a phishing attempt — with a confidence score.
+        is safe, spam, or a phishing attempt — with a confidence score. After
+        logging in, every scan is saved so you can review your scan history at
+        any time.
       </p>
 
       {isAuthenticated ? (

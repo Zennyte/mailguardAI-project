@@ -49,13 +49,20 @@ plain text. Register, login, and logout are recorded in `audit_logs`.
 - Register a user from the `/register` page — after registration the frontend
   logs in automatically and opens the dashboard.
 - Login works from the `/login` page.
-- `/dashboard` is protected: without a valid login it redirects to `/login`.
+- Protected pages (require login, otherwise redirect to `/login`):
+  - `/dashboard` — scan statistics cards and quick links
+  - `/scanner` — scan an email and see the result with confidence scores
+  - `/history` — table of previous scans, newest first
+- The notification bell in the navbar shows live notifications (WebSocket)
+  and lets you mark them as read.
 
 ### Scans
 
 | Method | Path                  | Auth required | Description                                  |
 |--------|-----------------------|---------------|----------------------------------------------|
 | POST   | `/scans/analyze`      | Yes (JWT)     | Scan an email with the ML model              |
+| GET    | `/scans`              | Yes (JWT)     | Scan history of the current user, newest first |
+| GET    | `/scans/stats`        | Yes (JWT)     | Simple stats: total/safe/spam/phishing counts + latest label |
 | GET    | `/scans/{scan_id}`    | Yes (JWT)     | Get a saved scan result (own scans only)     |
 
 **Note:** the model file must exist at

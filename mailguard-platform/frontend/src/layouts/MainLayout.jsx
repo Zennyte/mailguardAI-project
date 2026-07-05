@@ -1,5 +1,6 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import useAuthStore from "../store/authStore";
+import NotificationBell from "../components/NotificationBell";
 
 function MainLayout() {
   const { isAuthenticated, user, logout } = useAuthStore();
@@ -24,6 +25,13 @@ function MainLayout() {
                 <Link to="/dashboard" className="hover:text-emerald-400">
                   Dashboard
                 </Link>
+                <Link to="/scanner" className="hover:text-emerald-400">
+                  Scanner
+                </Link>
+                <Link to="/history" className="hover:text-emerald-400">
+                  History
+                </Link>
+                <NotificationBell />
                 {user && <span className="text-slate-400">{user.first_name}</span>}
                 <button
                   onClick={handleLogout}

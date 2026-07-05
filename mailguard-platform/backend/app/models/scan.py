@@ -35,6 +35,7 @@ class ScanRequest(Base):
 
     # Nje kerkese skanimi ka nje rezultat te vetem
     result = relationship("ScanResult", uselist=False, cascade="all, delete-orphan")
+    email_message = relationship("EmailMessage")
 
 
 class ScanResult(Base):

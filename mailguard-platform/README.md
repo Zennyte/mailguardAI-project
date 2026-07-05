@@ -179,6 +179,24 @@ copy ..\mailguard-ml\models\mail_detection_pipeline.joblib backend\app\ml\
 
 ---
 
+## Using the App
+
+1. Start the backend (`uvicorn app.main:app --reload` in `backend/`)
+2. Start the frontend (`npm run dev` in `frontend/`)
+3. Open `http://localhost:5173`, register or log in
+4. Open the **Scanner** page, paste an email subject and body, click **Scan Email**
+5. The result appears with the predicted label (safe/spam/phishing), the
+   confidence, and a score bar per class — and the notification bell in the
+   navbar receives a live notification
+6. The **Dashboard** shows your totals per label and the latest result
+7. The **History** page lists all your previous scans, newest first
+
+The ML model file must exist at `backend/app/ml/mail_detection_pipeline.joblib`.
+If it is missing, the scanner shows the backend error
+"ML model is not available..." — copy the file as described in "ML Model Setup".
+
+---
+
 ## MongoDB and Real-Time Notifications
 
 Besides PostgreSQL, the platform uses **MongoDB** for flexible log data:

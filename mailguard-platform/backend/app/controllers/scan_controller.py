@@ -4,7 +4,9 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.dependencies import get_current_user
 from app.models import User
-from app.schemas.scan import ScanEmailRequest, ScanResultResponse
+from app.schemas.scan import (
+    ScanEmailRequest, ScanResultResponse, ScanHistoryItem, ScanStatsResponse,
+)
 from app.services import scan_service
 
 router = APIRouter(prefix="/scans", tags=["Scans"])
@@ -17,6 +19,23 @@ async def analyze_email(
     current_user: User = Depends(get_current_user),
 ):
     return await scan_service.analyze_email(db, current_user.id, data)
+
+
+@router.get("", response_model=list[ScanHistoryItem])
+def get_scan_history(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    return scan_service.get_history(db, current_user.id)
+
+
+# Kujdes: "/stats" duhet te deklarohet para "/{scan_request_id}"
+@router.get("/stats", response_model=ScanStatsResponse)
+def get_scan_stats(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    return scan_service.get_stats(db, current_user.id)
 
 
 @router.get("/{scan_request_id}", response_model=ScanResultResponse)

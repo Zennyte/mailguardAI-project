@@ -2,7 +2,10 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.repositories import scan_repository, mongo_log_repository
-from app.schemas.scan import ScanEmailRequest, ScanResultResponse, ClassificationScoreResponse
+from app.schemas.scan import (
+    ScanEmailRequest, ScanResultResponse, ClassificationScoreResponse,
+    ScanHistoryItem, ScanStatsResponse,
+)
 from app.services import ml_service, notification_service
 
 RESULT_MESSAGES = {
@@ -37,6 +40,37 @@ async def analyze_email(db: Session, user_id: int, data: ScanEmailRequest) -> Sc
         confidence_score=prediction["confidence_score"],
         scores=[ClassificationScoreResponse(**score) for score in prediction["scores"]],
         message=RESULT_MESSAGES.get(prediction["predicted_label"], "Scan completed."),
+    )
+
+
+def get_history(db: Session, user_id: int) -> list:
+    items = []
+    for scan_request in scan_repository.get_history_for_user(db, user_id):
+        if scan_request.result is None:
+            continue
+        items.append(ScanHistoryItem(
+            scan_request_id=scan_request.id,
+            subject=scan_request.email_message.subject if scan_request.email_message else None,
+            predicted_label=scan_request.result.predicted_label,
+            confidence_score=float(scan_request.result.confidence_score),
+            created_at=scan_request.created_at,
+        ))
+    return items
+
+
+def get_stats(db: Session, user_id: int) -> ScanStatsResponse:
+    counts = scan_repository.count_labels_for_user(db, user_id)
+    history = scan_repository.get_history_for_user(db, user_id, limit=1)
+    latest_label = None
+    if history and history[0].result is not None:
+        latest_label = history[0].result.predicted_label
+
+    return ScanStatsResponse(
+        total_scans=sum(counts.values()),
+        safe_count=counts.get("safe", 0),
+        spam_count=counts.get("spam", 0),
+        phishing_count=counts.get("phishing", 0),
+        latest_scan_label=latest_label,
     )
 
 
