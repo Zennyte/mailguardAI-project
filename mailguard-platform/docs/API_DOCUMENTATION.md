@@ -189,8 +189,83 @@ import creates a row in the `import_jobs` table.
 
 ### Reports
 
-_To be added in a later commit._
+| Method | Path                    | Auth required | Description                                  |
+|--------|-------------------------|---------------|----------------------------------------------|
+| GET    | `/reports/preview`      | Yes (JWT)     | Generate report data without saving          |
+| POST   | `/reports`              | Yes (JWT)     | Generate and save a report with its filters  |
+| GET    | `/reports`              | Yes (JWT)     | List current user's saved reports            |
+| GET    | `/reports/{report_id}`  | Yes (JWT)     | Get a saved report (data regenerated live)   |
+
+Report types: `scan_summary`, `label_distribution`, `phishing_activity`.
+Filters: `date_from`, `date_to`, `label` — reports are dynamic because the
+data is computed from the user's scans using the chosen filters.
+
+**Request example** (`POST /reports`):
+
+```json
+{
+  "report_name": "Monthly phishing report",
+  "report_type": "phishing_activity",
+  "date_from": "2026-01-01",
+  "date_to": "2026-12-31"
+}
+```
+
+**Response example:**
+
+```json
+{
+  "id": 1,
+  "report_name": "Monthly phishing report",
+  "report_type": "phishing_activity",
+  "created_at": "2026-07-06T17:32:08",
+  "filters": [
+    { "filter_key": "date_from", "filter_value": "2026-01-01" },
+    { "filter_key": "date_to", "filter_value": "2026-12-31" }
+  ],
+  "data": {
+    "total_scans": 3,
+    "phishing_count": 1,
+    "phishing_percentage": 33.3,
+    "average_phishing_confidence": 0.9994,
+    "last_phishing_at": "2026-07-06 17:30:00"
+  }
+}
+```
+
+The filters are saved in the `report_filters` table. Opening a saved report
+regenerates the data from those filters, so the numbers are always current.
 
 ### CMS
 
-_To be added in a later commit._
+The CMS manages static app content (homepage text, phishing tips, help pages)
+— it is not business CRUD.
+
+**Public endpoints** (no login needed, published pages only):
+
+| Method | Path                 | Description                        |
+|--------|----------------------|------------------------------------|
+| GET    | `/cms/pages`         | List published pages with blocks   |
+| GET    | `/cms/pages/{slug}`  | Get one published page by slug     |
+
+**Protected endpoints** (JWT required):
+
+| Method | Path                            | Description                          |
+|--------|---------------------------------|--------------------------------------|
+| GET    | `/cms/pages/manage`             | List all pages, including drafts     |
+| POST   | `/cms/pages`                    | Create a page (title, slug, is_published) |
+| PUT    | `/cms/pages/{page_id}`          | Update a page                        |
+| DELETE | `/cms/pages/{page_id}`          | Delete a page (blocks cascade)       |
+| POST   | `/cms/pages/{page_id}/blocks`   | Add a content block                  |
+| PUT    | `/cms/blocks/{block_id}`        | Update a block                       |
+| DELETE | `/cms/blocks/{block_id}`        | Delete a block                       |
+
+Blocks are returned ordered by `sort_order`. Slugs must be unique.
+
+**Note:** management endpoints currently require any logged-in user. In a real
+production system they would be restricted with the existing role/permission
+system (e.g. `require_permission("manage_cms")`) — kept simple on purpose for
+this student project.
+
+If a published page with slug `home` exists, the frontend homepage shows its
+content blocks instead of the default static text.

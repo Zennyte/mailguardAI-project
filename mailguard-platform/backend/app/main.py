@@ -9,6 +9,8 @@ from app.controllers.notification_controller import router as notification_route
 from app.controllers.websocket_controller import router as websocket_router
 from app.controllers.search_controller import router as search_router
 from app.controllers.data_transfer_controller import router as data_transfer_router
+from app.controllers.report_controller import router as report_router
+from app.controllers.cms_controller import router as cms_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -31,3 +33,5 @@ app.include_router(notification_router)
 app.include_router(websocket_router)
 app.include_router(search_router)
 app.include_router(data_transfer_router)
+app.include_router(report_router)
+app.include_router(cms_router)

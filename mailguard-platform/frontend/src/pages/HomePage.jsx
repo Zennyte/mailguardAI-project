@@ -1,8 +1,20 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
 import useAuthStore from "../store/authStore";
+import { getPageBySlug } from "../services/cmsService";
 
 function HomePage() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const [cmsBlocks, setCmsBlocks] = useState(null);
+
+  // Nese ekziston faqja CMS "home" e publikuar, teksti i saj perdoret ketu.
+  // Nese jo, mbetet teksti statik i meposhtem.
+  useEffect(() => {
+    getPageBySlug("home")
+      .then((page) => setCmsBlocks(page.blocks))
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="text-center">
@@ -32,12 +44,20 @@ function HomePage() {
         </div>
       </div>
 
-      <p className="text-slate-300 mb-8">
-        Paste an email and our Machine Learning model tells you instantly if it
-        is safe, spam, or a phishing attempt — with a confidence score. After
-        logging in, every scan is saved so you can review your scan history at
-        any time.
-      </p>
+      {cmsBlocks && cmsBlocks.length > 0 ? (
+        <div className="mb-8 space-y-3">
+          {cmsBlocks.map((block) => (
+            <p key={block.id} className="text-slate-300">{block.content}</p>
+          ))}
+        </div>
+      ) : (
+        <p className="text-slate-300 mb-8">
+          Paste an email and our Machine Learning model tells you instantly if it
+          is safe, spam, or a phishing attempt — with a confidence score. After
+          logging in, every scan is saved so you can review your scan history at
+          any time.
+        </p>
+      )}
 
       {isAuthenticated ? (
         <Link

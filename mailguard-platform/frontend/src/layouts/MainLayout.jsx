@@ -37,6 +37,12 @@ function MainLayout() {
                 <Link to="/import-export" className="hover:text-emerald-400">
                   Import/Export
                 </Link>
+                <Link to="/reports" className="hover:text-emerald-400">
+                  Reports
+                </Link>
+                <Link to="/cms" className="hover:text-emerald-400">
+                  CMS
+                </Link>
                 <NotificationBell />
                 {user && <span className="text-slate-400">{user.first_name}</span>}
                 <button

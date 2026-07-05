@@ -227,6 +227,32 @@ The **Import/Export** page (`/import-export`) works for logged-in users:
 
 ---
 
+## Dynamic Reports
+
+On the **Reports** page (`/reports`) a logged-in user can generate reports
+from their own scans:
+
+- report types: **Scan Summary**, **Label Distribution**, **Phishing Activity**
+- filters: date range and label (safe/spam/phishing)
+- **Preview** shows the data without saving; **Save Report** stores the report
+  with its filters in the `reports` / `report_filters` tables
+- opening a saved report regenerates the data live from the stored filters
+
+---
+
+## Simple CMS
+
+On the **CMS** page (`/cms`) a logged-in user manages static app content —
+pages with ordered content blocks (this is content management, not business CRUD):
+
+- create/edit/delete pages (title, slug, published flag)
+- add/edit/delete text blocks with a sort order
+- unpublished pages are drafts: hidden from the public endpoints
+- if a published page with slug `home` exists, the homepage shows its blocks
+  instead of the default static text (with automatic fallback)
+
+---
+
 ## MongoDB and Real-Time Notifications
 
 Besides PostgreSQL, the platform uses **MongoDB** for flexible log data:

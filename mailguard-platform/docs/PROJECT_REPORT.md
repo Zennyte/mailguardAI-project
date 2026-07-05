@@ -27,6 +27,14 @@ Additional features implemented so far:
   status, and date filters plus sorting.
 - **Data Import/Export** — export of 5 lists as CSV/JSON/XLSX and import into
   5 lists from the same formats, with row validation and skip counts.
+- **Dynamic Report Generation** — the user chooses report type (scan summary,
+  label distribution, phishing activity), date range, and label filter; the
+  report data is computed live from their scans. Saved reports store only the
+  filters, so opening one regenerates fresh numbers.
+- **Simple CMS** — admin-style management of static app content (homepage
+  text, phishing tips) through pages and ordered content blocks. This is
+  content management, not normal business CRUD: if a published page with slug
+  `home` exists, the homepage displays its blocks instead of the built-in text.
 
 ## 5. Database Design
 
