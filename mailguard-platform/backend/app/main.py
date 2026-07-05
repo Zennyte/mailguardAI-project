@@ -7,6 +7,8 @@ from app.controllers.auth_controller import router as auth_router
 from app.controllers.scan_controller import router as scan_router
 from app.controllers.notification_controller import router as notification_router
 from app.controllers.websocket_controller import router as websocket_router
+from app.controllers.search_controller import router as search_router
+from app.controllers.data_transfer_controller import router as data_transfer_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -27,3 +29,5 @@ app.include_router(auth_router)
 app.include_router(scan_router)
 app.include_router(notification_router)
 app.include_router(websocket_router)
+app.include_router(search_router)
+app.include_router(data_transfer_router)

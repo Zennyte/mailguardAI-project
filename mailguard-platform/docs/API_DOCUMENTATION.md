@@ -135,6 +135,58 @@ so it is not lost if the user was offline.
 user with a `user_id` query parameter. A production system should validate the
 JWT token in the WebSocket connection as well.
 
+### Advanced Search
+
+| Method | Path      | Auth required | Description                       |
+|--------|-----------|---------------|-----------------------------------|
+| GET    | `/search` | Yes (JWT)     | Search across 5 application lists |
+
+Query parameters:
+
+- `entity` (required): `scans`, `email_messages`, `notifications`, `reports`, `cms_pages`
+- `q`: text query (searched in subject/body, title/message, name, slug — depending on entity)
+- `label`: `safe` / `spam` / `phishing` (scans only)
+- `status`: scan status (scans only)
+- `date_from`, `date_to`: date range (inclusive)
+- `sort_by`: `created_at` (default) or `id`
+- `sort_order`: `desc` (default) or `asc`
+- `limit`: max results (default 50)
+
+Example:
+
+```
+/search?entity=scans&q=invoice&label=phishing&date_from=2026-01-01&date_to=2026-12-31&sort_order=desc
+```
+
+Users only see their own data. `cms_pages` is the exception — it is public
+content, so only **published** pages are searchable.
+
+### Import / Export
+
+| Method | Path                     | Auth required | Description                          |
+|--------|--------------------------|---------------|--------------------------------------|
+| GET    | `/data/export/{entity}`  | Yes (JWT)     | Download a list as a file            |
+| POST   | `/data/import/{entity}`  | Yes (JWT)     | Upload a file and import its rows    |
+
+**Export** — entities: `scans`, `email_messages`, `notifications`, `reports`,
+`cms_pages`. Formats via `?format=`: `csv`, `json`, `xlsx`. The response is a
+downloadable file with the current user's data.
+
+**Import** — entities: `email_messages`, `cms_pages`, `user_feedback`,
+`settings`, `notifications`. The uploaded file can be `.csv`, `.json`, or
+`.xlsx` (format detected from the extension). Invalid rows are skipped, and the
+response is a summary:
+
+```json
+{ "entity": "email_messages", "imported_count": 10, "skipped_count": 2,
+  "message": "Imported 10 rows, skipped 2 invalid rows." }
+```
+
+Import rules: required fields are validated per entity (e.g. `body` for emails,
+`title`+`slug` for CMS pages); duplicate slugs and existing settings keys are
+skipped, never overwritten; users and passwords cannot be imported. Every
+import creates a row in the `import_jobs` table.
+
 ### Reports
 
 _To be added in a later commit._

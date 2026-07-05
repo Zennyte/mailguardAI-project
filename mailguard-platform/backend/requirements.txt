@@ -13,3 +13,4 @@ python-multipart
 pandas
 joblib
 scikit-learn
+openpyxl

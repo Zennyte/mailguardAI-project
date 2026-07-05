@@ -31,6 +31,12 @@ function MainLayout() {
                 <Link to="/history" className="hover:text-emerald-400">
                   History
                 </Link>
+                <Link to="/search" className="hover:text-emerald-400">
+                  Search
+                </Link>
+                <Link to="/import-export" className="hover:text-emerald-400">
+                  Import/Export
+                </Link>
                 <NotificationBell />
                 {user && <span className="text-slate-400">{user.first_name}</span>}
                 <button

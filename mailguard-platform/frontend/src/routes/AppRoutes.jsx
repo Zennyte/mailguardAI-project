@@ -7,6 +7,8 @@ import RegisterPage from "../pages/RegisterPage";
 import DashboardPage from "../pages/DashboardPage";
 import ScannerPage from "../pages/ScannerPage";
 import ScanHistoryPage from "../pages/ScanHistoryPage";
+import SearchPage from "../pages/SearchPage";
+import ImportExportPage from "../pages/ImportExportPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
@@ -38,6 +40,22 @@ function AppRoutes() {
             element={
               <ProtectedRoute>
                 <ScanHistoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <ProtectedRoute>
+                <SearchPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/import-export"
+            element={
+              <ProtectedRoute>
+                <ImportExportPage />
               </ProtectedRoute>
             }
           />

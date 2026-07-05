@@ -18,6 +18,16 @@ _Backend (FastAPI, layered: controllers -> services -> repositories), frontend (
 
 _Authentication, email scanning, real-time notifications, history, search, import/export, reports, CMS._
 
+Additional features implemented so far:
+
+- **Machine Learning Integration** — the exported Logistic Regression pipeline
+  classifies emails as safe/spam/phishing with confidence scores.
+- **Advanced Search Functionality** — one search endpoint covers 5 lists
+  (scans, email messages, notifications, reports, CMS pages) with text, label,
+  status, and date filters plus sorting.
+- **Data Import/Export** — export of 5 lists as CSV/JSON/XLSX and import into
+  5 lists from the same formats, with row validation and skip counts.
+
 ## 5. Database Design
 
 _Summary + link to DATABASE_DESIGN.md and the ERD._

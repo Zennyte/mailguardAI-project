@@ -197,6 +197,36 @@ If it is missing, the scanner shows the backend error
 
 ---
 
+## Advanced Search
+
+Logged-in users can search across five lists from the **Search** page
+(`/search` in the frontend, `GET /search` in the API):
+
+- **Scans** — filter by text, predicted label (safe/spam/phishing), status, dates
+- **Email Messages** — text and date filters
+- **Notifications** — text and date filters
+- **Reports** — text and date filters
+- **CMS Pages** — public content, only published pages are searched
+
+All searches support sorting (newest first by default) and return only the
+current user's own data.
+
+---
+
+## Import and Export
+
+The **Import/Export** page (`/import-export`) works for logged-in users:
+
+- **Export** downloads a list as **CSV**, **JSON**, or **XLSX**:
+  scans, email_messages, notifications, reports, cms_pages
+- **Import** uploads a CSV/JSON/XLSX file into one of:
+  email_messages, cms_pages, user_feedback, settings, notifications
+- Invalid rows are skipped and reported in the import summary
+  (imported/skipped counts); existing data is never overwritten
+- Every import is recorded in the `import_jobs` table
+
+---
+
 ## MongoDB and Real-Time Notifications
 
 Besides PostgreSQL, the platform uses **MongoDB** for flexible log data:
