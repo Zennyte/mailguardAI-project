@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.core.dependencies import get_current_user
+from app.core.dependencies import require_permission
 from app.models import User
 from app.schemas.cms import (
     CmsPageCreateRequest, CmsPageUpdateRequest, CmsPageResponse,
@@ -13,7 +13,7 @@ from app.services import cms_service
 router = APIRouter(prefix="/cms", tags=["CMS"])
 
 
-# --- Endpoints publike (permbajtja e publikuar) ---
+# Endpoints publike (permbajtja e publikuar)
 
 @router.get("/pages", response_model=list[CmsPageResponse])
 def get_published_pages(db: Session = Depends(get_db)):
@@ -24,7 +24,7 @@ def get_published_pages(db: Session = Depends(get_db)):
 @router.get("/pages/manage", response_model=list[CmsPageResponse])
 def get_all_pages(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_permission("manage_cms")),
 ):
     return cms_service.list_all_pages(db)
 
@@ -34,13 +34,13 @@ def get_page_by_slug(slug: str, db: Session = Depends(get_db)):
     return cms_service.get_published_page(db, slug)
 
 
-# --- Endpoints te mbrojtura (menaxhimi i permbajtjes) ---
+# Endpoints te mbrojtura (menaxhimi i permbajtjes)
 
 @router.post("/pages", response_model=CmsPageResponse, status_code=201)
 def create_page(
     data: CmsPageCreateRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_permission("manage_cms")),
 ):
     return cms_service.create_page(db, current_user.id, data)
 
@@ -50,7 +50,7 @@ def update_page(
     page_id: int,
     data: CmsPageUpdateRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_permission("manage_cms")),
 ):
     return cms_service.update_page(db, current_user.id, page_id, data)
 
@@ -59,7 +59,7 @@ def update_page(
 def delete_page(
     page_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_permission("manage_cms")),
 ):
     return cms_service.delete_page(db, page_id)
 
@@ -69,7 +69,7 @@ def add_block(
     page_id: int,
     data: CmsBlockCreateRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_permission("manage_cms")),
 ):
     return cms_service.add_block(db, page_id, data)
 
@@ -79,7 +79,7 @@ def update_block(
     block_id: int,
     data: CmsBlockCreateRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_permission("manage_cms")),
 ):
     return cms_service.update_block(db, block_id, data)
 
@@ -88,6 +88,6 @@ def update_block(
 def delete_block(
     block_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_permission("manage_cms")),
 ):
     return cms_service.delete_block(db, block_id)

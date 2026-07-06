@@ -9,7 +9,7 @@ const NAV_ITEMS = [
   { to: "/search", label: "Search" },
   { to: "/import-export", label: "Import/Export" },
   { to: "/reports", label: "Reports" },
-  { to: "/cms", label: "CMS" },
+  { to: "/cms", label: "CMS", role: "Admin" },
 ];
 
 function MainLayout() {
@@ -55,6 +55,11 @@ function MainLayout() {
   const sidebarLinkClass = ({ isActive }) =>
     isActive ? "sidebar-link sidebar-link-active" : "sidebar-link";
 
+  // CMS shfaqet vetem per perdoruesit qe kane rolin Admin
+  const visibleNavItems = NAV_ITEMS.filter(
+    (item) => !item.role || user?.roles?.includes(item.role),
+  );
+
   // Faqet e brendshme (pas login) marrin nje layout me sidebar, si nje aplikacion i vertete
   return (
     <div className="min-h-screen bg-[var(--bg)] flex">
@@ -66,7 +71,7 @@ function MainLayout() {
         </div>
 
         <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
-          {NAV_ITEMS.map(({ to, label }) => (
+          {visibleNavItems.map(({ to, label }) => (
             <NavLink key={to} to={to} className={sidebarLinkClass}>
               {label}
             </NavLink>
@@ -98,7 +103,7 @@ function MainLayout() {
 
         {/* Meny horizontale per ekranet e vegjel, kur sidebar-i fshihet */}
         <nav className="md:hidden flex flex-wrap gap-x-4 gap-y-2 px-4 py-3 border-b border-[var(--border)] bg-[var(--surface)]">
-          {NAV_ITEMS.map(({ to, label }) => (
+          {visibleNavItems.map(({ to, label }) => (
             <NavLink key={to} to={to} className={({ isActive }) => (isActive ? "nav-tab nav-tab-active" : "nav-tab")}>
               {label}
             </NavLink>

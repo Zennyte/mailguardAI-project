@@ -1,12 +1,19 @@
 import { useState } from "react";
 
+import useAuthStore from "../store/authStore";
 import { exportData, importData } from "../services/dataTransferService";
 
 const EXPORT_ENTITIES = ["scans", "email_messages", "notifications", "reports", "cms_pages"];
 const IMPORT_ENTITIES = ["email_messages", "cms_pages", "user_feedback", "settings", "notifications"];
 const FORMATS = ["csv", "json", "xlsx"];
 
+// Vetem Admin/Manager kane lejen "import_data" (shiko database/seed.sql)
+const IMPORT_ROLES = ["Admin", "Manager"];
+
 function ImportExportPage() {
+  const user = useAuthStore((state) => state.user);
+  const canImport = IMPORT_ROLES.some((role) => user?.roles?.includes(role));
+
   const [exportEntity, setExportEntity] = useState("scans");
   const [exportFormat, setExportFormat] = useState("csv");
   const [importEntity, setImportEntity] = useState("email_messages");
@@ -83,44 +90,53 @@ function ImportExportPage() {
           </p>
         </div>
 
-        <form onSubmit={handleImport} className="card">
-          <h2 className="text-lg font-bold text-[var(--text)] mb-4">Import data</h2>
-          <div className="space-y-4">
-            <div>
-              <label className="form-label">List</label>
-              <select
-                value={importEntity}
-                onChange={(e) => setImportEntity(e.target.value)}
-                className="input-field"
-              >
-                {IMPORT_ENTITIES.map((e) => <option key={e} value={e}>{e}</option>)}
-              </select>
+        {canImport ? (
+          <form onSubmit={handleImport} className="card">
+            <h2 className="text-lg font-bold text-[var(--text)] mb-4">Import data</h2>
+            <div className="space-y-4">
+              <div>
+                <label className="form-label">List</label>
+                <select
+                  value={importEntity}
+                  onChange={(e) => setImportEntity(e.target.value)}
+                  className="input-field"
+                >
+                  {IMPORT_ENTITIES.map((e) => <option key={e} value={e}>{e}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="form-label">File (.csv / .json / .xlsx)</label>
+                <input
+                  type="file"
+                  accept=".csv,.json,.xlsx"
+                  onChange={(e) => setImportFile(e.target.files[0])}
+                  className="input-field text-sm"
+                />
+              </div>
+              <button type="submit" disabled={loading} className="btn-primary px-6 w-full">
+                {loading ? "Importing..." : "Import"}
+              </button>
             </div>
-            <div>
-              <label className="form-label">File (.csv / .json / .xlsx)</label>
-              <input
-                type="file"
-                accept=".csv,.json,.xlsx"
-                onChange={(e) => setImportFile(e.target.files[0])}
-                className="input-field text-sm"
-              />
-            </div>
-            <button type="submit" disabled={loading} className="btn-primary px-6 w-full">
-              {loading ? "Importing..." : "Import"}
-            </button>
-          </div>
 
-          {summary && (
-            <div className="alert-success mt-4">
-              <p>{summary.message}</p>
-              <p className="mt-1 text-[var(--text-dim)]">
-                Imported: <span className="text-[var(--safe)] font-bold">{summary.imported_count}</span>
-                {" · "}
-                Skipped: <span className="text-[var(--warn)] font-bold">{summary.skipped_count}</span>
-              </p>
-            </div>
-          )}
-        </form>
+            {summary && (
+              <div className="alert-success mt-4">
+                <p>{summary.message}</p>
+                <p className="mt-1 text-[var(--text-dim)]">
+                  Imported: <span className="text-[var(--safe)] font-bold">{summary.imported_count}</span>
+                  {" · "}
+                  Skipped: <span className="text-[var(--warn)] font-bold">{summary.skipped_count}</span>
+                </p>
+              </div>
+            )}
+          </form>
+        ) : (
+          <div className="card">
+            <h2 className="text-lg font-bold text-[var(--text)] mb-4">Import data</h2>
+            <p className="text-sm text-[var(--text-dim)]">
+              Importing data requires the Admin or Manager role.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

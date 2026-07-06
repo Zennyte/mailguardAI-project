@@ -20,6 +20,7 @@ class ScanResultResponse(BaseModel):
     confidence_score: float
     scores: list[ClassificationScoreResponse]
     message: str
+    ai_explanation: str | None = None
 
 
 class ScanHistoryItem(BaseModel):

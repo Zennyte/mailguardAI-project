@@ -14,3 +14,5 @@ pandas
 joblib
 scikit-learn
 openpyxl
+httpx
+truststore

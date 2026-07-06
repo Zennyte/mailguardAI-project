@@ -104,6 +104,15 @@ function ScannerPage() {
                 </div>
               ))}
             </div>
+
+            {result.ai_explanation && (
+              <div className="mt-5 pt-4 border-t border-[var(--border)]">
+                <p className="text-xs uppercase tracking-wide text-[var(--text-faint)] mb-2">
+                  Why? (AI explanation)
+                </p>
+                <p className="text-sm text-[var(--text-dim)]">{result.ai_explanation}</p>
+              </div>
+            )}
           </div>
         ) : (
           <div className="empty-state h-full flex items-center justify-center">

@@ -6,7 +6,7 @@ from app.schemas.scan import (
     ScanEmailRequest, ScanResultResponse, ClassificationScoreResponse,
     ScanHistoryItem, ScanStatsResponse,
 )
-from app.services import ml_service, notification_service
+from app.services import ml_service, notification_service, ai_explanation_service
 
 RESULT_MESSAGES = {
     "safe": "This email looks safe.",
@@ -34,12 +34,18 @@ async def analyze_email(db: Session, user_id: int, data: ScanEmailRequest) -> Sc
         db, user_id, prediction["predicted_label"], prediction["confidence_score"],
     )
 
+    # Shpjegim opsional nga Groq - nese s'ka API key ose deshton, kthehet None
+    ai_explanation = await ai_explanation_service.get_explanation(
+        data.subject, data.body, prediction["predicted_label"], prediction["confidence_score"],
+    )
+
     return ScanResultResponse(
         scan_request_id=scan_request.id,
         predicted_label=prediction["predicted_label"],
         confidence_score=prediction["confidence_score"],
         scores=[ClassificationScoreResponse(**score) for score in prediction["scores"]],
         message=RESULT_MESSAGES.get(prediction["predicted_label"], "Scan completed."),
+        ai_explanation=ai_explanation,
     )
 
 

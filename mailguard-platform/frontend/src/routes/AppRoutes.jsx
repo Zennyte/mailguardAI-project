@@ -80,7 +80,7 @@ function AppRoutes() {
             <Route
               path="/cms"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute role="Admin">
                   <CmsPage />
                 </ProtectedRoute>
               }
