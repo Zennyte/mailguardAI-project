@@ -35,7 +35,7 @@ function NotificationBell() {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="relative bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded"
+        className="relative bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-md transition-colors"
         title="Notifications"
       >
         🔔
@@ -47,7 +47,7 @@ function NotificationBell() {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-80 bg-slate-800 border border-slate-700 rounded-lg shadow-lg z-10">
+        <div className="absolute right-0 mt-2 w-80 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-30">
           <p className="px-4 py-2 text-sm font-semibold border-b border-slate-700">
             Notifications
           </p>

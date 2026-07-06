@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { createReport, getReports, getReport, previewReport } from "../services/reportService";
+import LabelBadge from "../components/LabelBadge";
 
 const REPORT_TYPES = [
   { value: "scan_summary", label: "Scan Summary" },
@@ -80,23 +81,19 @@ function ReportsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white mb-6">Dynamic Reports</h1>
+      <h1 className="page-title">Dynamic Reports</h1>
 
-      <div className="bg-slate-800 rounded-lg p-6 mb-6">
-        {error && (
-          <p className="bg-red-900/50 text-red-300 text-sm rounded px-3 py-2 mb-4">{error}</p>
-        )}
-        {message && (
-          <p className="bg-emerald-900/50 text-emerald-300 text-sm rounded px-3 py-2 mb-4">{message}</p>
-        )}
+      <div className="card mb-6">
+        {error && <p className="alert-error mb-4">{error}</p>}
+        {message && <p className="alert-success mb-4">{message}</p>}
 
-        <div className="grid sm:grid-cols-4 gap-4 mb-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Report type</label>
+            <label className="form-label">Report type</label>
             <select
               value={reportType}
               onChange={(e) => setReportType(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+              className="input-field"
             >
               {REPORT_TYPES.map((t) => (
                 <option key={t.value} value={t.value}>{t.label}</option>
@@ -104,29 +101,29 @@ function ReportsPage() {
             </select>
           </div>
           <div>
-            <label className="block text-sm text-slate-300 mb-1">From date</label>
+            <label className="form-label">From date</label>
             <input
               type="date"
               value={dateFrom}
               onChange={(e) => setDateFrom(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+              className="input-field"
             />
           </div>
           <div>
-            <label className="block text-sm text-slate-300 mb-1">To date</label>
+            <label className="form-label">To date</label>
             <input
               type="date"
               value={dateTo}
               onChange={(e) => setDateTo(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+              className="input-field"
             />
           </div>
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Label (optional)</label>
+            <label className="form-label">Label (optional)</label>
             <select
               value={label}
               onChange={(e) => setLabel(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+              className="input-field"
             >
               <option value="">All labels</option>
               <option value="safe">safe</option>
@@ -137,25 +134,19 @@ function ReportsPage() {
         </div>
 
         <div className="flex flex-wrap items-end gap-4">
-          <button
-            onClick={handlePreview}
-            className="bg-slate-700 hover:bg-slate-600 px-6 py-2 rounded text-white font-medium"
-          >
+          <button onClick={handlePreview} className="btn-secondary px-6">
             Preview
           </button>
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Report name</label>
+            <label className="form-label">Report name</label>
             <input
               value={reportName}
               onChange={(e) => setReportName(e.target.value)}
               placeholder="e.g. Monthly phishing report"
-              className="bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white w-64"
+              className="input-field w-64"
             />
           </div>
-          <button
-            onClick={handleSave}
-            className="bg-emerald-600 hover:bg-emerald-500 px-6 py-2 rounded text-white font-medium"
-          >
+          <button onClick={handleSave} className="btn-primary px-6">
             Save Report
           </button>
         </div>
@@ -163,10 +154,10 @@ function ReportsPage() {
 
       {data && (
         <div className="mb-8">
-          <div className="grid sm:grid-cols-4 gap-4 mb-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             {simpleEntries.map(([key, value]) => (
-              <div key={key} className="bg-slate-800 rounded-lg p-5">
-                <p className="text-sm text-slate-400">{key.replaceAll("_", " ")}</p>
+              <div key={key} className="card p-5">
+                <p className="text-sm text-slate-400 mb-1">{key.replaceAll("_", " ")}</p>
                 <p className="text-2xl font-bold text-white break-words">
                   {value === null ? "-" : String(value)}
                 </p>
@@ -175,10 +166,10 @@ function ReportsPage() {
           </div>
 
           {data.distribution && (
-            <div className="bg-slate-800 rounded-lg overflow-hidden">
+            <div className="card p-0 overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-slate-400 border-b border-slate-700">
+                  <tr className="table-header">
                     <th className="px-4 py-3">Label</th>
                     <th className="px-4 py-3">Count</th>
                     <th className="px-4 py-3">Percentage</th>
@@ -186,8 +177,8 @@ function ReportsPage() {
                 </thead>
                 <tbody>
                   {data.distribution.map((row) => (
-                    <tr key={row.label} className="border-b border-slate-700/50">
-                      <td className="px-4 py-3 text-slate-200">{row.label}</td>
+                    <tr key={row.label} className="table-row">
+                      <td className="px-4 py-3"><LabelBadge label={row.label} /></td>
                       <td className="px-4 py-3 text-slate-300">{row.count}</td>
                       <td className="px-4 py-3 text-slate-300">{row.percentage}%</td>
                     </tr>
@@ -201,11 +192,11 @@ function ReportsPage() {
 
       <h2 className="text-lg font-semibold text-white mb-3">Saved reports</h2>
       {reports.length === 0 ? (
-        <div className="bg-slate-800 rounded-lg p-6 text-slate-400">
+        <div className="empty-state">
           No saved reports yet. Choose filters above and click Save Report.
         </div>
       ) : (
-        <ul className="bg-slate-800 rounded-lg divide-y divide-slate-700/50">
+        <ul className="card p-0 divide-y divide-slate-700/50">
           {reports.map((report) => (
             <li key={report.id} className="px-4 py-3 flex items-center justify-between">
               <div>

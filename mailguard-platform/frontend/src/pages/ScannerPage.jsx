@@ -3,10 +3,17 @@ import { useState } from "react";
 import { analyzeEmail } from "../services/scanService";
 import LabelBadge from "../components/LabelBadge";
 
-const RESULT_STYLES = {
-  safe: "border-green-500/50",
-  spam: "border-yellow-500/50",
-  phishing: "border-red-500/50",
+// Ngjyrat e njejta si LabelBadge: safe=jeshile, spam=verdhe, phishing=kuqe
+const RESULT_BORDERS = {
+  safe: "border-green-500/60",
+  spam: "border-yellow-500/60",
+  phishing: "border-red-500/60",
+};
+
+const BAR_COLORS = {
+  safe: "bg-green-500",
+  spam: "bg-yellow-500",
+  phishing: "bg-red-500",
 };
 
 function ScannerPage() {
@@ -34,62 +41,57 @@ function ScannerPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold text-white mb-6">Email Scanner</h1>
+      <h1 className="page-title">Email Scanner</h1>
 
-      <form onSubmit={handleSubmit} className="bg-slate-800 rounded-lg p-6 space-y-4">
-        {error && (
-          <p className="bg-red-900/50 text-red-300 text-sm rounded px-3 py-2">{error}</p>
-        )}
+      <form onSubmit={handleSubmit} className="card space-y-4">
+        {error && <p className="alert-error">{error}</p>}
 
         <div>
-          <label className="block text-sm text-slate-300 mb-1">Subject (optional)</label>
+          <label className="form-label">Subject (optional)</label>
           <input
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+            className="input-field"
           />
         </div>
 
         <div>
-          <label className="block text-sm text-slate-300 mb-1">Email body</label>
+          <label className="form-label">Email body</label>
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
             required
             rows={8}
             placeholder="Paste the email content here..."
-            className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+            className="input-field"
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 px-6 py-2 rounded text-white font-medium"
-        >
+        <button type="submit" disabled={loading} className="btn-primary px-6">
           {loading ? "Scanning..." : "Scan Email"}
         </button>
       </form>
 
       {result && (
-        <div className={`mt-6 bg-slate-800 rounded-lg p-6 border-2 ${RESULT_STYLES[result.predicted_label] || "border-slate-700"}`}>
-          <div className="flex items-center justify-between mb-2">
+        <div className={`card mt-6 border-2 ${RESULT_BORDERS[result.predicted_label] || "border-slate-700"}`}>
+          <div className="flex items-center justify-between mb-3">
             <h2 className="text-lg font-semibold text-white">Result</h2>
             <LabelBadge label={result.predicted_label} />
           </div>
 
-          <p className="text-slate-300 mb-1">{result.message}</p>
-          <p className="text-sm text-slate-400 mb-4">
-            Confidence: {(result.confidence_score * 100).toFixed(1)}%
+          <p className="text-slate-200 mb-1">{result.message}</p>
+          <p className="text-3xl font-bold text-white mb-1">
+            {(result.confidence_score * 100).toFixed(1)}%
           </p>
+          <p className="text-sm text-slate-400 mb-5">confidence</p>
 
           <div className="space-y-2">
             {result.scores.map((score) => (
               <div key={score.label} className="flex items-center gap-3 text-sm">
                 <span className="w-20 text-slate-400">{score.label}</span>
-                <div className="flex-1 bg-slate-900 rounded h-2">
+                <div className="flex-1 bg-slate-900 rounded-full h-2">
                   <div
-                    className="bg-emerald-500 h-2 rounded"
+                    className={`h-2 rounded-full ${BAR_COLORS[score.label] || "bg-emerald-500"}`}
                     style={{ width: `${score.score * 100}%` }}
                   />
                 </div>

@@ -106,41 +106,44 @@ function CmsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white mb-2">Simple CMS</h1>
+      <h1 className="text-2xl font-bold text-white mb-1">Simple CMS</h1>
       <p className="text-slate-400 mb-6 text-sm">
         Manage static content pages like the homepage text and phishing tips.
       </p>
 
-      {error && (
-        <p className="bg-red-900/50 text-red-300 text-sm rounded px-3 py-2 mb-4">{error}</p>
-      )}
+      {error && <p className="alert-error mb-4">{error}</p>}
 
       <div className="grid md:grid-cols-2 gap-6">
         {/* Lista e faqeve + krijimi */}
         <div>
-          <div className="bg-slate-800 rounded-lg p-5 mb-6">
+          <div className="card mb-6">
             <h2 className="text-lg font-semibold text-white mb-3">Pages</h2>
             {pages.length === 0 ? (
-              <p className="text-sm text-slate-400">No CMS pages yet.</p>
+              <p className="text-sm text-slate-400">
+                No CMS pages yet. Create the first one below — try the slug{" "}
+                <span className="text-emerald-400">home</span> to change the homepage text.
+              </p>
             ) : (
               <ul className="divide-y divide-slate-700/50">
                 {pages.map((page) => (
-                  <li key={page.id} className="py-2 flex items-center justify-between">
+                  <li key={page.id} className="py-2 flex items-center justify-between gap-2">
                     <button
                       onClick={() => setSelected(page)}
-                      className={`text-left hover:text-emerald-400 ${
+                      className={`text-left hover:text-emerald-400 transition-colors ${
                         selected?.id === page.id ? "text-emerald-400" : "text-slate-200"
                       }`}
                     >
                       {page.title}
                       <span className="text-xs text-slate-500 ml-2">/{page.slug}</span>
                       {!page.is_published && (
-                        <span className="text-xs text-yellow-400 ml-2">draft</span>
+                        <span className="text-xs bg-yellow-500/20 text-yellow-400 rounded px-1.5 py-0.5 ml-2">
+                          draft
+                        </span>
                       )}
                     </button>
                     <button
                       onClick={() => handleDeletePage(page.id)}
-                      className="text-xs text-red-400 hover:underline"
+                      className="text-xs text-red-400 hover:underline shrink-0"
                     >
                       Delete
                     </button>
@@ -150,7 +153,7 @@ function CmsPage() {
             )}
           </div>
 
-          <form onSubmit={handleCreatePage} className="bg-slate-800 rounded-lg p-5">
+          <form onSubmit={handleCreatePage} className="card">
             <h2 className="text-lg font-semibold text-white mb-3">New page</h2>
             <div className="space-y-3">
               <input
@@ -158,14 +161,14 @@ function CmsPage() {
                 onChange={(e) => setNewPage({ ...newPage, title: e.target.value })}
                 placeholder="Title"
                 required
-                className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+                className="input-field"
               />
               <input
                 value={newPage.slug}
                 onChange={(e) => setNewPage({ ...newPage, slug: e.target.value })}
                 placeholder="Slug (e.g. home, phishing-tips)"
                 required
-                className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+                className="input-field"
               />
               <label className="flex items-center gap-2 text-sm text-slate-300">
                 <input
@@ -175,10 +178,7 @@ function CmsPage() {
                 />
                 Published
               </label>
-              <button
-                type="submit"
-                className="bg-emerald-600 hover:bg-emerald-500 px-6 py-2 rounded text-white font-medium"
-              >
+              <button type="submit" className="btn-primary px-6">
                 Create Page
               </button>
             </div>
@@ -188,22 +188,22 @@ function CmsPage() {
         {/* Editimi i faqes se zgjedhur */}
         <div>
           {selected === null ? (
-            <div className="bg-slate-800 rounded-lg p-6 text-slate-400">
+            <div className="empty-state">
               Select a page on the left to edit it.
             </div>
           ) : (
-            <div className="bg-slate-800 rounded-lg p-5">
+            <div className="card">
               <h2 className="text-lg font-semibold text-white mb-3">Edit page</h2>
               <div className="space-y-3 mb-6">
                 <input
                   value={selected.title}
                   onChange={(e) => setSelected({ ...selected, title: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+                  className="input-field"
                 />
                 <input
                   value={selected.slug}
                   onChange={(e) => setSelected({ ...selected, slug: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+                  className="input-field"
                 />
                 <label className="flex items-center gap-2 text-sm text-slate-300">
                   <input
@@ -213,10 +213,7 @@ function CmsPage() {
                   />
                   Published
                 </label>
-                <button
-                  onClick={handleUpdatePage}
-                  className="bg-emerald-600 hover:bg-emerald-500 px-6 py-2 rounded text-white font-medium"
-                >
+                <button onClick={handleUpdatePage} className="btn-primary px-6">
                   Save Page
                 </button>
               </div>
@@ -227,12 +224,12 @@ function CmsPage() {
               )}
               <div className="space-y-3 mb-6">
                 {selected.blocks.map((block) => (
-                  <div key={block.id} className="bg-slate-900 rounded p-3 space-y-2">
+                  <div key={block.id} className="bg-slate-900 border border-slate-700/60 rounded-md p-3 space-y-2">
                     <textarea
                       value={block.content || ""}
                       onChange={(e) => handleBlockChange(block.id, "content", e.target.value)}
                       rows={2}
-                      className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm"
+                      className="input-field bg-slate-800 text-sm"
                     />
                     <div className="flex items-center gap-3 text-sm">
                       <label className="text-slate-400">
@@ -268,12 +265,9 @@ function CmsPage() {
                   placeholder="New block content..."
                   rows={2}
                   required
-                  className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white text-sm"
+                  className="input-field text-sm"
                 />
-                <button
-                  type="submit"
-                  className="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-white text-sm"
-                >
+                <button type="submit" className="btn-secondary px-4 py-2 text-sm">
                   Add Block
                 </button>
               </form>

@@ -46,39 +46,34 @@ function ImportExportPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold text-white mb-6">Import / Export</h1>
+      <h1 className="page-title">Import / Export</h1>
 
-      {error && (
-        <p className="bg-red-900/50 text-red-300 text-sm rounded px-3 py-2 mb-4">{error}</p>
-      )}
+      {error && <p className="alert-error mb-4">{error}</p>}
 
-      <div className="bg-slate-800 rounded-lg p-6 mb-6">
+      <div className="card mb-6">
         <h2 className="text-lg font-semibold text-white mb-4">Export data</h2>
         <div className="flex flex-wrap items-end gap-4">
           <div>
-            <label className="block text-sm text-slate-300 mb-1">List</label>
+            <label className="form-label">List</label>
             <select
               value={exportEntity}
               onChange={(e) => setExportEntity(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+              className="input-field"
             >
               {EXPORT_ENTITIES.map((e) => <option key={e} value={e}>{e}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Format</label>
+            <label className="form-label">Format</label>
             <select
               value={exportFormat}
               onChange={(e) => setExportFormat(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+              className="input-field"
             >
               {FORMATS.map((f) => <option key={f} value={f}>{f}</option>)}
             </select>
           </div>
-          <button
-            onClick={handleExport}
-            className="bg-emerald-600 hover:bg-emerald-500 px-6 py-2 rounded text-white font-medium"
-          >
+          <button onClick={handleExport} className="btn-primary px-6">
             Export
           </button>
         </div>
@@ -87,21 +82,21 @@ function ImportExportPage() {
         </p>
       </div>
 
-      <form onSubmit={handleImport} className="bg-slate-800 rounded-lg p-6">
+      <form onSubmit={handleImport} className="card">
         <h2 className="text-lg font-semibold text-white mb-4">Import data</h2>
         <div className="flex flex-wrap items-end gap-4">
           <div>
-            <label className="block text-sm text-slate-300 mb-1">List</label>
+            <label className="form-label">List</label>
             <select
               value={importEntity}
               onChange={(e) => setImportEntity(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+              className="input-field"
             >
               {IMPORT_ENTITIES.map((e) => <option key={e} value={e}>{e}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm text-slate-300 mb-1">File (.csv / .json / .xlsx)</label>
+            <label className="form-label">File (.csv / .json / .xlsx)</label>
             <input
               type="file"
               accept=".csv,.json,.xlsx"
@@ -109,22 +104,18 @@ function ImportExportPage() {
               className="text-sm text-slate-300"
             />
           </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 px-6 py-2 rounded text-white font-medium"
-          >
+          <button type="submit" disabled={loading} className="btn-primary px-6">
             {loading ? "Importing..." : "Import"}
           </button>
         </div>
 
         {summary && (
-          <div className="mt-4 bg-slate-900 rounded p-4 text-sm">
-            <p className="text-slate-200">{summary.message}</p>
-            <p className="text-slate-400 mt-1">
-              Imported: <span className="text-green-400">{summary.imported_count}</span>
+          <div className="alert-success mt-4">
+            <p>{summary.message}</p>
+            <p className="mt-1 text-slate-300">
+              Imported: <span className="text-green-400 font-medium">{summary.imported_count}</span>
               {" · "}
-              Skipped: <span className="text-yellow-400">{summary.skipped_count}</span>
+              Skipped: <span className="text-yellow-400 font-medium">{summary.skipped_count}</span>
             </p>
           </div>
         )}

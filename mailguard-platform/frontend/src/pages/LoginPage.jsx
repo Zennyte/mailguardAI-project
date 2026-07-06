@@ -23,40 +23,34 @@ function LoginPage() {
 
   return (
     <div className="max-w-sm mx-auto">
-      <h1 className="text-2xl font-bold text-white mb-6 text-center">Login</h1>
+      <h1 className="page-title text-center">Login</h1>
 
-      <form onSubmit={handleSubmit} className="bg-slate-800 rounded-lg p-6 space-y-4">
-        {error && (
-          <p className="bg-red-900/50 text-red-300 text-sm rounded px-3 py-2">{error}</p>
-        )}
+      <form onSubmit={handleSubmit} className="card space-y-4">
+        {error && <p className="alert-error">{error}</p>}
 
         <div>
-          <label className="block text-sm text-slate-300 mb-1">Email</label>
+          <label className="form-label">Email</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+            className="input-field"
           />
         </div>
 
         <div>
-          <label className="block text-sm text-slate-300 mb-1">Password</label>
+          <label className="form-label">Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+            className="input-field"
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 py-2 rounded text-white font-medium"
-        >
+        <button type="submit" disabled={loading} className="btn-primary w-full">
           {loading ? "Logging in..." : "Login"}
         </button>
 

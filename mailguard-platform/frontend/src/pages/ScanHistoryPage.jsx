@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { getScanHistory } from "../services/scanService";
 import LabelBadge from "../components/LabelBadge";
@@ -15,19 +16,22 @@ function ScanHistoryPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white mb-6">Scan History</h1>
+      <h1 className="page-title">Scan History</h1>
 
       {loading ? (
         <p className="text-slate-400">Loading...</p>
       ) : scans.length === 0 ? (
-        <div className="bg-slate-800 rounded-lg p-6 text-slate-400">
-          No scans yet. Go to the Scanner page and scan your first email.
+        <div className="empty-state">
+          <p className="mb-3">No scans yet.</p>
+          <Link to="/scanner" className="btn-primary inline-block">
+            Scan your first email
+          </Link>
         </div>
       ) : (
-        <div className="bg-slate-800 rounded-lg overflow-hidden">
+        <div className="card p-0 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-slate-400 border-b border-slate-700">
+              <tr className="table-header">
                 <th className="px-4 py-3">Subject</th>
                 <th className="px-4 py-3">Result</th>
                 <th className="px-4 py-3">Confidence</th>
@@ -36,7 +40,7 @@ function ScanHistoryPage() {
             </thead>
             <tbody>
               {scans.map((scan) => (
-                <tr key={scan.scan_request_id} className="border-b border-slate-700/50">
+                <tr key={scan.scan_request_id} className="table-row">
                   <td className="px-4 py-3 text-slate-200">
                     {scan.subject || <span className="text-slate-500">(no subject)</span>}
                   </td>

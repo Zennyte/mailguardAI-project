@@ -4,6 +4,27 @@ import { Link } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 import { getPageBySlug } from "../services/cmsService";
 
+const LABEL_CARDS = [
+  {
+    name: "Safe",
+    color: "text-green-400",
+    border: "border-t-green-500/60",
+    text: "Normal, legitimate emails that pose no risk.",
+  },
+  {
+    name: "Spam",
+    color: "text-yellow-400",
+    border: "border-t-yellow-500/60",
+    text: "Unwanted bulk or promotional emails.",
+  },
+  {
+    name: "Phishing",
+    color: "text-red-400",
+    border: "border-t-red-500/60",
+    text: "Malicious emails that try to steal your information.",
+  },
+];
+
 function HomePage() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const [cmsBlocks, setCmsBlocks] = useState(null);
@@ -17,41 +38,29 @@ function HomePage() {
   }, []);
 
   return (
-    <div className="text-center">
+    <div className="text-center max-w-3xl mx-auto">
       <h1 className="text-4xl font-bold text-white mb-3">MailGuard AI Platform</h1>
-      <p className="text-lg text-slate-300 mb-10">
+      <p className="text-lg text-slate-300 mb-12">
         Full-stack email scanning platform powered by Machine Learning
       </p>
 
-      <div className="grid sm:grid-cols-3 gap-4 mb-10 text-left">
-        <div className="bg-slate-800 rounded-lg p-5">
-          <p className="text-green-400 font-semibold mb-1">Safe</p>
-          <p className="text-sm text-slate-400">
-            Normal, legitimate emails that pose no risk.
-          </p>
-        </div>
-        <div className="bg-slate-800 rounded-lg p-5">
-          <p className="text-yellow-400 font-semibold mb-1">Spam</p>
-          <p className="text-sm text-slate-400">
-            Unwanted bulk or promotional emails.
-          </p>
-        </div>
-        <div className="bg-slate-800 rounded-lg p-5">
-          <p className="text-red-400 font-semibold mb-1">Phishing</p>
-          <p className="text-sm text-slate-400">
-            Malicious emails that try to steal your information.
-          </p>
-        </div>
+      <div className="grid sm:grid-cols-3 gap-4 mb-12 text-left">
+        {LABEL_CARDS.map((card) => (
+          <div key={card.name} className={`card border-t-2 ${card.border}`}>
+            <p className={`font-semibold mb-1 ${card.color}`}>{card.name}</p>
+            <p className="text-sm text-slate-400">{card.text}</p>
+          </div>
+        ))}
       </div>
 
       {cmsBlocks && cmsBlocks.length > 0 ? (
-        <div className="mb-8 space-y-3">
+        <div className="mb-10 space-y-3">
           {cmsBlocks.map((block) => (
             <p key={block.id} className="text-slate-300">{block.content}</p>
           ))}
         </div>
       ) : (
-        <p className="text-slate-300 mb-8">
+        <p className="text-slate-300 mb-10">
           Paste an email and our Machine Learning model tells you instantly if it
           is safe, spam, or a phishing attempt — with a confidence score. After
           logging in, every scan is saved so you can review your scan history at
@@ -60,24 +69,15 @@ function HomePage() {
       )}
 
       {isAuthenticated ? (
-        <Link
-          to="/dashboard"
-          className="bg-emerald-600 hover:bg-emerald-500 px-6 py-3 rounded text-white font-medium"
-        >
+        <Link to="/dashboard" className="btn-primary px-6 py-3">
           Go to Dashboard
         </Link>
       ) : (
         <div className="flex justify-center gap-4">
-          <Link
-            to="/login"
-            className="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded text-white font-medium"
-          >
+          <Link to="/login" className="btn-secondary px-6 py-3">
             Login
           </Link>
-          <Link
-            to="/register"
-            className="bg-emerald-600 hover:bg-emerald-500 px-6 py-3 rounded text-white font-medium"
-          >
+          <Link to="/register" className="btn-primary px-6 py-3">
             Register
           </Link>
         </div>
