@@ -1,13 +1,5 @@
--- ============================================================
--- MailGuard AI Platform - Seed Data (PostgreSQL)
--- ============================================================
 -- Te dhenat fillestare: rolet, lejet, konfigurimet dhe modeli ML.
--- Ekzekutohet pas schema.sql:
---   psql -U postgres -d mailguard_platform -f database/seed.sql
---
--- Perdoruesit real (me fjalekalime te hash-uara) krijohen ne
--- commitin e autentikimit, jo ketu.
--- ============================================================
+-- Ekzekutohet pas schema.sql: psql -U postgres -d mailguard_platform -f database/seed.sql
 
 -- Rolet baze
 INSERT INTO roles (name, description) VALUES

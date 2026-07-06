@@ -1,28 +1,7 @@
--- ============================================================
--- MailGuard AI Platform - Database Schema (PostgreSQL)
--- ============================================================
--- Skema e plote relacionale me 26 tabela.
---
--- Si te ekzekutohet:
---   psql -U postgres -d mailguard_platform -f database/schema.sql
--- Ose me scriptin Python (perdor modelet SQLAlchemy):
---   cd backend && python -m app.create_tables
---
--- Standardet e perdorura:
---   * BIGSERIAL primary key me emrin "id" ne cdo tabele
---   * foreign keys me REFERENCES
---   * created_at / updated_at ne cdo tabele
---   * created_by / updated_by vetem ne tabelat qe menaxhohen
---     nga administratori (roles, permissions, settings, model_versions,
---     cms_pages) - tabelat e tjera e kane pronarin te user_id
---   * indekse ne kolonat qe kerkohen shpesh
---   * struktura e normalizuar (3NF)
--- ============================================================
+-- Skema e plote e databazes (26 tabela).
+-- Ekzekutohet me: psql -U postgres -d mailguard_platform -f database/schema.sql
 
-
--- ------------------------------------------------------------
--- AUTH & USERS
--- ------------------------------------------------------------
+-- Auth & Users
 
 -- 1. users - llogarite e perdoruesve
 CREATE TABLE users (
@@ -93,9 +72,7 @@ CREATE TABLE refresh_tokens (
 CREATE INDEX idx_refresh_tokens_user_id ON refresh_tokens(user_id);
 
 
--- ------------------------------------------------------------
--- SYSTEM
--- ------------------------------------------------------------
+-- System
 
 -- 7. audit_logs - regjistri i veprimeve te rendesishme
 CREATE TABLE audit_logs (
@@ -150,9 +127,7 @@ CREATE TABLE files (
 CREATE INDEX idx_files_uploaded_by ON files(uploaded_by);
 
 
--- ------------------------------------------------------------
--- EMAIL DATA
--- ------------------------------------------------------------
+-- Email Data
 
 -- 11. email_messages - emaili qe do te skanohet
 CREATE TABLE email_messages (
@@ -213,9 +188,7 @@ CREATE TABLE email_attachments (
 CREATE INDEX idx_email_attachments_message_id ON email_attachments(email_message_id);
 
 
--- ------------------------------------------------------------
--- SCANNING & ML
--- ------------------------------------------------------------
+-- Scanning & ML
 
 -- 19. model_versions - versionet e modelit ML
 -- (krijohet para scan_results sepse scan_results e referencon)
@@ -281,9 +254,7 @@ CREATE TABLE user_feedback (
 CREATE INDEX idx_user_feedback_user_id ON user_feedback(user_id);
 
 
--- ------------------------------------------------------------
--- IMPORT / EXPORT
--- ------------------------------------------------------------
+-- Import / Export
 
 -- 21. import_jobs - importimi masiv i emaileve
 CREATE TABLE import_jobs (
@@ -311,9 +282,7 @@ CREATE TABLE export_jobs (
 CREATE INDEX idx_export_jobs_user_id ON export_jobs(user_id);
 
 
--- ------------------------------------------------------------
--- REPORTS
--- ------------------------------------------------------------
+-- Reports
 
 -- 23. reports - raportet e gjeneruara
 CREATE TABLE reports (
@@ -338,9 +307,7 @@ CREATE TABLE report_filters (
 CREATE INDEX idx_report_filters_report_id ON report_filters(report_id);
 
 
--- ------------------------------------------------------------
 -- CMS
--- ------------------------------------------------------------
 
 -- 25. cms_pages - faqet e thjeshta CMS (ndihma, keshilla, ...)
 CREATE TABLE cms_pages (

@@ -106,8 +106,8 @@ function CmsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white mb-1">Simple CMS</h1>
-      <p className="text-slate-400 mb-6 text-sm">
+      <h1 className="page-title mb-1">Simple CMS</h1>
+      <p className="text-[var(--text-dim)] mb-6 text-sm">
         Manage static content pages like the homepage text and phishing tips.
       </p>
 
@@ -117,33 +117,33 @@ function CmsPage() {
         {/* Lista e faqeve + krijimi */}
         <div>
           <div className="card mb-6">
-            <h2 className="text-lg font-semibold text-white mb-3">Pages</h2>
+            <h2 className="text-lg font-bold text-[var(--text)] mb-3">Pages</h2>
             {pages.length === 0 ? (
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-[var(--text-dim)]">
                 No CMS pages yet. Create the first one below — try the slug{" "}
-                <span className="text-emerald-400">home</span> to change the homepage text.
+                <span className="text-[var(--accent)]">home</span> to change the homepage text.
               </p>
             ) : (
-              <ul className="divide-y divide-slate-700/50">
+              <ul className="divide-y divide-[var(--border)]">
                 {pages.map((page) => (
                   <li key={page.id} className="py-2 flex items-center justify-between gap-2">
                     <button
                       onClick={() => setSelected(page)}
-                      className={`text-left hover:text-emerald-400 transition-colors ${
-                        selected?.id === page.id ? "text-emerald-400" : "text-slate-200"
+                      className={`text-left hover:text-[var(--accent)] ${
+                        selected?.id === page.id ? "text-[var(--accent)]" : "text-[var(--text)]"
                       }`}
                     >
                       {page.title}
-                      <span className="text-xs text-slate-500 ml-2">/{page.slug}</span>
+                      <span className="text-xs text-[var(--text-faint)] ml-2">/{page.slug}</span>
                       {!page.is_published && (
-                        <span className="text-xs bg-yellow-500/20 text-yellow-400 rounded px-1.5 py-0.5 ml-2">
+                        <span className="text-xs bg-[var(--surface-2)] text-[var(--warn)] rounded px-1.5 py-0.5 ml-2">
                           draft
                         </span>
                       )}
                     </button>
                     <button
                       onClick={() => handleDeletePage(page.id)}
-                      className="text-xs text-red-400 hover:underline shrink-0"
+                      className="text-xs text-[var(--danger)] hover:underline shrink-0"
                     >
                       Delete
                     </button>
@@ -154,7 +154,7 @@ function CmsPage() {
           </div>
 
           <form onSubmit={handleCreatePage} className="card">
-            <h2 className="text-lg font-semibold text-white mb-3">New page</h2>
+            <h2 className="text-lg font-bold text-[var(--text)] mb-3">New page</h2>
             <div className="space-y-3">
               <input
                 value={newPage.title}
@@ -170,7 +170,7 @@ function CmsPage() {
                 required
                 className="input-field"
               />
-              <label className="flex items-center gap-2 text-sm text-slate-300">
+              <label className="flex items-center gap-2 text-sm text-[var(--text-dim)]">
                 <input
                   type="checkbox"
                   checked={newPage.is_published}
@@ -193,7 +193,7 @@ function CmsPage() {
             </div>
           ) : (
             <div className="card">
-              <h2 className="text-lg font-semibold text-white mb-3">Edit page</h2>
+              <h2 className="text-lg font-bold text-[var(--text)] mb-3">Edit page</h2>
               <div className="space-y-3 mb-6">
                 <input
                   value={selected.title}
@@ -205,7 +205,7 @@ function CmsPage() {
                   onChange={(e) => setSelected({ ...selected, slug: e.target.value })}
                   className="input-field"
                 />
-                <label className="flex items-center gap-2 text-sm text-slate-300">
+                <label className="flex items-center gap-2 text-sm text-[var(--text-dim)]">
                   <input
                     type="checkbox"
                     checked={selected.is_published}
@@ -218,38 +218,40 @@ function CmsPage() {
                 </button>
               </div>
 
-              <h3 className="text-md font-semibold text-white mb-2">Content blocks</h3>
+              <h3 className="text-sm font-bold text-[var(--text-dim)] mb-2">
+                Content blocks
+              </h3>
               {selected.blocks.length === 0 && (
-                <p className="text-sm text-slate-400 mb-3">No blocks yet.</p>
+                <p className="text-sm text-[var(--text-dim)] mb-3">No blocks yet.</p>
               )}
               <div className="space-y-3 mb-6">
                 {selected.blocks.map((block) => (
-                  <div key={block.id} className="bg-slate-900 border border-slate-700/60 rounded-md p-3 space-y-2">
+                  <div key={block.id} className="bg-[var(--surface-2)] border border-[var(--border)] rounded p-3 space-y-2">
                     <textarea
                       value={block.content || ""}
                       onChange={(e) => handleBlockChange(block.id, "content", e.target.value)}
                       rows={2}
-                      className="input-field bg-slate-800 text-sm"
+                      className="input-field text-sm"
                     />
                     <div className="flex items-center gap-3 text-sm">
-                      <label className="text-slate-400">
+                      <label className="text-[var(--text-dim)]">
                         Order:{" "}
                         <input
                           type="number"
                           value={block.sort_order}
                           onChange={(e) => handleBlockChange(block.id, "sort_order", e.target.value)}
-                          className="w-16 bg-slate-800 border border-slate-700 rounded px-2 py-1 text-white"
+                          className="w-16 bg-[var(--surface)] border border-[var(--border)] rounded px-2 py-1 text-[var(--text)]"
                         />
                       </label>
                       <button
                         onClick={() => handleSaveBlock(block)}
-                        className="text-emerald-400 hover:underline"
+                        className="text-[var(--accent)] hover:underline"
                       >
                         Save
                       </button>
                       <button
                         onClick={() => handleDeleteBlock(block.id)}
-                        className="text-red-400 hover:underline"
+                        className="text-[var(--danger)] hover:underline"
                       >
                         Delete
                       </button>

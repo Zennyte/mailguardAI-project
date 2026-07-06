@@ -19,7 +19,7 @@ function ScanHistoryPage() {
       <h1 className="page-title">Scan History</h1>
 
       {loading ? (
-        <p className="text-slate-400">Loading...</p>
+        <p className="text-[var(--text-dim)]">Loading...</p>
       ) : scans.length === 0 ? (
         <div className="empty-state">
           <p className="mb-3">No scans yet.</p>
@@ -41,16 +41,16 @@ function ScanHistoryPage() {
             <tbody>
               {scans.map((scan) => (
                 <tr key={scan.scan_request_id} className="table-row">
-                  <td className="px-4 py-3 text-slate-200">
-                    {scan.subject || <span className="text-slate-500">(no subject)</span>}
+                  <td className="px-4 py-3 text-[var(--text)]">
+                    {scan.subject || <span className="text-[var(--text-faint)]">(no subject)</span>}
                   </td>
                   <td className="px-4 py-3">
                     <LabelBadge label={scan.predicted_label} />
                   </td>
-                  <td className="px-4 py-3 text-slate-300">
+                  <td className="px-4 py-3 text-[var(--text-dim)]">
                     {(scan.confidence_score * 100).toFixed(1)}%
                   </td>
-                  <td className="px-4 py-3 text-slate-400">
+                  <td className="px-4 py-3 text-[var(--text-faint)] text-xs">
                     {new Date(scan.created_at).toLocaleString()}
                   </td>
                 </tr>

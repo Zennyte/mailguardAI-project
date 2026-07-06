@@ -144,7 +144,7 @@ function SearchPage() {
                 {results.map((row, index) => (
                   <tr key={index} className="table-row">
                     {columns.map((column) => (
-                      <td key={column} className="px-4 py-3 text-slate-200">
+                      <td key={column} className="px-4 py-3 text-[var(--text)]">
                         {renderValue(column, row[column])}
                       </td>
                     ))}

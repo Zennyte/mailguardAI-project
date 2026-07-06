@@ -23,7 +23,7 @@ function LoginPage() {
 
   return (
     <div className="max-w-sm mx-auto">
-      <h1 className="page-title text-center">Login</h1>
+      <h1 className="page-title text-center text-2xl">Login</h1>
 
       <form onSubmit={handleSubmit} className="card space-y-4">
         {error && <p className="alert-error">{error}</p>}
@@ -54,9 +54,9 @@ function LoginPage() {
           {loading ? "Logging in..." : "Login"}
         </button>
 
-        <p className="text-sm text-slate-400 text-center">
+        <p className="text-sm text-[var(--text-dim)] text-center">
           No account?{" "}
-          <Link to="/register" className="text-emerald-400 hover:underline">
+          <Link to="/register" className="text-[var(--accent)] hover:underline">
             Register here
           </Link>
         </p>

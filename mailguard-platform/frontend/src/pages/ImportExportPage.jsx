@@ -45,81 +45,83 @@ function ImportExportPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div>
       <h1 className="page-title">Import / Export</h1>
 
       {error && <p className="alert-error mb-4">{error}</p>}
 
-      <div className="card mb-6">
-        <h2 className="text-lg font-semibold text-white mb-4">Export data</h2>
-        <div className="flex flex-wrap items-end gap-4">
-          <div>
-            <label className="form-label">List</label>
-            <select
-              value={exportEntity}
-              onChange={(e) => setExportEntity(e.target.value)}
-              className="input-field"
-            >
-              {EXPORT_ENTITIES.map((e) => <option key={e} value={e}>{e}</option>)}
-            </select>
+      <div className="grid lg:grid-cols-2 gap-6">
+        <div className="card">
+          <h2 className="text-lg font-bold text-[var(--text)] mb-4">Export data</h2>
+          <div className="space-y-4">
+            <div>
+              <label className="form-label">List</label>
+              <select
+                value={exportEntity}
+                onChange={(e) => setExportEntity(e.target.value)}
+                className="input-field"
+              >
+                {EXPORT_ENTITIES.map((e) => <option key={e} value={e}>{e}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="form-label">Format</label>
+              <select
+                value={exportFormat}
+                onChange={(e) => setExportFormat(e.target.value)}
+                className="input-field"
+              >
+                {FORMATS.map((f) => <option key={f} value={f}>{f}</option>)}
+              </select>
+            </div>
+            <button onClick={handleExport} className="btn-primary px-6 w-full">
+              Export
+            </button>
           </div>
-          <div>
-            <label className="form-label">Format</label>
-            <select
-              value={exportFormat}
-              onChange={(e) => setExportFormat(e.target.value)}
-              className="input-field"
-            >
-              {FORMATS.map((f) => <option key={f} value={f}>{f}</option>)}
-            </select>
-          </div>
-          <button onClick={handleExport} className="btn-primary px-6">
-            Export
-          </button>
+          <p className="text-xs text-[var(--text-faint)] mt-3">
+            The file downloads directly in the browser.
+          </p>
         </div>
-        <p className="text-xs text-slate-500 mt-3">
-          The file downloads directly in the browser.
-        </p>
+
+        <form onSubmit={handleImport} className="card">
+          <h2 className="text-lg font-bold text-[var(--text)] mb-4">Import data</h2>
+          <div className="space-y-4">
+            <div>
+              <label className="form-label">List</label>
+              <select
+                value={importEntity}
+                onChange={(e) => setImportEntity(e.target.value)}
+                className="input-field"
+              >
+                {IMPORT_ENTITIES.map((e) => <option key={e} value={e}>{e}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="form-label">File (.csv / .json / .xlsx)</label>
+              <input
+                type="file"
+                accept=".csv,.json,.xlsx"
+                onChange={(e) => setImportFile(e.target.files[0])}
+                className="input-field text-sm"
+              />
+            </div>
+            <button type="submit" disabled={loading} className="btn-primary px-6 w-full">
+              {loading ? "Importing..." : "Import"}
+            </button>
+          </div>
+
+          {summary && (
+            <div className="alert-success mt-4">
+              <p>{summary.message}</p>
+              <p className="mt-1 text-[var(--text-dim)]">
+                Imported: <span className="text-[var(--safe)] font-bold">{summary.imported_count}</span>
+                {" · "}
+                Skipped: <span className="text-[var(--warn)] font-bold">{summary.skipped_count}</span>
+              </p>
+            </div>
+          )}
+        </form>
       </div>
-
-      <form onSubmit={handleImport} className="card">
-        <h2 className="text-lg font-semibold text-white mb-4">Import data</h2>
-        <div className="flex flex-wrap items-end gap-4">
-          <div>
-            <label className="form-label">List</label>
-            <select
-              value={importEntity}
-              onChange={(e) => setImportEntity(e.target.value)}
-              className="input-field"
-            >
-              {IMPORT_ENTITIES.map((e) => <option key={e} value={e}>{e}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="form-label">File (.csv / .json / .xlsx)</label>
-            <input
-              type="file"
-              accept=".csv,.json,.xlsx"
-              onChange={(e) => setImportFile(e.target.files[0])}
-              className="text-sm text-slate-300"
-            />
-          </div>
-          <button type="submit" disabled={loading} className="btn-primary px-6">
-            {loading ? "Importing..." : "Import"}
-          </button>
-        </div>
-
-        {summary && (
-          <div className="alert-success mt-4">
-            <p>{summary.message}</p>
-            <p className="mt-1 text-slate-300">
-              Imported: <span className="text-green-400 font-medium">{summary.imported_count}</span>
-              {" · "}
-              Skipped: <span className="text-yellow-400 font-medium">{summary.skipped_count}</span>
-            </p>
-          </div>
-        )}
-      </form>
     </div>
   );
 }

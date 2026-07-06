@@ -1,59 +1,172 @@
 @import "tailwindcss";
 
-/* Klasa te perbashketa qe perdoren neper te gjitha faqet */
+/* Design e thjeshte, e erret: sfond gri-e-erret, karta pak me te celta, blu si theksim */
+
+:root {
+  --bg: #15181d;
+  --surface: #1e222a;
+  --surface-2: #262b34;
+  --border: #333944;
+  --text: #e5e7eb;
+  --text-dim: #9aa1ac;
+  --text-faint: #6b7280;
+
+  --accent: #4f8ff7;
+  --safe: #34d399;
+  --warn: #fbbf24;
+  --danger: #f87171;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: system-ui, sans-serif;
+  }
+}
+
 @layer components {
   .card {
-    @apply bg-slate-800 border border-slate-700/60 rounded-xl p-6;
+    @apply border rounded-lg p-6 transition-colors;
+    background-color: var(--surface);
+    border-color: var(--border);
   }
 
   .page-title {
-    @apply text-2xl font-bold text-white mb-6;
+    @apply text-2xl font-bold mb-6;
+    color: var(--text);
   }
 
   .form-label {
-    @apply block text-sm text-slate-300 mb-1;
+    @apply block text-sm font-medium mb-1;
+    color: var(--text-dim);
   }
 
   .input-field {
-    @apply w-full bg-slate-900 border border-slate-700 rounded-md px-3 py-2 text-white
-      placeholder:text-slate-500 focus:outline-none focus:border-emerald-500;
+    @apply w-full border rounded px-3 py-2 focus:outline-none;
+    background-color: var(--surface-2);
+    border-color: var(--border);
+    color: var(--text);
+  }
+  .input-field:focus {
+    border-color: var(--accent);
+  }
+  .input-field::placeholder {
+    color: var(--text-faint);
   }
 
   .btn-primary {
-    @apply bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 px-5 py-2 rounded-md
-      text-white font-medium transition-colors;
+    @apply px-5 py-2 rounded font-medium transition-colors disabled:opacity-50;
+    background-color: var(--accent);
+    color: #0b1220;
+  }
+  .btn-primary:not(:disabled):hover {
+    filter: brightness(1.1);
   }
 
   .btn-secondary {
-    @apply bg-slate-700 hover:bg-slate-600 px-5 py-2 rounded-md text-white font-medium
-      transition-colors;
+    @apply border px-5 py-2 rounded font-medium transition-colors;
+    background-color: transparent;
+    border-color: var(--border);
+    color: var(--text);
+  }
+  .btn-secondary:hover {
+    background-color: var(--surface-2);
   }
 
   .alert-error {
-    @apply bg-red-900/40 border border-red-700/50 text-red-300 text-sm rounded-md px-3 py-2;
+    @apply text-sm rounded px-3 py-2 border;
+    background-color: rgba(248, 113, 113, 0.1);
+    border-color: rgba(248, 113, 113, 0.4);
+    color: #fca5a5;
   }
 
   .alert-success {
-    @apply bg-emerald-900/40 border border-emerald-700/50 text-emerald-300 text-sm rounded-md px-3 py-2;
+    @apply text-sm rounded px-3 py-2 border;
+    background-color: rgba(52, 211, 153, 0.1);
+    border-color: rgba(52, 211, 153, 0.4);
+    color: #6ee7b7;
   }
 
   .empty-state {
-    @apply bg-slate-800 border border-slate-700/60 rounded-xl p-10 text-center text-slate-400;
+    @apply border border-dashed rounded-lg p-10 text-center;
+    border-color: var(--border);
+    color: var(--text-dim);
   }
 
   .table-header {
-    @apply text-left text-slate-400 border-b border-slate-700;
+    @apply text-left text-xs uppercase tracking-wide border-b;
+    color: var(--text-dim);
+    border-color: var(--border);
   }
 
   .table-row {
-    @apply border-b border-slate-700/50 hover:bg-slate-700/20;
+    @apply border-b;
+    border-color: var(--border);
+  }
+  .table-row:hover {
+    background-color: var(--surface-2);
   }
 
-  .nav-link {
-    @apply text-slate-300 hover:text-emerald-400 transition-colors;
+  .nav-tab {
+    @apply text-sm;
+    color: var(--text-dim);
+  }
+  .nav-tab:hover {
+    color: var(--text);
+  }
+  .nav-tab-active {
+    @apply font-medium;
+    color: var(--accent);
   }
 
-  .nav-link-active {
-    @apply text-emerald-400 font-medium;
+  /* Linqet e menyse anesore (sidebar) per faqet e brendshme */
+  .sidebar-link {
+    @apply flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors border-l-2;
+    color: var(--text-dim);
+    border-color: transparent;
+  }
+  .sidebar-link:hover {
+    background-color: var(--surface-2);
+    color: var(--text);
+  }
+  .sidebar-link-active {
+    background-color: var(--surface-2);
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  .stat-card {
+    @apply border rounded-lg p-5 border-t-2 transition-transform;
+    background-color: var(--surface);
+    border-color: var(--border);
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+  }
+  .stat-value {
+    @apply text-2xl font-bold;
+    color: var(--text);
+  }
+  .stat-label {
+    @apply text-xs uppercase tracking-wide mb-2;
+    color: var(--text-dim);
+  }
+
+  /* Etiketa per safe / spam / phishing */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium;
+  }
+  .badge-safe {
+    color: #6ee7b7;
+    background-color: rgba(52, 211, 153, 0.12);
+  }
+  .badge-spam {
+    color: #fcd34d;
+    background-color: rgba(251, 191, 36, 0.12);
+  }
+  .badge-phishing {
+    color: #fca5a5;
+    background-color: rgba(248, 113, 113, 0.12);
   }
 }

@@ -21,57 +21,94 @@ function MainLayout() {
     navigate("/");
   };
 
-  // Linku aktiv theksohet me ngjyre jeshile
-  const navLinkClass = ({ isActive }) =>
-    isActive ? "nav-link nav-link-active" : "nav-link";
-
-  return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col">
-      <nav className="bg-slate-800/95 border-b border-slate-700 sticky top-0 z-20">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-y-2">
-          <Link to="/" className="text-lg font-bold text-white">
-            MailGuard <span className="text-emerald-400">AI</span>
-          </Link>
-
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-            {isAuthenticated ? (
-              <>
-                {NAV_ITEMS.map((item) => (
-                  <NavLink key={item.to} to={item.to} className={navLinkClass}>
-                    {item.label}
-                  </NavLink>
-                ))}
-                <NotificationBell />
-                {user && (
-                  <span className="text-slate-400 hidden sm:inline">
-                    {user.first_name}
-                  </span>
-                )}
-                <button onClick={handleLogout} className="btn-secondary px-3 py-1.5 text-sm">
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <NavLink to="/login" className={navLinkClass}>
-                  Login
-                </NavLink>
-                <Link to="/register" className="btn-primary px-3 py-1.5 text-sm">
-                  Register
-                </Link>
-              </>
-            )}
+  // Faqet publike (Home/Login/Register) marrin nje navbar te thjeshte, pa menu anesore
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[var(--bg)] flex flex-col">
+        <nav className="bg-[var(--surface)] border-b border-[var(--border)] sticky top-0 z-20">
+          <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+            <Link to="/" className="font-bold text-lg text-[var(--text)]">
+              MailGuard <span className="text-[var(--accent)]">AI</span>
+            </Link>
+            <div className="flex items-center gap-4 text-sm">
+              <NavLink to="/login" className="nav-tab">
+                Login
+              </NavLink>
+              <Link to="/register" className="btn-primary px-4 py-1.5 text-sm">
+                Register
+              </Link>
+            </div>
           </div>
+        </nav>
+
+        <main className="flex-1 w-full px-6 py-10">
+          <Outlet />
+        </main>
+
+        <footer className="border-t border-[var(--border)] py-4 text-center text-xs text-[var(--text-faint)]">
+          MailGuard AI Platform — Lab Course 2 project
+        </footer>
+      </div>
+    );
+  }
+
+  const sidebarLinkClass = ({ isActive }) =>
+    isActive ? "sidebar-link sidebar-link-active" : "sidebar-link";
+
+  // Faqet e brendshme (pas login) marrin nje layout me sidebar, si nje aplikacion i vertete
+  return (
+    <div className="min-h-screen bg-[var(--bg)] flex">
+      <aside className="w-56 shrink-0 hidden md:flex flex-col bg-[var(--surface)] border-r border-[var(--border)]">
+        <div className="h-14 flex items-center px-4 border-b border-[var(--border)]">
+          <Link to="/" className="font-bold text-[var(--text)]">
+            MailGuard <span className="text-[var(--accent)]">AI</span>
+          </Link>
         </div>
-      </nav>
 
-      <main className="max-w-6xl w-full mx-auto px-4 py-10 flex-1">
-        <Outlet />
-      </main>
+        <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
+          {NAV_ITEMS.map(({ to, label }) => (
+            <NavLink key={to} to={to} className={sidebarLinkClass}>
+              {label}
+            </NavLink>
+          ))}
+        </nav>
 
-      <footer className="border-t border-slate-800 py-4 text-center text-xs text-slate-500">
-        MailGuard AI Platform — Lab Course 2 project
-      </footer>
+        <div className="px-3 py-3 border-t border-[var(--border)]">
+          {user && (
+            <p className="px-1 mb-2 text-xs text-[var(--text-dim)] truncate">
+              {user.first_name} {user.last_name}
+            </p>
+          )}
+          <button onClick={handleLogout} className="btn-secondary w-full text-xs py-1.5">
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      <div className="flex-1 min-w-0 flex flex-col">
+        <header className="h-14 shrink-0 flex items-center justify-between px-4 md:px-8 border-b border-[var(--border)] bg-[var(--surface)] sticky top-0 z-20">
+          <Link to="/" className="font-bold text-[var(--text)] md:hidden">
+            MailGuard <span className="text-[var(--accent)]">AI</span>
+          </Link>
+          <div className="hidden md:block" />
+          <div className="flex items-center gap-3">
+            <NotificationBell />
+          </div>
+        </header>
+
+        {/* Meny horizontale per ekranet e vegjel, kur sidebar-i fshihet */}
+        <nav className="md:hidden flex flex-wrap gap-x-4 gap-y-2 px-4 py-3 border-b border-[var(--border)] bg-[var(--surface)]">
+          {NAV_ITEMS.map(({ to, label }) => (
+            <NavLink key={to} to={to} className={({ isActive }) => (isActive ? "nav-tab nav-tab-active" : "nav-tab")}>
+              {label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <main className="flex-1 w-full px-4 md:px-8 py-8">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }

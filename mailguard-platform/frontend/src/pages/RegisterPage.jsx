@@ -35,7 +35,7 @@ function RegisterPage() {
 
   return (
     <div className="max-w-sm mx-auto">
-      <h1 className="page-title text-center">Register</h1>
+      <h1 className="page-title text-center text-2xl">Register</h1>
 
       <form onSubmit={handleSubmit} className="card space-y-4">
         {error && <p className="alert-error">{error}</p>}
@@ -92,9 +92,9 @@ function RegisterPage() {
           {loading ? "Creating account..." : "Register"}
         </button>
 
-        <p className="text-sm text-slate-400 text-center">
+        <p className="text-sm text-[var(--text-dim)] text-center">
           Already have an account?{" "}
-          <Link to="/login" className="text-emerald-400 hover:underline">
+          <Link to="/login" className="text-[var(--accent)] hover:underline">
             Login here
           </Link>
         </p>

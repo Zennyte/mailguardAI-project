@@ -156,9 +156,9 @@ function ReportsPage() {
         <div className="mb-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             {simpleEntries.map(([key, value]) => (
-              <div key={key} className="card p-5">
-                <p className="text-sm text-slate-400 mb-1">{key.replaceAll("_", " ")}</p>
-                <p className="text-2xl font-bold text-white break-words">
+              <div key={key} className="stat-card">
+                <p className="stat-label">{key.replaceAll("_", " ")}</p>
+                <p className="stat-value text-[var(--text)] break-words">
                   {value === null ? "-" : String(value)}
                 </p>
               </div>
@@ -179,8 +179,8 @@ function ReportsPage() {
                   {data.distribution.map((row) => (
                     <tr key={row.label} className="table-row">
                       <td className="px-4 py-3"><LabelBadge label={row.label} /></td>
-                      <td className="px-4 py-3 text-slate-300">{row.count}</td>
-                      <td className="px-4 py-3 text-slate-300">{row.percentage}%</td>
+                      <td className="px-4 py-3 text-[var(--text-dim)]">{row.count}</td>
+                      <td className="px-4 py-3 text-[var(--text-dim)]">{row.percentage}%</td>
                     </tr>
                   ))}
                 </tbody>
@@ -190,24 +190,24 @@ function ReportsPage() {
         </div>
       )}
 
-      <h2 className="text-lg font-semibold text-white mb-3">Saved reports</h2>
+      <h2 className="text-lg font-bold text-[var(--text)] mb-3">Saved reports</h2>
       {reports.length === 0 ? (
         <div className="empty-state">
           No saved reports yet. Choose filters above and click Save Report.
         </div>
       ) : (
-        <ul className="card p-0 divide-y divide-slate-700/50">
+        <ul className="card p-0 divide-y divide-[var(--border)]">
           {reports.map((report) => (
             <li key={report.id} className="px-4 py-3 flex items-center justify-between">
               <div>
-                <p className="text-slate-200">{report.report_name}</p>
-                <p className="text-xs text-slate-500">
+                <p className="text-[var(--text)]">{report.report_name}</p>
+                <p className="text-xs text-[var(--text-faint)]">
                   {report.report_type} · {new Date(report.created_at).toLocaleString()}
                 </p>
               </div>
               <button
                 onClick={() => handleOpenSaved(report.id)}
-                className="text-sm text-emerald-400 hover:underline"
+                className="text-sm text-[var(--accent)] hover:underline"
               >
                 View
               </button>
