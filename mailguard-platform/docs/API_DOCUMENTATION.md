@@ -1,6 +1,6 @@
 # API Documentation - MailGuard AI Platform
 
-Dokumentimi i API-se do te plotesohet gjate zhvillimit.
+Dokumentimi i plote i API-se, me shembuj per cdo grup endpointesh.
 
 FastAPI generates interactive documentation automatically at:
 

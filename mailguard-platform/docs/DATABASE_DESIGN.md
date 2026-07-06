@@ -23,7 +23,7 @@ Collections **in use now**:
 | `raw_email_documents`  | Full raw email text (subject + body) per scan        |
 | `scan_payload_logs`    | ML prediction payload per scan (label, all scores)   |
 
-Planned for later commits:
+Planned as future extensions (documented, not implemented):
 
 | Collection             | Content                                              |
 |------------------------|------------------------------------------------------|

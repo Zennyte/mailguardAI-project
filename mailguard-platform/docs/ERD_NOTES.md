@@ -1,7 +1,10 @@
 # ERD Notes - MailGuard AI Platform
 
-Pershkrim tekstual i lidhjeve mes tabelave. Diagrami final vizual do te
-eksportohet me nje mjet si dbdiagram.io ose draw.io.
+Pershkrim tekstual i lidhjeve mes tabelave.
+
+Diagrami vizual eshte ne [`ERD.mmd`](ERD.mmd) (Mermaid ERD syntax) — mund te
+shikohet direkt ne GitHub, ne https://mermaid.live, ose ne VS Code me nje
+Mermaid extension.
 
 ## Text-based ERD
 
