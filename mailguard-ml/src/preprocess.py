@@ -26,6 +26,7 @@ TFIDF_SETTINGS = {
 }
 
 
+# Ngarkon dataset-in e kombinuar nga CSV
 def load_data():
     if not os.path.isfile(DATA_FILE):
         print(f"File not found: {DATA_FILE}")
@@ -36,6 +37,7 @@ def load_data():
     return df
 
 
+# Ndan te dhenat ne train/test (80/20, stratified sipas etiketes)
 def split_data(df):
     X = df["text"].fillna("").astype(str)
     y = df["label"]
@@ -49,6 +51,7 @@ def split_data(df):
     return X_train, X_test, y_train, y_test
 
 
+# Printon shperndarjen e etiketave per train dhe test
 def print_split_summary(X_train, X_test, y_train, y_test):
     print(f"\nTrain size: {len(X_train)}  Test size: {len(X_test)}")
 
@@ -65,6 +68,7 @@ def print_split_summary(X_train, X_test, y_train, y_test):
         print(f"  {label:<12} {test_counts[label]:>6}  ({test_pcts[label]:.1f}%)")
 
 
+# Pershtat TF-IDF vectorizer-in ne train dhe transformon te dyja grupet
 def fit_tfidf(X_train, X_test):
     print("\nFitting TF-IDF vectorizer on training data ...")
     vectorizer = TfidfVectorizer(**TFIDF_SETTINGS)
@@ -75,6 +79,7 @@ def fit_tfidf(X_train, X_test):
     return vectorizer, X_train_tfidf, X_test_tfidf
 
 
+# Ruan nje permbledhje .md te preprocesimit
 def save_summary(X_train, X_test, y_train, y_test, X_train_tfidf, X_test_tfidf):
     train_counts = y_train.value_counts()
     train_pcts = y_train.value_counts(normalize=True) * 100
@@ -126,6 +131,7 @@ def save_summary(X_train, X_test, y_train, y_test, X_train_tfidf, X_test_tfidf):
     print(f"\nSaved: {path}")
 
 
+# Rrjedha kryesore: ndarje + TF-IDF + ruajtje permbledhje
 def main():
     print("=" * 60)
     print("Preprocessing")

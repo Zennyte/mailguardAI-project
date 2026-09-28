@@ -4,6 +4,7 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
+# Tabela audit_logs - regjistri i veprimeve te rendesishme
 class AuditLog(Base):
     __tablename__ = "audit_logs"
 

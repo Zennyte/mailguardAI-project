@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+# Konfigurimi i aplikacionit, lexohet nga .env
 class Settings(BaseSettings):
     # Konfigurimi lexohet nga skedari .env
     APP_NAME: str = "MailGuard AI Platform"

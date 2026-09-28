@@ -10,6 +10,7 @@ REPORT_TYPES = ["scan_summary", "label_distribution", "phishing_activity"]
 VALID_LABELS = ["safe", "spam", "phishing"]
 
 
+# Gjeneron te dhenat e raportit sipas llojit (summary/distribution/phishing)
 def build_report_data(db: Session, user_id: int, report_type: str,
                       date_from=None, date_to=None, label=None) -> dict:
     if report_type not in REPORT_TYPES:
@@ -61,6 +62,7 @@ def build_report_data(db: Session, user_id: int, report_type: str,
     }
 
 
+# Kthen te dhena raporti pa i ruajtur ne DB
 def preview_report(db: Session, user_id: int, report_type: str,
                    date_from=None, date_to=None, label=None) -> ReportPreviewResponse:
     data = build_report_data(db, user_id, report_type, date_from, date_to, label)
@@ -68,6 +70,7 @@ def preview_report(db: Session, user_id: int, report_type: str,
                                  date_to=date_to, label=label, data=data)
 
 
+# Ruan nje raport te ri bashke me filtrat e perdorur
 def create_report(db: Session, user_id: int, request: ReportCreateRequest) -> ReportResponse:
     data = build_report_data(db, user_id, request.report_type,
                              request.date_from, request.date_to, request.label)
@@ -88,11 +91,13 @@ def create_report(db: Session, user_id: int, request: ReportCreateRequest) -> Re
     return response
 
 
+# Lista e raporteve te ruajtura te perdoruesit
 def list_reports(db: Session, user_id: int) -> list:
     reports = report_repository.get_reports_for_user(db, user_id)
     return [ReportResponse.model_validate(r) for r in reports]
 
 
+# Rilexon filtrat e ruajtur dhe rigjeneron raportin live
 def get_report(db: Session, user_id: int, report_id: int) -> ReportResponse:
     report = report_repository.get_report_for_user(db, report_id, user_id)
     if report is None:

@@ -38,6 +38,7 @@ LIKELY_LABEL_COLUMNS = [
 MAX_TEXT_LENGTH = 80
 
 
+# Gjen te gjitha skedaret .csv ne nje dosje
 def find_csv_files(folder):
     """Return a sorted list of .csv file names inside the given folder."""
     if not os.path.isdir(folder):
@@ -46,6 +47,7 @@ def find_csv_files(folder):
     return sorted(files)
 
 
+# Provon te lexoje nje CSV me disa encodings te ndryshme
 def read_csv_with_fallback(file_path):
     """
     Try to read a CSV file using several encodings.
@@ -61,6 +63,7 @@ def read_csv_with_fallback(file_path):
     return None
 
 
+# Shkurton nje vlere teksti te gjate per lexueshmeri
 def shorten(value):
     """Shorten long text values so the sample rows stay readable."""
     text = str(value)
@@ -69,6 +72,7 @@ def shorten(value):
     return text
 
 
+# Printon rreshtat e pare te DataFrame (te shkurtuar)
 def print_sample_rows(df, row_count=3):
     """Print the first few rows with long text values truncated."""
     sample = df.head(row_count).copy()
@@ -77,6 +81,7 @@ def print_sample_rows(df, row_count=3):
     print(sample.to_string(index=False))
 
 
+# Printon numrat per kolonat qe mund te jene etiketa
 def print_label_counts(df):
     """Print value counts for any likely label columns that exist."""
     found_any = False
@@ -89,6 +94,7 @@ def print_label_counts(df):
         print("\nNo likely label columns found in this file.")
 
 
+# Printon nje permbledhje inspektimi per nje skedar CSV
 def inspect_file(file_name):
     """Print an inspection summary for a single CSV file."""
     file_path = os.path.join(RAW_DATA_DIR, file_name)
@@ -111,6 +117,7 @@ def inspect_file(file_name):
     print_label_counts(df)
 
 
+# Gjen dhe inspekton te gjitha CSV-te ne data/raw/
 def main():
     """Find and inspect all CSV files in the raw data folder."""
     csv_files = find_csv_files(RAW_DATA_DIR)

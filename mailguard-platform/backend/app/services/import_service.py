@@ -17,6 +17,7 @@ IMPORT_ENTITIES = ["email_messages", "cms_pages", "user_feedback", "settings", "
 VALID_LABELS = ["safe", "spam", "phishing"]
 
 
+# Lexon skedarin e ngarkuar dhe importon rreshtat ne listen e kerkuar
 def import_entity(db: Session, user_id: int, entity: str,
                   filename: str, content: bytes) -> ImportSummary:
     if entity not in IMPORT_ENTITIES:
@@ -49,6 +50,7 @@ def import_entity(db: Session, user_id: int, entity: str,
     )
 
 
+# Percakton formatin (CSV/JSON/XLSX) dhe kthen rreshtat si dict
 def _read_rows(filename: str, content: bytes) -> list:
     # Formati njihet nga prapashtesa e skedarit
     name = (filename or "").lower()
@@ -74,15 +76,18 @@ def _read_rows(filename: str, content: bytes) -> list:
     raise HTTPException(status_code=400, detail="Unsupported file type. Use .csv, .json or .xlsx")
 
 
+# Merr nje fushe teksti nga rreshti, e kthen bosh nese mungon
 def _text(row: dict, key: str) -> str:
     value = row.get(key)
     return str(value).strip() if value is not None else ""
 
 
+# Konverton nje vlere teksti/numer ne boolean
 def _to_bool(value) -> bool:
     return str(value).strip().lower() in ("true", "1", "yes")
 
 
+# Importon rreshta si email_messages, duke kaluar rreshtat pa body
 def _import_email_messages(db, user_id, rows):
     imported = skipped = 0
     for row in rows:
@@ -100,6 +105,7 @@ def _import_email_messages(db, user_id, rows):
     return imported, skipped
 
 
+# Importon rreshta si cms_pages, duke kaluar slug-et e perseritur
 def _import_cms_pages(db, user_id, rows):
     imported = skipped = 0
     for row in rows:
@@ -120,6 +126,7 @@ def _import_cms_pages(db, user_id, rows):
     return imported, skipped
 
 
+# Importon feedback, vetem per skanimet e vet perdoruesit
 def _import_user_feedback(db, user_id, rows):
     imported = skipped = 0
     for row in rows:
@@ -151,6 +158,7 @@ def _import_user_feedback(db, user_id, rows):
     return imported, skipped
 
 
+# Importon konfigurime, pa i mbishkruar ato ekzistuese
 def _import_settings(db, user_id, rows):
     imported = skipped = 0
     for row in rows:
@@ -171,6 +179,7 @@ def _import_settings(db, user_id, rows):
     return imported, skipped
 
 
+# Importon njoftime, duke kaluar rreshtat pa titull
 def _import_notifications(db, user_id, rows):
     imported = skipped = 0
     for row in rows:

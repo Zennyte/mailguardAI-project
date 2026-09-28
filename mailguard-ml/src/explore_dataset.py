@@ -18,6 +18,7 @@ os.makedirs(FIGURES_DIR, exist_ok=True)
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 
+# Ngarkon dataset-in dhe shton kolona te gjatesise se tekstit
 def load_data():
     if not os.path.isfile(DATA_FILE):
         print(f"File not found: {DATA_FILE}")
@@ -30,6 +31,7 @@ def load_data():
     return df
 
 
+# Printon permbledhje: forma, mungesat, shperndarja e etiketave
 def print_overview(df):
     print("=" * 60)
     print("Dataset overview")
@@ -66,6 +68,7 @@ def print_overview(df):
               f"max={stats['max']:.0f}  median={df[col].median():.0f}")
 
 
+# Vizaton grafikun e shperndarjes se etiketave (bar chart)
 def plot_label_distribution(df):
     counts = df["label"].value_counts()
     colors = ["#4caf50", "#f44336", "#ff9800"]
@@ -87,6 +90,7 @@ def plot_label_distribution(df):
     print(f"Saved: {path}")
 
 
+# Vizaton grafikun e shperndarjes sipas dataset-it burimor
 def plot_source_distribution(df):
     counts = df["source_dataset"].value_counts().dropna()
     if counts.empty:
@@ -110,6 +114,7 @@ def plot_source_distribution(df):
     print(f"Saved: {path}")
 
 
+# Vizaton histogramin e gjatesise se tekstit
 def plot_text_length_histogram(df):
     clipped = df["text_length"].clip(upper=5000)
 
@@ -126,6 +131,7 @@ def plot_text_length_histogram(df):
     print(f"Saved: {path}")
 
 
+# Ruan nje permbledhje .md te analizes eksploruese (EDA)
 def save_eda_summary(df):
     counts = df["label"].value_counts()
     pcts = df["label"].value_counts(normalize=True) * 100
@@ -174,6 +180,7 @@ def save_eda_summary(df):
     print(f"Saved: {path}")
 
 
+# Rrjedha kryesore e analizes eksploruese te dataset-it
 def main():
     df = load_data()
     if df is None:

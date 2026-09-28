@@ -4,6 +4,7 @@ import useAuthStore from "../store/authStore";
 import { getNotifications, markAsRead } from "../services/notificationService";
 import { connectNotifications } from "../services/websocketService";
 
+// Kambana e njoftimeve - lidhet me WebSocket per njoftime live
 function NotificationBell() {
   const user = useAuthStore((state) => state.user);
   const [notifications, setNotifications] = useState([]);
@@ -24,6 +25,7 @@ function NotificationBell() {
 
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
+  // Shenon nje njoftim si te lexuar
   const handleMarkRead = async (id) => {
     await markAsRead(id).catch(() => {});
     setNotifications((current) =>

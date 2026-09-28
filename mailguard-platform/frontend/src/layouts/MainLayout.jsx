@@ -12,10 +12,12 @@ const NAV_ITEMS = [
   { to: "/cms", label: "CMS", role: "Admin" },
 ];
 
+// Layout i perbashket: navbar per vizitore, sidebar per perdorues te kycur
 function MainLayout() {
   const { isAuthenticated, user, logout } = useAuthStore();
   const navigate = useNavigate();
 
+  // Del nga llogaria dhe ridrejton te homepage
   const handleLogout = async () => {
     await logout();
     navigate("/");
@@ -52,6 +54,7 @@ function MainLayout() {
     );
   }
 
+  // Percakton klasen CSS te linkut sipas faqes aktive
   const sidebarLinkClass = ({ isActive }) =>
     isActive ? "sidebar-link sidebar-link-active" : "sidebar-link";
 

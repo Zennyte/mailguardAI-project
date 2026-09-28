@@ -7,6 +7,7 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
+# Tabela model_versions - versionet e modelit ML
 class ModelVersion(Base):
     __tablename__ = "model_versions"
     __table_args__ = (UniqueConstraint("model_name", "version"),)
@@ -22,6 +23,7 @@ class ModelVersion(Base):
     updated_at = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
 
+# Tabela scan_requests - kerkesa e nje perdoruesi per skanim
 class ScanRequest(Base):
     __tablename__ = "scan_requests"
 
@@ -38,6 +40,7 @@ class ScanRequest(Base):
     email_message = relationship("EmailMessage")
 
 
+# Tabela scan_results - rezultati final i nje skanimi
 class ScanResult(Base):
     __tablename__ = "scan_results"
 
@@ -53,6 +56,7 @@ class ScanResult(Base):
     scores = relationship("ClassificationScore", cascade="all, delete-orphan")
 
 
+# Tabela classification_scores - probabiliteti per cdo klase
 class ClassificationScore(Base):
     __tablename__ = "classification_scores"
 
@@ -64,6 +68,7 @@ class ClassificationScore(Base):
     updated_at = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
 
+# Tabela user_feedback - feedback i perdoruesit per nje rezultat
 class UserFeedback(Base):
     __tablename__ = "user_feedback"
 

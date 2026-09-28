@@ -10,6 +10,7 @@ from app.services import export_service, import_service
 router = APIRouter(prefix="/data", tags=["Import/Export"])
 
 
+# GET /data/export/{entity} - eksporton nje liste si CSV/JSON/XLSX
 @router.get("/export/{entity}")
 def export_data(
     entity: str,
@@ -27,6 +28,7 @@ def export_data(
     )
 
 
+# POST /data/import/{entity} - importon te dhena nga nje skedar
 @router.post("/import/{entity}", response_model=ImportSummary)
 async def import_data(
     entity: str,

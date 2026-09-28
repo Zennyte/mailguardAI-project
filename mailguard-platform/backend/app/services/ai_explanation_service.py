@@ -23,6 +23,7 @@ PROMPT_TEMPLATE = (
 _ssl_context = truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
 
 
+# Kerkon nje shpjegim me fjale nga Groq per rezultatin e skanimit
 async def get_explanation(subject: str, body: str, predicted_label: str, confidence_score: float) -> str | None:
     # Nese s'ka API key te konfiguruar, thjesht anashkalohet (skanimi vazhdon normalisht)
     if not settings.GROQ_API_KEY:

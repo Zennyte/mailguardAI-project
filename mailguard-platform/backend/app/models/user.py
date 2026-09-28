@@ -4,6 +4,7 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
+# Tabela users - llogarite e perdoruesve
 class User(Base):
     __tablename__ = "users"
 

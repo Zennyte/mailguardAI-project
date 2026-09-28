@@ -5,6 +5,7 @@ import {
   addBlock, updateBlock, deleteBlock,
 } from "../services/cmsService";
 
+// Paneli i menaxhimit CMS (kerkon rolin Admin)
 function CmsPage() {
   const [pages, setPages] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -12,6 +13,7 @@ function CmsPage() {
   const [newBlock, setNewBlock] = useState({ block_type: "text", content: "", sort_order: 0 });
   const [error, setError] = useState("");
 
+  // Ngarkon listen e plote te faqeve CMS
   const loadPages = async () => {
     const data = await getPages().catch(() => []);
     setPages(data);
@@ -25,11 +27,13 @@ function CmsPage() {
     loadPages();
   }, []);
 
+  // Shfaq mesazhin e gabimit te kthyer nga backend-i
   const showError = (err, fallback) => {
     const detail = err.response?.data?.detail;
     setError(typeof detail === "string" ? detail : fallback);
   };
 
+  // Krijon nje faqe te re CMS
   const handleCreatePage = async (event) => {
     event.preventDefault();
     setError("");
@@ -42,6 +46,7 @@ function CmsPage() {
     }
   };
 
+  // Ruan ndryshimet e faqes se zgjedhur
   const handleUpdatePage = async () => {
     setError("");
     try {
@@ -56,6 +61,7 @@ function CmsPage() {
     }
   };
 
+  // Fshin nje faqe CMS
   const handleDeletePage = async (id) => {
     setError("");
     await deletePage(id).catch(() => {});
@@ -63,6 +69,7 @@ function CmsPage() {
     await loadPages();
   };
 
+  // Shton nje bllok te ri permbajtjeje
   const handleAddBlock = async (event) => {
     event.preventDefault();
     setError("");
@@ -75,6 +82,7 @@ function CmsPage() {
     }
   };
 
+  // Perditeson nje fushe te nje blloku (ne memorie, para ruajtjes)
   const handleBlockChange = (blockId, field, value) => {
     setSelected({
       ...selected,
@@ -84,6 +92,7 @@ function CmsPage() {
     });
   };
 
+  // Ruan nje bllok te ndryshuar
   const handleSaveBlock = async (block) => {
     setError("");
     try {
@@ -98,6 +107,7 @@ function CmsPage() {
     }
   };
 
+  // Fshin nje bllok permbajtjeje
   const handleDeleteBlock = async (blockId) => {
     setError("");
     await deleteBlock(blockId).catch(() => {});

@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.models import Notification
 
 
+# Krijon nje njoftim te ri ne DB
 def create(db: Session, user_id: int, title: str, message: str,
            notification_type: str) -> Notification:
     notification = Notification(
@@ -17,6 +18,7 @@ def create(db: Session, user_id: int, title: str, message: str,
     return notification
 
 
+# Kthen njoftimet e nje perdoruesi, me te rejat te parat
 def get_for_user(db: Session, user_id: int, limit: int = 50):
     return (
         db.query(Notification)
@@ -27,6 +29,7 @@ def get_for_user(db: Session, user_id: int, limit: int = 50):
     )
 
 
+# Shenon nje njoftim si te lexuar
 def mark_read(db: Session, notification_id: int, user_id: int):
     # Perdoruesi mund te shenoje si te lexuara vetem njoftimet e veta
     notification = (

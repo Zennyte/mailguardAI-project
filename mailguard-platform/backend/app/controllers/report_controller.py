@@ -12,6 +12,7 @@ from app.services import report_service
 router = APIRouter(prefix="/reports", tags=["Reports"])
 
 
+# POST /reports - gjeneron dhe ruan nje raport te ri
 @router.post("", response_model=ReportResponse, status_code=201)
 def create_report(
     data: ReportCreateRequest,
@@ -21,6 +22,7 @@ def create_report(
     return report_service.create_report(db, current_user.id, data)
 
 
+# GET /reports - lista e raporteve te ruajtura te perdoruesit
 @router.get("", response_model=list[ReportResponse])
 def list_reports(
     db: Session = Depends(get_db),
@@ -43,6 +45,7 @@ def preview_report(
         db, current_user.id, report_type, date_from, date_to, label)
 
 
+# GET /reports/{id} - rigjeneron nje raport te ruajtur me te dhena te freskta
 @router.get("/{report_id}", response_model=ReportResponse)
 def get_report(
     report_id: int,

@@ -11,6 +11,7 @@ const ENTITIES = [
   { value: "cms_pages", label: "CMS Pages" },
 ];
 
+// Kerkim i avancuar mbi disa lista, me filtra
 function SearchPage() {
   const [entity, setEntity] = useState("scans");
   const [q, setQ] = useState("");
@@ -21,6 +22,7 @@ function SearchPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Nis kerkimin sipas listes dhe filtrave te zgjedhur
   const handleSearch = async (event) => {
     event.preventDefault();
     setError("");
@@ -44,6 +46,7 @@ function SearchPage() {
 
   const columns = results && results.length > 0 ? Object.keys(results[0]) : [];
 
+  // Formaton nje vlere per shfaqje ne tabele (etikete/date/boolean)
   const renderValue = (column, value) => {
     if (column === "predicted_label" && value) return <LabelBadge label={value} />;
     if (column === "created_at" && value) return new Date(value).toLocaleString();

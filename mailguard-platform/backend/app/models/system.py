@@ -4,6 +4,7 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
+# Tabela settings - konfigurime globale key/value
 class Setting(Base):
     __tablename__ = "settings"
 
@@ -17,6 +18,7 @@ class Setting(Base):
     updated_at = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
 
+# Tabela import_jobs - importimi masiv i emaileve
 class ImportJob(Base):
     __tablename__ = "import_jobs"
 
@@ -30,6 +32,7 @@ class ImportJob(Base):
     updated_at = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
 
+# Tabela export_jobs - eksportimi i te dhenave
 class ExportJob(Base):
     __tablename__ = "export_jobs"
 

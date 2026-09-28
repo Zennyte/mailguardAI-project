@@ -15,6 +15,7 @@ RESULT_MESSAGES = {
 }
 
 
+# Skanon nje email: ML + ruajtje DB/Mongo + njoftim + shpjegim AI
 async def analyze_email(db: Session, user_id: int, data: ScanEmailRequest) -> ScanResultResponse:
     prediction = ml_service.predict_email(data.subject, data.body)
 
@@ -49,6 +50,7 @@ async def analyze_email(db: Session, user_id: int, data: ScanEmailRequest) -> Sc
     )
 
 
+# Historiku i skanimeve te perdoruesit, i formatuar per pergjigje
 def get_history(db: Session, user_id: int) -> list:
     items = []
     for scan_request in scan_repository.get_history_for_user(db, user_id):
@@ -64,6 +66,7 @@ def get_history(db: Session, user_id: int) -> list:
     return items
 
 
+# Statistika te permbledhura per dashboard (total + sipas etiketes)
 def get_stats(db: Session, user_id: int) -> ScanStatsResponse:
     counts = scan_repository.count_labels_for_user(db, user_id)
     history = scan_repository.get_history_for_user(db, user_id, limit=1)
@@ -80,6 +83,7 @@ def get_stats(db: Session, user_id: int) -> ScanStatsResponse:
     )
 
 
+# Detajet e nje skanimi specifik te perdoruesit
 def get_scan(db: Session, user_id: int, scan_request_id: int) -> ScanResultResponse:
     scan_request = scan_repository.get_scan_for_user(db, scan_request_id, user_id)
     if scan_request is None or scan_request.result is None:

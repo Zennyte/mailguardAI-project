@@ -5,6 +5,7 @@ import useAuthStore from "../store/authStore";
 import { getScanStats } from "../services/scanService";
 import LabelBadge from "../components/LabelBadge";
 
+// Statistika te permbledhura per perdoruesin e kycur
 function DashboardPage() {
   const user = useAuthStore((state) => state.user);
   const [stats, setStats] = useState(null);

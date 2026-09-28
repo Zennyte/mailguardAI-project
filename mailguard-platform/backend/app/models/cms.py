@@ -5,6 +5,7 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
+# Tabela cms_pages - faqet e thjeshta CMS
 class CmsPage(Base):
     __tablename__ = "cms_pages"
 
@@ -22,6 +23,7 @@ class CmsPage(Base):
                           order_by="CmsContentBlock.sort_order")
 
 
+# Tabela cms_content_blocks - blloqet e permbajtjes se nje faqeje
 class CmsContentBlock(Base):
     __tablename__ = "cms_content_blocks"
 

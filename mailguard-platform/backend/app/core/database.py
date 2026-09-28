@@ -11,6 +11,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
+# Krijon nje session te ri DB per cdo kerkese dhe e mbyll ne fund
 def get_db():
     # Cdo kerkese merr nje session te ri dhe e mbyll ne fund
     db = SessionLocal()

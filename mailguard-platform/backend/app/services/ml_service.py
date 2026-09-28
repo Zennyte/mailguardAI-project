@@ -9,6 +9,7 @@ MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "ml", "mail_detection
 _model = None
 
 
+# Ngarkon modelin .joblib nje here dhe e mban ne memorie
 def get_model():
     # Modeli ngarkohet vetem njehere dhe mbahet ne memorie
     global _model
@@ -23,6 +24,7 @@ def get_model():
     return _model
 
 
+# Bashkon subject+body dhe kerkon parashikimin nga modeli ML
 def predict_email(subject: str, body: str) -> dict:
     model = get_model()
 

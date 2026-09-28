@@ -16,6 +16,7 @@ const BAR_COLORS = {
   phishing: "bg-[var(--danger)]",
 };
 
+// Forma e skanimit + rezultati (etikete, score-t, shpjegimi AI)
 function ScannerPage() {
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -23,6 +24,7 @@ function ScannerPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Dergon emailin per skanim dhe shfaq rezultatin
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");

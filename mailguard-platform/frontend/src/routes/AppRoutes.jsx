@@ -16,10 +16,12 @@ const ImportExportPage = lazy(() => import("../pages/ImportExportPage"));
 const ReportsPage = lazy(() => import("../pages/ReportsPage"));
 const CmsPage = lazy(() => import("../pages/CmsPage"));
 
+// Shfaqet sa kohe nje faqe (lazy) po ngarkohet
 function PageLoader() {
   return <p className="text-[var(--text-dim)] text-sm">Loading...</p>;
 }
 
+// Percakton te gjitha rruget e aplikacionit
 function AppRoutes() {
   return (
     <BrowserRouter>

@@ -10,6 +10,7 @@ from app.repositories import user_repository
 bearer_scheme = HTTPBearer()
 
 
+# Lexon JWT-ne nga header-i Authorization dhe kthen perdoruesin
 def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
     db: Session = Depends(get_db),
@@ -25,6 +26,7 @@ def get_current_user(
     return user
 
 
+# Dependency qe kerkon nje rol specifik (p.sh. Admin)
 def require_role(role_name: str):
     # Perdoret si: Depends(require_role("Admin"))
     def checker(
@@ -39,6 +41,7 @@ def require_role(role_name: str):
     return checker
 
 
+# Dependency qe kerkon nje leje specifike (p.sh. manage_cms)
 def require_permission(permission_name: str):
     # Perdoret si: Depends(require_permission("scan_email"))
     def checker(

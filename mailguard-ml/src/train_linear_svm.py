@@ -34,6 +34,7 @@ os.makedirs(FIGURES_DIR, exist_ok=True)
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 
+# Ngarkon te dhenat dhe i ndan ne train/test (stratified)
 def load_and_split():
     df = pd.read_csv(DATA_FILE)
     X = df["text"].fillna("").astype(str)
@@ -41,6 +42,7 @@ def load_and_split():
     return train_test_split(X, y, test_size=TEST_SIZE, random_state=RANDOM_STATE, stratify=y)
 
 
+# Pershtat TF-IDF ne train dhe transformon test
 def build_tfidf(X_train, X_test):
     vectorizer = TfidfVectorizer(max_features=30000, ngram_range=(1, 2), min_df=2, max_df=0.95)
     X_train_tfidf = vectorizer.fit_transform(X_train)
@@ -48,6 +50,7 @@ def build_tfidf(X_train, X_test):
     return X_train_tfidf, X_test_tfidf
 
 
+# Llogarit accuracy/precision/recall/F1 mbi test set
 def evaluate(model, X_test_tfidf, y_test):
     y_pred = model.predict(X_test_tfidf)
     return {
@@ -59,6 +62,7 @@ def evaluate(model, X_test_tfidf, y_test):
     }
 
 
+# Vizaton dhe ruan matricen e konfuzionit
 def save_confusion_matrix(y_test, y_pred, best_c):
     cm = confusion_matrix(y_test, y_pred, labels=LABELS)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=LABELS)
@@ -74,6 +78,7 @@ def save_confusion_matrix(y_test, y_pred, best_c):
     print(f"Saved: {path}")
 
 
+# Ruan rezultatet e te gjitha kombinimeve si CSV
 def save_results_csv(results):
     rows = []
     for c, metrics in results.items():
@@ -89,6 +94,7 @@ def save_results_csv(results):
     print(f"Saved: {path}")
 
 
+# Ruan nje permbledhje .md te rezultateve te modelit
 def save_summary(results, best_c):
     best = results[best_c]
     lines = [
@@ -122,6 +128,7 @@ def save_summary(results, best_c):
     print(f"Saved: {path}")
 
 
+# Rrjedha kryesore: trajnon, krahason kombinimet, ruan rezultatin me te mire
 def main():
     print("=" * 60)
     print("Linear SVM Training")

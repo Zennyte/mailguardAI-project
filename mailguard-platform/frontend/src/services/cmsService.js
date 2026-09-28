@@ -12,31 +12,37 @@ export async function getPageBySlug(slug) {
   return response.data;
 }
 
+// POST /cms/pages - krijon nje faqe te re
 export async function createPage(data) {
   const response = await api.post("/cms/pages", data);
   return response.data;
 }
 
+// PUT /cms/pages/{id} - perditeson nje faqe
 export async function updatePage(id, data) {
   const response = await api.put(`/cms/pages/${id}`, data);
   return response.data;
 }
 
+// DELETE /cms/pages/{id} - fshin nje faqe
 export async function deletePage(id) {
   const response = await api.delete(`/cms/pages/${id}`);
   return response.data;
 }
 
+// POST /cms/pages/{id}/blocks - shton nje bllok permbajtjeje
 export async function addBlock(pageId, data) {
   const response = await api.post(`/cms/pages/${pageId}/blocks`, data);
   return response.data;
 }
 
+// PUT /cms/blocks/{id} - perditeson nje bllok
 export async function updateBlock(blockId, data) {
   const response = await api.put(`/cms/blocks/${blockId}`, data);
   return response.data;
 }
 
+// DELETE /cms/blocks/{id} - fshin nje bllok
 export async function deleteBlock(blockId) {
   const response = await api.delete(`/cms/blocks/${blockId}`);
   return response.data;

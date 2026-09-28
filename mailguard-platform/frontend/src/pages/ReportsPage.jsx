@@ -9,6 +9,7 @@ const REPORT_TYPES = [
   { value: "phishing_activity", label: "Phishing Activity" },
 ];
 
+// Krijon dhe shfaq raporte dinamike
 function ReportsPage() {
   const [reportType, setReportType] = useState("scan_summary");
   const [reportName, setReportName] = useState("");
@@ -24,6 +25,7 @@ function ReportsPage() {
     getReports().then(setReports).catch(() => {});
   }, []);
 
+  // Ndertimi i filtrave te dergueshem per raportin
   const buildParams = () => {
     // Dergohen vetem filtrat e plotesuar
     const params = { report_type: reportType };
@@ -33,6 +35,7 @@ function ReportsPage() {
     return params;
   };
 
+  // Shikon te dhenat e raportit pa i ruajtur
   const handlePreview = async () => {
     setError("");
     setMessage("");
@@ -45,6 +48,7 @@ function ReportsPage() {
     }
   };
 
+  // Ruan raportin bashke me filtrat e perdorur
   const handleSave = async () => {
     setError("");
     setMessage("");
@@ -64,6 +68,7 @@ function ReportsPage() {
     }
   };
 
+  // Hap nje raport te ruajtur (te dhenat rigjenerohen live)
   const handleOpenSaved = async (id) => {
     setError("");
     setMessage("");

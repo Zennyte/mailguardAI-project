@@ -10,6 +10,7 @@ const LABEL_CARDS = [
   { name: "Phishing", accent: "var(--danger)", text: "Malicious emails that try to steal your information." },
 ];
 
+// Faqja kryesore publike - teksti mund te vije nga CMS (slug 'home')
 function HomePage() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const [cmsBlocks, setCmsBlocks] = useState(null);

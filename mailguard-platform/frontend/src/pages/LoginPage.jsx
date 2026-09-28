@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 
+// Forma e kyçjes
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -9,6 +10,7 @@ function LoginPage() {
   const navigate = useNavigate();
   const { login, loading } = useAuthStore();
 
+  // Dergon email+fjalekalim dhe ridrejton te dashboard nese ka sukses
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");

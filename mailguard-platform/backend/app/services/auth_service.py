@@ -9,6 +9,7 @@ from app.schemas.auth import RegisterRequest, LoginRequest, TokenResponse, UserR
 DEFAULT_ROLE = "User"
 
 
+# Regjistron nje perdorues te ri dhe i cakton rolin default
 def register_user(db: Session, data: RegisterRequest) -> UserResponse:
     # Kontrollojme nese perdoruesi ekziston
     if user_repository.get_by_email(db, data.email) is not None:
@@ -23,6 +24,7 @@ def register_user(db: Session, data: RegisterRequest) -> UserResponse:
     return build_user_response(db, user)
 
 
+# Verifikon kredencialet dhe kthen access + refresh token
 def login_user(db: Session, data: LoginRequest) -> TokenResponse:
     user = user_repository.get_by_email(db, data.email)
     if user is None or not security.verify_password(data.password, user.password_hash):
@@ -35,6 +37,7 @@ def login_user(db: Session, data: LoginRequest) -> TokenResponse:
     return tokens
 
 
+# Verifikon refresh tokenin dhe kthen nje cift te ri (rotation)
 def refresh_access_token(db: Session, refresh_token: str) -> TokenResponse:
     token_hash = security.hash_refresh_token(refresh_token)
     saved_token = token_repository.get_valid(db, token_hash)
@@ -46,6 +49,7 @@ def refresh_access_token(db: Session, refresh_token: str) -> TokenResponse:
     return create_tokens(db, saved_token.user_id)
 
 
+# Revokon refresh tokenin e perdoruesit
 def logout_user(db: Session, refresh_token: str, user_id: int) -> dict:
     token_hash = security.hash_refresh_token(refresh_token)
     token_repository.revoke(db, token_hash)
@@ -53,6 +57,7 @@ def logout_user(db: Session, refresh_token: str, user_id: int) -> dict:
     return {"message": "Logged out successfully"}
 
 
+# Krijon dhe ruan (te hash-uar) nje cift access+refresh token
 def create_tokens(db: Session, user_id: int) -> TokenResponse:
     access_token = security.create_access_token(user_id)
     refresh_token = security.create_refresh_token()
@@ -60,6 +65,7 @@ def create_tokens(db: Session, user_id: int) -> TokenResponse:
     return TokenResponse(access_token=access_token, refresh_token=refresh_token)
 
 
+# Ndertimi i UserResponse me rolet e perdoruesit
 def build_user_response(db: Session, user: User) -> UserResponse:
     return UserResponse(
         id=user.id,
@@ -71,6 +77,7 @@ def build_user_response(db: Session, user: User) -> UserResponse:
     )
 
 
+# Regjistron nje veprim ne audit_logs
 def log_action(db: Session, user_id: int, action: str):
     # Regjistrojme veprimin ne audit_logs
     db.add(AuditLog(user_id=user_id, action=action, entity="user", entity_id=user_id))

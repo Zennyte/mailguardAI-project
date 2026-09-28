@@ -8,6 +8,7 @@ const useAuthStore = create((set, get) => ({
   isAuthenticated: localStorage.getItem("accessToken") !== null,
   loading: false,
 
+  // Kycet, ruan token-at ne localStorage dhe ngarkon te dhenat e perdoruesit
   login: async (email, password) => {
     set({ loading: true });
     try {
@@ -25,6 +26,7 @@ const useAuthStore = create((set, get) => ({
     }
   },
 
+  // Regjistron nje llogari te re dhe behet login automatik
   register: async (data) => {
     set({ loading: true });
     try {
@@ -36,11 +38,13 @@ const useAuthStore = create((set, get) => ({
     }
   },
 
+  // Merr te dhenat e perdoruesit te kycur (perfshire rolet)
   loadCurrentUser: async () => {
     const user = await authService.getCurrentUser();
     set({ user });
   },
 
+  // Revokon refresh tokenin dhe pastron gjendjen lokale
   logout: async () => {
     try {
       await authService.logout(get().refreshToken);

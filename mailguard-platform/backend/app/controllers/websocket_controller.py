@@ -5,6 +5,7 @@ from app.websockets.connection_manager import manager
 router = APIRouter(tags=["WebSocket"])
 
 
+# WS /ws/notifications - lidhja live per njoftime
 @router.websocket("/ws/notifications")
 async def notifications_websocket(websocket: WebSocket, user_id: int):
     # Shenim: per thjeshtesi identifikohemi me user_id si query parameter.

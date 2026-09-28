@@ -6,6 +6,7 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
+# Tabela roles - rolet e perdoruesve (Admin, Manager, User)
 class Role(Base):
     __tablename__ = "roles"
 
@@ -18,6 +19,7 @@ class Role(Base):
     updated_at = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
 
+# Tabela user_roles - lidhja many-to-many mes users dhe roles
 class UserRole(Base):
     __tablename__ = "user_roles"
     __table_args__ = (UniqueConstraint("user_id", "role_id"),)
@@ -29,6 +31,7 @@ class UserRole(Base):
     updated_at = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
 
+# Tabela permissions - lejet individuale
 class Permission(Base):
     __tablename__ = "permissions"
 
@@ -41,6 +44,7 @@ class Permission(Base):
     updated_at = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
 
+# Tabela role_permissions - lidhja many-to-many mes roles dhe permissions
 class RolePermission(Base):
     __tablename__ = "role_permissions"
     __table_args__ = (UniqueConstraint("role_id", "permission_id"),)
@@ -52,6 +56,7 @@ class RolePermission(Base):
     updated_at = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
 
+# Tabela refresh_tokens - refresh tokens te hash-uara per user
 class RefreshToken(Base):
     __tablename__ = "refresh_tokens"
 

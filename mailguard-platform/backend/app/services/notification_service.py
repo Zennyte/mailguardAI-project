@@ -6,6 +6,7 @@ from app.schemas.notification import NotificationResponse
 from app.websockets.connection_manager import manager
 
 
+# Krijon nje njoftim dhe e dergon live me WebSocket
 async def notify_scan_completed(db: Session, user_id: int,
                                 predicted_label: str, confidence_score: float):
     title = "Email scan completed"
@@ -25,11 +26,13 @@ async def notify_scan_completed(db: Session, user_id: int,
     return notification
 
 
+# Lista e njoftimeve te perdoruesit
 def list_for_user(db: Session, user_id: int) -> list:
     notifications = notification_repository.get_for_user(db, user_id)
     return [NotificationResponse.model_validate(n) for n in notifications]
 
 
+# Shenon nje njoftim si te lexuar
 def mark_as_read(db: Session, user_id: int, notification_id: int) -> NotificationResponse:
     notification = notification_repository.mark_read(db, notification_id, user_id)
     if notification is None:

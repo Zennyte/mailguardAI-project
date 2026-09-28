@@ -1,5 +1,6 @@
 import api from "./api";
 
+// Kerkon nje eksport nga backend-i dhe e shkarkon si skedar
 export async function exportData(entity, format) {
   const response = await api.get(`/data/export/${entity}`, {
     params: { format },
@@ -15,6 +16,7 @@ export async function exportData(entity, format) {
   URL.revokeObjectURL(url);
 }
 
+// Ngarkon nje skedar per import te te dhenave
 export async function importData(entity, file) {
   const formData = new FormData();
   formData.append("file", file);

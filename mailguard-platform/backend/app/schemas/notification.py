@@ -3,6 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
+# Forma e nje njoftimi ne pergjigjen e API
 class NotificationResponse(BaseModel):
     id: int
     title: str

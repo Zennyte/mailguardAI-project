@@ -5,6 +5,7 @@ from pymongo.errors import PyMongoError
 from app.core import mongo
 
 
+# Ruan tekstin e plote te emailit ne MongoDB
 def save_raw_email(user_id: int, subject: str, body: str, input_type: str) -> bool:
     document = {
         "user_id": user_id,
@@ -16,6 +17,7 @@ def save_raw_email(user_id: int, subject: str, body: str, input_type: str) -> bo
     return _insert("raw_email_documents", document)
 
 
+# Ruan payload-in e plote te parashikimit ML ne MongoDB
 def save_scan_payload(user_id: int, scan_request_id: int, prediction: dict,
                       model_version_id) -> bool:
     document = {
@@ -30,6 +32,7 @@ def save_scan_payload(user_id: int, scan_request_id: int, prediction: dict,
     return _insert("scan_payload_logs", document)
 
 
+# Fut nje dokument ne nje koleksion, pa e prishur skanimin nese Mongo mungon
 def _insert(collection_name: str, document: dict) -> bool:
     # Nese MongoDB nuk eshte aktiv, skanimi vazhdon - humbet vetem logu
     try:

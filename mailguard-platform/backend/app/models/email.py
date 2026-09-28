@@ -5,6 +5,7 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
+# Tabela email_messages - emaili qe do te skanohet
 class EmailMessage(Base):
     __tablename__ = "email_messages"
 
@@ -23,6 +24,7 @@ class EmailMessage(Base):
     attachments = relationship("EmailAttachment", cascade="all, delete-orphan")
 
 
+# Tabela email_headers - headerat e nje emaili
 class EmailHeader(Base):
     __tablename__ = "email_headers"
 
@@ -34,6 +36,7 @@ class EmailHeader(Base):
     updated_at = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
 
+# Tabela email_recipients - marresit e nje emaili (to/cc/bcc)
 class EmailRecipient(Base):
     __tablename__ = "email_recipients"
 
@@ -45,6 +48,7 @@ class EmailRecipient(Base):
     updated_at = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
 
+# Tabela email_links - linqet e gjetura brenda emailit
 class EmailLink(Base):
     __tablename__ = "email_links"
 
@@ -57,6 +61,7 @@ class EmailLink(Base):
     updated_at = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
 
+# Tabela email_attachments - bashkengjitjet e nje emaili
 class EmailAttachment(Base):
     __tablename__ = "email_attachments"
 

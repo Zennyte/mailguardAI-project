@@ -5,6 +5,7 @@ from app.services import health_service
 router = APIRouter(tags=["Health"])
 
 
+# GET /health - kontrollon nese backend-i po punon
 @router.get("/health")
 def check_health():
     # Kontrolli me i thjeshte: a po punon backend-i

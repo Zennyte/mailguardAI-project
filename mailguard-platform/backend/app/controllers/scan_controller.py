@@ -12,6 +12,7 @@ from app.services import scan_service
 router = APIRouter(prefix="/scans", tags=["Scans"])
 
 
+# POST /scans/analyze - skanon nje email me modelin ML
 @router.post("/analyze", response_model=ScanResultResponse)
 async def analyze_email(
     data: ScanEmailRequest,
@@ -21,6 +22,7 @@ async def analyze_email(
     return await scan_service.analyze_email(db, current_user.id, data)
 
 
+# GET /scans - historiku i skanimeve te perdoruesit
 @router.get("", response_model=list[ScanHistoryItem])
 def get_scan_history(
     db: Session = Depends(get_db),
@@ -38,6 +40,7 @@ def get_scan_stats(
     return scan_service.get_stats(db, current_user.id)
 
 
+# GET /scans/{id} - detajet e nje skanimi specifik
 @router.get("/{scan_request_id}", response_model=ScanResultResponse)
 def get_scan(
     scan_request_id: int,

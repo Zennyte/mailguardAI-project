@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.models import Report, ReportFilter, ScanRequest, ScanResult
 
 
+# Krijon rreshtin e raportit (pa te dhenat, vetem metadaten)
 def create_report(db: Session, user_id: int, report_name: str, report_type: str) -> Report:
     report = Report(user_id=user_id, report_name=report_name, report_type=report_type)
     db.add(report)
@@ -13,10 +14,12 @@ def create_report(db: Session, user_id: int, report_name: str, report_type: str)
     return report
 
 
+# Ruan nje filter te perdorur per nje raport
 def add_filter(db: Session, report_id: int, key: str, value: str):
     db.add(ReportFilter(report_id=report_id, filter_key=key, filter_value=value))
 
 
+# Lista e raporteve te ruajtura te perdoruesit
 def get_reports_for_user(db: Session, user_id: int):
     return (
         db.query(Report)
@@ -26,6 +29,7 @@ def get_reports_for_user(db: Session, user_id: int):
     )
 
 
+# Nje raport specifik i perdoruesit
 def get_report_for_user(db: Session, report_id: int, user_id: int):
     return (
         db.query(Report)
@@ -34,6 +38,7 @@ def get_report_for_user(db: Session, report_id: int, user_id: int):
     )
 
 
+# Query baze: skanimet e perdoruesit, filtruar sipas date/etikete
 def _scan_query(db: Session, user_id: int, date_from, date_to, label):
     # Baza e perbashket per te gjitha raportet: skanimet e perdoruesit me filtra
     query = (
@@ -50,6 +55,7 @@ def _scan_query(db: Session, user_id: int, date_from, date_to, label):
     return query
 
 
+# Numri dhe besueshmeria mesatare per cdo etikete
 def get_label_stats(db: Session, user_id: int, date_from, date_to, label) -> list:
     # Kthen (etikete, numri, besueshmeria mesatare) per cdo etikete
     return (
@@ -64,6 +70,7 @@ def get_label_stats(db: Session, user_id: int, date_from, date_to, label) -> lis
     )
 
 
+# Data e skanimit te fundit qe perputhet me filtrat
 def get_latest_scan_date(db: Session, user_id: int, date_from, date_to, label):
     return (
         _scan_query(db, user_id, date_from, date_to, label)

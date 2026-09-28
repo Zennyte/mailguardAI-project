@@ -12,6 +12,7 @@ from app.services import search_service
 router = APIRouter(prefix="/search", tags=["Search"])
 
 
+# GET /search - kerkim i avancuar mbi 5 lista te ndryshme
 @router.get("", response_model=SearchResponse)
 def search(
     entity: str,

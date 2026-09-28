@@ -20,6 +20,7 @@ MODEL_FILES = [
 ]
 
 
+# Lexon rreshtin me F1 me te larte nga CSV-ja e rezultateve te nje modeli
 def load_best_row(csv_name, hyperparam_col):
     path = os.path.join(RESULTS_DIR, csv_name)
     if not os.path.isfile(path):
@@ -41,12 +42,14 @@ def load_best_row(csv_name, hyperparam_col):
     }
 
 
+# Ruan tabelen krahasuese si CSV
 def save_comparison_csv(rows):
     path = os.path.join(RESULTS_DIR, "model_comparison.csv")
     pd.DataFrame(rows).to_csv(path, index=False)
     print(f"Saved: {path}")
 
 
+# Ruan nje permbledhje .md te krahasimit te modeleve
 def save_comparison_summary(rows):
     lines = [
         "# Model Comparison Summary\n\n",
@@ -92,6 +95,7 @@ def save_comparison_summary(rows):
     print(f"Saved: {path}")
 
 
+# Krahason te 5 modelet dhe i rendit sipas F1-macro
 def main():
     print("=" * 60)
     print("Model Comparison")

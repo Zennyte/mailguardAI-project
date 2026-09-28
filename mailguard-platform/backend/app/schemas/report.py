@@ -3,6 +3,7 @@ from datetime import date, datetime
 from pydantic import BaseModel, Field
 
 
+# Te dhenat per te krijuar nje raport te ri
 class ReportCreateRequest(BaseModel):
     report_name: str = Field(min_length=1, max_length=200)
     report_type: str = "scan_summary"  # scan_summary / label_distribution / phishing_activity
@@ -11,6 +12,7 @@ class ReportCreateRequest(BaseModel):
     label: str | None = None
 
 
+# Nje filter i ruajtur per nje raport
 class ReportFilterResponse(BaseModel):
     filter_key: str
     filter_value: str | None = None
@@ -18,6 +20,7 @@ class ReportFilterResponse(BaseModel):
     model_config = {"from_attributes": True}
 
 
+# Raporti i ruajtur, me te dhenat e rigjeneruara
 class ReportResponse(BaseModel):
     id: int
     report_name: str
@@ -29,6 +32,7 @@ class ReportResponse(BaseModel):
     model_config = {"from_attributes": True}
 
 
+# Rezultati i nje pareje raporti (pa e ruajtur)
 class ReportPreviewResponse(BaseModel):
     report_type: str
     date_from: date | None = None

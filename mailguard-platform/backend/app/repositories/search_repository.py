@@ -8,6 +8,7 @@ from app.models import (
 )
 
 
+# Shton filtrin e intervalit te dates ne nje query
 def _apply_dates(query, column, date_from, date_to):
     if date_from:
         query = query.filter(column >= date_from)
@@ -17,10 +18,12 @@ def _apply_dates(query, column, date_from, date_to):
     return query
 
 
+# Shton renditjen (asc/desc) ne nje query
 def _apply_sort(query, column, sort_order):
     return query.order_by(column.desc() if sort_order == "desc" else column.asc())
 
 
+# Kerkon ne skanimet e perdoruesit me filtra teksti/etikete/date
 def search_scans(db: Session, user_id: int, q, label, status,
                  date_from, date_to, sort_by, sort_order, limit):
     query = (
@@ -44,6 +47,7 @@ def search_scans(db: Session, user_id: int, q, label, status,
     return _apply_sort(query, column, sort_order).limit(limit).all()
 
 
+# Kerkon ne email_messages e perdoruesit
 def search_email_messages(db: Session, user_id: int, q,
                           date_from, date_to, sort_by, sort_order, limit):
     query = db.query(EmailMessage).filter(EmailMessage.user_id == user_id)
@@ -58,6 +62,7 @@ def search_email_messages(db: Session, user_id: int, q,
     return _apply_sort(query, column, sort_order).limit(limit).all()
 
 
+# Kerkon ne njoftimet e perdoruesit
 def search_notifications(db: Session, user_id: int, q,
                          date_from, date_to, sort_by, sort_order, limit):
     query = db.query(Notification).filter(Notification.user_id == user_id)
@@ -72,6 +77,7 @@ def search_notifications(db: Session, user_id: int, q,
     return _apply_sort(query, column, sort_order).limit(limit).all()
 
 
+# Kerkon ne raportet e perdoruesit
 def search_reports(db: Session, user_id: int, q,
                    date_from, date_to, sort_by, sort_order, limit):
     query = db.query(Report).filter(Report.user_id == user_id)
@@ -86,6 +92,7 @@ def search_reports(db: Session, user_id: int, q,
     return _apply_sort(query, column, sort_order).limit(limit).all()
 
 
+# Kerkon ne faqet CMS te publikuara (publike per te gjithe)
 def search_cms_pages(db: Session, q, date_from, date_to, sort_by, sort_order, limit):
     # Faqet CMS jane publike - kerkohen vetem ato te publikuara
     query = db.query(CmsPage).filter(CmsPage.is_published == True)  # noqa: E712

@@ -18,6 +18,7 @@ MEDIA_TYPES = {
 }
 
 
+# Eksporton nje liste te dhenash ne formatin e kerkuar
 def export_entity(db: Session, user_id: int, entity: str, format: str):
     if format not in EXPORT_FORMATS:
         raise HTTPException(status_code=400,
@@ -37,6 +38,7 @@ def export_entity(db: Session, user_id: int, entity: str, format: str):
     return content, MEDIA_TYPES[format], filename
 
 
+# Konverton rreshtat ne CSV
 def _to_csv(rows: list) -> bytes:
     output = io.StringIO()
     if rows:
@@ -47,11 +49,13 @@ def _to_csv(rows: list) -> bytes:
     return output.getvalue().encode("utf-8-sig")
 
 
+# Konverton rreshtat ne JSON
 def _to_json(rows: list) -> bytes:
     # default=str kthen datat ne tekst
     return json.dumps(rows, indent=2, default=str).encode("utf-8")
 
 
+# Konverton rreshtat ne nje skedar Excel
 def _to_xlsx(rows: list) -> bytes:
     workbook = Workbook()
     sheet = workbook.active

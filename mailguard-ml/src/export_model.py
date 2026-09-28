@@ -43,6 +43,7 @@ os.makedirs(MODELS_DIR, exist_ok=True)
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 
+# Lexon vleren me te mire te C nga rezultatet e trajnuara me pare
 def pick_best_c():
     """Read the best C value from previous LR results, fall back to C=1."""
     if os.path.isfile(LR_RESULTS_FILE):
@@ -55,6 +56,7 @@ def pick_best_c():
     return 1.0
 
 
+# Ngarkon te dhenat dhe i ndan ne train/test
 def load_and_split():
     df = pd.read_csv(DATA_FILE)
     X = df["text"].fillna("").astype(str)
@@ -62,6 +64,7 @@ def load_and_split():
     return train_test_split(X, y, test_size=TEST_SIZE, random_state=RANDOM_STATE, stratify=y)
 
 
+# Ndertimi i pipeline: TfidfVectorizer -> LogisticRegression
 def build_pipeline(best_c):
     return Pipeline([
         ("tfidf", TfidfVectorizer(
@@ -78,12 +81,14 @@ def build_pipeline(best_c):
     ])
 
 
+# Ruan metrikat finale si CSV
 def save_metrics_csv(metrics):
     path = os.path.join(RESULTS_DIR, "final_model_metrics.csv")
     pd.DataFrame([metrics]).to_csv(path, index=False)
     print(f"Saved: {path}")
 
 
+# Ruan nje permbledhje .md te modelit final dhe si perdoret ne platforme
 def save_summary(metrics, best_c):
     lines = [
         "# Final Model Summary\n\n",
@@ -130,6 +135,7 @@ def save_summary(metrics, best_c):
     print(f"Saved: {path}")
 
 
+# Trajnon modelin final dhe e eksporton si .joblib per platformen
 def main():
     print("=" * 60)
     print("Exporting Final Model Pipeline")

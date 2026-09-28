@@ -4,6 +4,7 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
+# Tabela files - metadata e skedareve te ngarkuar
 class File(Base):
     __tablename__ = "files"
 

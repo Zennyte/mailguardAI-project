@@ -10,6 +10,7 @@ from app.services import notification_service
 router = APIRouter(prefix="/notifications", tags=["Notifications"])
 
 
+# GET /notifications - kthen njoftimet e perdoruesit te kycur
 @router.get("", response_model=list[NotificationResponse])
 def get_notifications(
     db: Session = Depends(get_db),
@@ -18,6 +19,7 @@ def get_notifications(
     return notification_service.list_for_user(db, current_user.id)
 
 
+# PATCH /notifications/{id}/read - shenon nje njoftim si te lexuar
 @router.patch("/{notification_id}/read", response_model=NotificationResponse)
 def mark_notification_read(
     notification_id: int,

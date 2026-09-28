@@ -7,6 +7,7 @@ from app.schemas.search import SearchResponse
 ALLOWED_ENTITIES = ["scans", "email_messages", "notifications", "reports", "cms_pages"]
 
 
+# Kerkon dhe e mbeshtjell rezultatin ne SearchResponse
 def search(db: Session, user_id: int, entity: str, q=None, label=None, status=None,
            date_from=None, date_to=None, sort_by="created_at",
            sort_order="desc", limit=50) -> SearchResponse:
@@ -15,6 +16,7 @@ def search(db: Session, user_id: int, entity: str, q=None, label=None, status=No
     return SearchResponse(entity=entity, count=len(results), results=results)
 
 
+# Thërret repository-n e duhur sipas listes (entity) dhe formaton rreshtat
 def get_rows(db: Session, user_id: int, entity: str, q=None, label=None, status=None,
              date_from=None, date_to=None, sort_by="created_at",
              sort_order="desc", limit=50) -> list:

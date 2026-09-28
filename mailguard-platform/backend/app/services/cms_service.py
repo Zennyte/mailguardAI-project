@@ -8,17 +8,20 @@ from app.schemas.cms import (
 )
 
 
+# Lista publike e faqeve te publikuara
 def list_published_pages(db: Session) -> list:
     pages = cms_repository.list_pages(db, published_only=True)
     return [CmsPageResponse.model_validate(p) for p in pages]
 
 
+# Lista e plote e faqeve (perfshire draftet), per panelin e menaxhimit
 def list_all_pages(db: Session) -> list:
     # Per panelin e menaxhimit - perfshin edhe draftet
     pages = cms_repository.list_pages(db, published_only=False)
     return [CmsPageResponse.model_validate(p) for p in pages]
 
 
+# Nje faqe e publikuar, sipas slug
 def get_published_page(db: Session, slug: str) -> CmsPageResponse:
     page = cms_repository.get_page_by_slug(db, slug)
     if page is None or not page.is_published:
@@ -26,6 +29,7 @@ def get_published_page(db: Session, slug: str) -> CmsPageResponse:
     return CmsPageResponse.model_validate(page)
 
 
+# Krijon nje faqe te re CMS (slug duhet te jete unik)
 def create_page(db: Session, user_id: int, data: CmsPageCreateRequest) -> CmsPageResponse:
     # Kontrollojme nese slug-u ekziston
     if cms_repository.get_page_by_slug(db, data.slug):
@@ -34,6 +38,7 @@ def create_page(db: Session, user_id: int, data: CmsPageCreateRequest) -> CmsPag
     return CmsPageResponse.model_validate(page)
 
 
+# Perditeson titullin/slug/statusin e nje faqeje
 def update_page(db: Session, user_id: int, page_id: int,
                 data: CmsPageUpdateRequest) -> CmsPageResponse:
     page = cms_repository.get_page_by_id(db, page_id)
@@ -48,6 +53,7 @@ def update_page(db: Session, user_id: int, page_id: int,
     return CmsPageResponse.model_validate(page)
 
 
+# Fshin nje faqe (blloqet fshihen bashke, cascade)
 def delete_page(db: Session, page_id: int) -> dict:
     page = cms_repository.get_page_by_id(db, page_id)
     if page is None:
@@ -56,6 +62,7 @@ def delete_page(db: Session, page_id: int) -> dict:
     return {"message": "Page deleted"}
 
 
+# Shton nje bllok te ri permbajtjeje ne nje faqe
 def add_block(db: Session, page_id: int, data: CmsBlockCreateRequest) -> CmsBlockResponse:
     if cms_repository.get_page_by_id(db, page_id) is None:
         raise HTTPException(status_code=404, detail="Page not found")
@@ -63,6 +70,7 @@ def add_block(db: Session, page_id: int, data: CmsBlockCreateRequest) -> CmsBloc
     return CmsBlockResponse.model_validate(block)
 
 
+# Perditeson nje bllok ekzistues
 def update_block(db: Session, block_id: int, data: CmsBlockCreateRequest) -> CmsBlockResponse:
     block = cms_repository.get_block_by_id(db, block_id)
     if block is None:
@@ -71,6 +79,7 @@ def update_block(db: Session, block_id: int, data: CmsBlockCreateRequest) -> Cms
     return CmsBlockResponse.model_validate(block)
 
 
+# Fshin nje bllok permbajtjeje
 def delete_block(db: Session, block_id: int) -> dict:
     block = cms_repository.get_block_by_id(db, block_id)
     if block is None:

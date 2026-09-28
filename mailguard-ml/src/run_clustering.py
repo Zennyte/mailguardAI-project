@@ -30,6 +30,7 @@ os.makedirs(FIGURES_DIR, exist_ok=True)
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 
+# Ngarkon tekstin dhe etiketat e verteta (per krahasim, jo per trajnim)
 def load_data():
     df = pd.read_csv(DATA_FILE)
     X_text = df["text"].fillna("").astype(str)
@@ -37,6 +38,7 @@ def load_data():
     return X_text, y_true
 
 
+# Pershtat TF-IDF mbi te gjithe tekstin
 def build_tfidf(X_text):
     print("Fitting TF-IDF ...")
     vectorizer = TfidfVectorizer(max_features=30000, ngram_range=(1, 2), min_df=2, max_df=0.95)
@@ -45,6 +47,7 @@ def build_tfidf(X_text):
     return X_tfidf
 
 
+# Zvogelon dimensionet me TruncatedSVD
 def reduce_dimensions(X_tfidf, n_components):
     print(f"Applying TruncatedSVD (n_components={n_components}) ...")
     svd = TruncatedSVD(n_components=n_components, random_state=RANDOM_STATE)
@@ -54,6 +57,7 @@ def reduce_dimensions(X_tfidf, n_components):
     return X_reduced
 
 
+# Provon K-Means per k=2,3,4,5 dhe mat silhouette/ARI/NMI
 def run_kmeans(X_reduced, y_true):
     results = []
     for k in K_VALUES:
@@ -76,6 +80,7 @@ def run_kmeans(X_reduced, y_true):
     return results
 
 
+# Vizaton klasterat e k=3 krahas etiketave te verteta
 def plot_clusters_k3(X_2d, y_true):
     print("\nPlotting k=3 clusters ...")
     km = KMeans(n_clusters=3, random_state=RANDOM_STATE, n_init=10)
@@ -116,12 +121,14 @@ def plot_clusters_k3(X_2d, y_true):
     print(f"Saved: {path}")
 
 
+# Ruan rezultatet e klasterimit si CSV
 def save_results_csv(results):
     path = os.path.join(RESULTS_DIR, "clustering_results.csv")
     pd.DataFrame(results).to_csv(path, index=False)
     print(f"Saved: {path}")
 
 
+# Ruan nje permbledhje .md te rezultateve te klasterimit
 def save_summary(results):
     df = pd.DataFrame(results)
     best_sil = df.loc[df["silhouette_score"].idxmax()]
@@ -171,6 +178,7 @@ def save_summary(results):
     print(f"Saved: {path}")
 
 
+# Rrjedha kryesore e klasterimit K-Means (i pambikqyrur)
 def main():
     print("=" * 60)
     print("K-Means Clustering")

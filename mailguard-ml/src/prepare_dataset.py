@@ -26,6 +26,7 @@ ENCODINGS_TO_TRY = ["utf-8", "latin-1", "cp1252"]
 # Low-level helpers
 # ---------------------------------------------------------------------------
 
+# Lexon nje CSV nga data/raw/, duke provuar disa encodings
 def read_csv(filename):
     """Read a CSV from data/raw/ trying multiple encodings. Returns DataFrame or None."""
     path = os.path.join(RAW_DIR, filename)
@@ -41,6 +42,7 @@ def read_csv(filename):
     return None
 
 
+# Kontrollon qe kolonat e nevojshme ekzistojne ne DataFrame
 def require_columns(df, filename, columns):
     """Return True if all required columns exist in df, else print a warning."""
     missing = [c for c in columns if c not in df.columns]
@@ -50,6 +52,7 @@ def require_columns(df, filename, columns):
     return True
 
 
+# Pastron nje vlere teksti (heq hapesira teper)
 def clean_text(value):
     """Lightly clean a text value: strip whitespace and collapse internal spaces."""
     text = str(value)
@@ -58,6 +61,7 @@ def clean_text(value):
     return text
 
 
+# Zevendeson NaN me string bosh
 def fill_na(series):
     """Replace NaN with empty string and return a string series."""
     return series.fillna("").astype(str)
@@ -67,6 +71,7 @@ def fill_na(series):
 # Per-dataset loaders
 # ---------------------------------------------------------------------------
 
+# Ngarkon dataset-in CEAS_08 dhe e normalizon ne format te perbashket
 def load_ceas(filename="CEAS_08.csv"):
     """
     CEAS_08: subject + body, label 0→safe / 1→spam
@@ -93,6 +98,7 @@ def load_ceas(filename="CEAS_08.csv"):
     return result
 
 
+# Ngarkon dataset-in Enron dhe e normalizon ne format te perbashket
 def load_enron(filename="enron_spam_data.csv"):
     """
     Enron: Subject→subject, Message→body, Spam/Ham ham→safe / spam→spam
@@ -119,6 +125,7 @@ def load_enron(filename="enron_spam_data.csv"):
     return result
 
 
+# Ngarkon dataset-in Ling-Spam (messages.csv) dhe e normalizon
 def load_messages(filename="messages.csv"):
     """
     messages (Ling-Spam): subject + message→body, label 0→safe / 1→spam
@@ -145,6 +152,7 @@ def load_messages(filename="messages.csv"):
     return result
 
 
+# Ngarkon dataset-in SpamAssassin dhe e normalizon
 def load_spamassassin(filename="SpamAssasin.csv"):
     """
     SpamAssassin: subject + body, label 0→safe / 1→spam
@@ -171,6 +179,7 @@ def load_spamassassin(filename="SpamAssasin.csv"):
     return result
 
 
+# Ngarkon dataset-in Nazario (te gjitha rreshtat -> phishing)
 def load_nazario(filename="Nazario.csv"):
     """
     Nazario: subject + body, all rows → phishing (label column ignored).
@@ -192,6 +201,7 @@ def load_nazario(filename="Nazario.csv"):
     return result
 
 
+# Ngarkon dataset-in Nigerian Fraud (te gjitha rreshtat -> phishing)
 def load_nigerian_fraud(filename="Nigerian_Fraud.csv"):
     """
     Nigerian_Fraud: subject + body, all rows → phishing (label column ignored).
@@ -217,6 +227,7 @@ def load_nigerian_fraud(filename="Nigerian_Fraud.csv"):
 # Main pipeline
 # ---------------------------------------------------------------------------
 
+# Rrjedha kryesore: ngarkon, bashkon, pastron dhe ruan dataset-in final
 def main():
     print("=" * 60)
     print("Dataset preparation starting")

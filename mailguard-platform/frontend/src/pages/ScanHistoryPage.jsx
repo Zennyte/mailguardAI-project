@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { getScanHistory } from "../services/scanService";
 import LabelBadge from "../components/LabelBadge";
 
+// Tabela me historikun e skanimeve te perdoruesit
 function ScanHistoryPage() {
   const [scans, setScans] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -1,6 +1,7 @@
 from fastapi import WebSocket
 
 
+# Mban lidhjet WebSocket aktive per cdo perdorues dhe dergon njoftime live
 class ConnectionManager:
     def __init__(self):
         # user_id -> lista e lidhjeve aktive (nje perdorues mund te kete disa tab-e)

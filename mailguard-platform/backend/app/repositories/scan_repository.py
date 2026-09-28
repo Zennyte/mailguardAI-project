@@ -6,11 +6,13 @@ from app.models import (
 )
 
 
+# Gjen id-ne e versionit aktiv te modelit ML
 def get_active_model_version_id(db: Session):
     model_version = db.query(ModelVersion).filter(ModelVersion.is_active == True).first()  # noqa: E712
     return model_version.id if model_version is not None else None
 
 
+# Ruan email, kerkese, rezultat dhe score-t e nje skanimi
 def save_scan(db: Session, user_id: int, subject: str, body: str,
               input_type: str, prediction: dict) -> ScanRequest:
     # Ruajme emailin, kerkesen, rezultatin dhe scoret ne nje transaksion
@@ -53,6 +55,7 @@ def save_scan(db: Session, user_id: int, subject: str, body: str,
     return scan_request
 
 
+# Nje skanim specifik, vetem nese i perket perdoruesit
 def get_scan_for_user(db: Session, scan_request_id: int, user_id: int):
     # Perdoruesi sheh vetem skanimet e veta
     return (
@@ -62,6 +65,7 @@ def get_scan_for_user(db: Session, scan_request_id: int, user_id: int):
     )
 
 
+# Historiku i skanimeve te perdoruesit, me te rejat te parat
 def get_history_for_user(db: Session, user_id: int, limit: int = 50):
     # Skanimet me te rejat te parat
     return (
@@ -73,6 +77,7 @@ def get_history_for_user(db: Session, user_id: int, limit: int = 50):
     )
 
 
+# Numri i skanimeve per cdo etikete (per dashboard)
 def count_labels_for_user(db: Session, user_id: int) -> dict:
     # Sa skanime ka perdoruesi per cdo etikete (safe/spam/phishing)
     rows = (

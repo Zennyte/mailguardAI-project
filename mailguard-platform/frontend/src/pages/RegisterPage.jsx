@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 
+// Forma e regjistrimit
 function RegisterPage() {
   const [form, setForm] = useState({
     first_name: "",
@@ -13,10 +14,12 @@ function RegisterPage() {
   const navigate = useNavigate();
   const { register, loading } = useAuthStore();
 
+  // Perditeson fushat e formes se regjistrimit
   const handleChange = (event) => {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 
+  // Regjistron perdoruesin e ri (behet edhe login automatik)
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");

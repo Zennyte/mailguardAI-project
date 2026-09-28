@@ -5,6 +5,7 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
+# Tabela reports - raportet e gjeneruara nga perdoruesi
 class Report(Base):
     __tablename__ = "reports"
 
@@ -18,6 +19,7 @@ class Report(Base):
     filters = relationship("ReportFilter", cascade="all, delete-orphan")
 
 
+# Tabela report_filters - filtrat e perdorur per nje raport
 class ReportFilter(Base):
     __tablename__ = "report_filters"
 

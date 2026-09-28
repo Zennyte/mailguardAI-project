@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import AppRoutes from "./routes/AppRoutes";
 import useAuthStore from "./store/authStore";
 
+// Komponenti rrenje - rifreskon perdoruesin nese ka token te ruajtur
 function App() {
   const { isAuthenticated, user, loadCurrentUser, logout } = useAuthStore();
 

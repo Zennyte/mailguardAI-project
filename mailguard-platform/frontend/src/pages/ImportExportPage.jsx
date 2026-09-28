@@ -10,6 +10,7 @@ const FORMATS = ["csv", "json", "xlsx"];
 // Vetem Admin/Manager kane lejen "import_data" (shiko database/seed.sql)
 const IMPORT_ROLES = ["Admin", "Manager"];
 
+// Eksporton/importon te dhena; import-i kerkon rol Admin/Manager
 function ImportExportPage() {
   const user = useAuthStore((state) => state.user);
   const canImport = IMPORT_ROLES.some((role) => user?.roles?.includes(role));
@@ -22,6 +23,7 @@ function ImportExportPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Kerkon eksportin dhe e shkarkon si skedar
   const handleExport = async () => {
     setError("");
     try {
@@ -31,6 +33,7 @@ function ImportExportPage() {
     }
   };
 
+  // Ngarkon nje skedar dhe shfaq numrin e rreshtave te importuar/anashkaluar
   const handleImport = async (event) => {
     event.preventDefault();
     setError("");

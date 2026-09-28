@@ -4,6 +4,7 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
+# Tabela notifications - njoftimet e perdoruesit
 class Notification(Base):
     __tablename__ = "notifications"
 
