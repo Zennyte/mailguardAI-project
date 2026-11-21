@@ -1,0 +1,156 @@
+MAILGUARD AI - TEST EMAILS FOR THE PRESENTATION
+================================================
+10 emails: 4 safe, 3 spam, 3 phishing.
+Copy the Subject into the "Subject" field and the Body into the "Email body" field on the Scanner page.
+
+
+------------------------------------------------
+EMAIL 1 - expected: SAFE
+------------------------------------------------
+Subject:
+Team meeting moved to Thursday
+
+Body:
+Hi everyone,
+
+Just a quick note that our weekly project meeting is moved from Wednesday to Thursday at 10:00 in room B204. Please bring your progress notes for the database module so we can review them together.
+
+Thanks,
+Arben
+
+
+------------------------------------------------
+EMAIL 2 - expected: SAFE
+------------------------------------------------
+Subject:
+Notes from today's lecture
+
+Body:
+Hello,
+
+As promised, I attached the slides and my notes from today's lecture on normalization and foreign keys. The next lab session will cover joins, so please read chapter 6 before then. Let me know if you have any questions.
+
+Best regards,
+Professor Krasniqi
+
+
+------------------------------------------------
+EMAIL 3 - expected: SAFE
+------------------------------------------------
+Subject:
+Dinner on Saturday?
+
+Body:
+Hey,
+
+Are you free on Saturday evening? Mom wants to have the whole family over for dinner around 7. I can pick you up on the way if you need a ride. Let me know so I can tell her how many people are coming.
+
+See you,
+Elira
+
+
+------------------------------------------------
+EMAIL 4 - expected: SAFE
+------------------------------------------------
+Subject:
+Re: Code review for the login page
+
+Body:
+Hi Denis,
+
+I looked at your pull request for the login page. The validation logic looks good. I left two small comments about the error messages and one about renaming a variable. Once those are fixed I will merge it into the main branch.
+
+Cheers,
+Dren
+
+
+------------------------------------------------
+EMAIL 5 - expected: SPAM
+------------------------------------------------
+Subject:
+CONGRATULATIONS!!! You have WON a FREE iPhone
+
+Body:
+Dear Winner,
+
+You have been selected as the lucky winner of our monthly prize draw! Claim your FREE brand new iPhone today. No purchase necessary! Limited time offer, only 3 prizes left. Click here now to claim your prize and get free shipping. Act now before this amazing offer expires!!!
+
+To unsubscribe from these offers reply STOP.
+
+
+------------------------------------------------
+EMAIL 6 - expected: SPAM
+------------------------------------------------
+Subject:
+Lose 15 kg in 2 weeks - 70% OFF today only
+
+Body:
+Amazing new diet pills that doctors do not want you to know about! Burn fat fast with no exercise and no diet. Thousands of happy customers. Order now and get 70% off plus a free bottle. Special discount, cheap price, buy 2 get 1 free. Best deal guaranteed, order today!
+
+Click here to unsubscribe from our mailing list.
+
+
+------------------------------------------------
+EMAIL 7 - expected: SPAM
+------------------------------------------------
+Subject:
+Make $5000 a week working from home
+
+Body:
+Are you tired of your boring job? Earn money fast from home with our proven system! Make $5000 per week with just 2 hours a day. No experience needed. Guaranteed income, 100% risk free. Join thousands of people who are already making money online. Sign up today and get your free starter kit. Don't miss this incredible opportunity!
+
+Remove me from this list.
+
+
+------------------------------------------------
+EMAIL 8 - expected: PHISHING
+------------------------------------------------
+Subject:
+Urgent: Your account has been suspended
+
+Body:
+Dear Customer,
+
+We have detected unusual activity on your account and it has been temporarily suspended for your security. To restore access, you must verify your account within 24 hours by clicking the link below and confirming your username and password.
+
+http://secure-account-verify-login.com/confirm
+
+If you do not verify your identity, your account will be permanently closed.
+
+Security Team
+
+
+------------------------------------------------
+EMAIL 9 - expected: PHISHING
+------------------------------------------------
+Subject:
+Your PayPal payment could not be processed
+
+Body:
+Dear valued member,
+
+We were unable to process your last payment and your PayPal account has been limited. Please log in using the secure link below and update your billing information and credit card details to avoid suspension.
+
+http://paypal-billing-update.secure-login.net
+
+Failure to update your information within 48 hours will result in your account being locked.
+
+PayPal Customer Service
+
+
+------------------------------------------------
+EMAIL 10 - expected: PHISHING
+------------------------------------------------
+Subject:
+Action required: Confirm your bank details
+
+Body:
+Dear Client,
+
+Due to a security update of our online banking system, all customers are required to confirm their account information. Click the link below to verify your identity and enter your account number, PIN and password.
+
+http://bank-security-verification.com/login
+
+This is an urgent request. If you do not confirm your details today your online banking access will be blocked.
+
+Online Banking Security Department

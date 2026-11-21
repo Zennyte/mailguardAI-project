@@ -100,7 +100,7 @@ mailguard-platform/
   database/
     schema.sql         Full SQL schema (26 tables)
     seed.sql           Seed data (roles, permissions, settings, ML model row)
-  docs/                API docs, database design, ERD, project report, checklists
+  docs/                ERD (draw.io, mermaid, png)
   README.md
 ```
 
@@ -209,14 +209,13 @@ Everything can also be tested API-first in Swagger: register/login, click
 
 - Swagger UI (interactive): `http://localhost:8000/docs`
 - ReDoc: `http://localhost:8000/redoc`
-- Written reference with examples: [`docs/API_DOCUMENTATION.md`](docs/API_DOCUMENTATION.md)
 
 ## Database / ERD Documentation
 
-- Design and table groups: [`docs/DATABASE_DESIGN.md`](docs/DATABASE_DESIGN.md)
-- Relationships explained: [`docs/ERD_NOTES.md`](docs/ERD_NOTES.md)
+- Editable ERD (draw.io): [`docs/ERD.drawio`](docs/ERD.drawio)
 - Mermaid ERD diagram: [`docs/ERD.mmd`](docs/ERD.mmd)
-- Project report: [`docs/PROJECT_REPORT.md`](docs/PROJECT_REPORT.md)
+- ERD image: [`docs/ERD.png`](docs/ERD.png)
+- Full SQL schema: [`database/schema.sql`](database/schema.sql)
 
 ## Notes for Presentation
 
@@ -226,7 +225,3 @@ Everything can also be tested API-first in Swagger: register/login, click
 - Why two databases: PostgreSQL for structured/related data, MongoDB for large
   flexible payloads (raw email text, ML logs)
 - Real-time = WebSockets (server pushes), not polling
-- The 10 required base tables and the full 26-table list are in
-  `docs/DATABASE_DESIGN.md`
-- Checklists: [`docs/FINAL_SUBMISSION_CHECKLIST.md`](docs/FINAL_SUBMISSION_CHECKLIST.md),
-  [`docs/PROJECT_MANAGEMENT.md`](docs/PROJECT_MANAGEMENT.md)

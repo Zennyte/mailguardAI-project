@@ -3,10 +3,10 @@ import { useState } from "react";
 import { analyzeEmail } from "../services/scanService";
 import LabelBadge from "../components/LabelBadge";
 
-// Ngjyrat e njejta si LabelBadge: safe=jeshile, spam=verdhe, phishing=kuqe
+
 const RESULT_BORDERS = {
+    spam: "border-[var(--warn)]/40",
   safe: "border-[var(--safe)]/40",
-  spam: "border-[var(--warn)]/40",
   phishing: "border-[var(--danger)]/40",
 };
 
@@ -16,7 +16,7 @@ const BAR_COLORS = {
   phishing: "bg-[var(--danger)]",
 };
 
-// Forma e skanimit + rezultati (etikete, score-t, shpjegimi AI)
+
 function ScannerPage() {
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -24,7 +24,7 @@ function ScannerPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Dergon emailin per skanim dhe shfaq rezultatin
+ 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");

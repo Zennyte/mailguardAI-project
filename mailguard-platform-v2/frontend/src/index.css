@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+/*
+  NGJYRAT E FAQES - ndrysho ketu dhe ndryshon e gjithe faqja.
+  Cdo ngjyre ketu behet automatikisht klase Tailwind, p.sh.:
+    --color-card-background  ->  bg-card-background
+    --color-muted-text       ->  text-muted-text
+    --color-divider          ->  border-divider
+*/
+@theme {
+  /* Tema e celet: sfondi gri shume i lehte, kartat te bardha */
+  --color-page-background: #f5f7fa;
+  --color-card-background: #ffffff;
+  --color-raised-background: #eef2f6; /* fushat e formave, hover, vijat bosh te bar-eve */
+
+  --color-divider: #e2e8f0; /* te gjitha vijat dhe kornizat */
+
+  --color-main-text: #0f172a;
+  --color-muted-text: #475569;
+  --color-faint-text: #94a3b8;
+
+  --color-accent: #059669; /* butonat dhe linqet (jeshile) */
+  --color-on-accent: #ffffff; /* teksti mbi butonat jeshile */
+
+  /* Nga nje ngjyre per secilen etikete, plus nje version me i erret per tekstin mbi sfond te bardhe */
+  --color-safe: #10b981;
+  --color-safe-strong: #047857;
+  --color-spam: #f59e0b;
+  --color-spam-strong: #b45309;
+  --color-phishing: #ef4444;
+  --color-phishing-strong: #b91c1c;
+
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-page-background text-main-text font-sans antialiased;
+  }
+}
+
+/*
+  KLASAT E PERSERITURA - stilet qe perdoren ne shume faqe.
+  Perdoren ne JSX si className="card", className="btn-primary", etj.
+*/
+@layer components {
+  /* ---------- Tekste ---------- */
+
+  /* Titulli i madh ne krye te cdo faqeje */
+  .page-title {
+    @apply text-3xl font-extrabold tracking-tight mb-6 text-main-text;
+  }
+
+  /* Titulli i nje karte, p.sh. "Export data" */
+  .section-title {
+    @apply text-lg font-semibold mb-3 text-main-text;
+  }
+
+  /* ---------- Karta dhe kuti ---------- */
+
+  .card {
+    @apply border rounded-2xl p-6 shadow-sm bg-card-background border-divider;
+  }
+
+  /* Kutia me vija te nderprera kur nuk ka te dhena */
+  .empty-state {
+    @apply border-2 border-dashed rounded-2xl p-10 text-center bg-card-background border-divider text-muted-text;
+  }
+
+  /* Kartat me numra ne Dashboard, Homepage dhe Reports */
+  .stat-card {
+    @apply border border-t-4 rounded-2xl p-5 shadow-sm transition-shadow bg-card-background border-divider;
+  }
+  .stat-card:hover {
+    @apply shadow-md;
+  }
+  .stat-label {
+    @apply text-xs font-semibold uppercase tracking-wider mb-2 text-faint-text;
+  }
+  .stat-value {
+    @apply text-3xl font-extrabold text-main-text;
+  }
+
+  /* ---------- Forma ---------- */
+
+  .form-label {
+    @apply block text-sm font-semibold mb-1.5 text-main-text;
+  }
+
+  .input-field {
+    @apply w-full border rounded-xl px-3.5 py-2.5 bg-card-background border-divider text-main-text;
+    @apply focus:outline-none focus:border-accent focus:ring-4 focus:ring-accent/15 placeholder:text-faint-text;
+  }
+
+  /* Butonat jane ne forme "pill" (te rrumbullaket plotesisht) */
+  .btn-primary {
+    @apply px-5 py-2 rounded-full font-semibold shadow-sm transition-colors bg-accent text-on-accent disabled:opacity-50;
+  }
+  .btn-primary:not(:disabled):hover {
+    filter: brightness(0.92);
+  }
+
+  .btn-secondary {
+    @apply border px-5 py-2 rounded-full font-semibold transition-colors bg-card-background border-divider text-main-text;
+    @apply hover:bg-raised-background;
+  }
+
+  /* ---------- Mesazhe ---------- */
+
+  .alert-error {
+    @apply text-sm rounded-xl px-3.5 py-2.5 border bg-phishing/10 border-phishing/30 text-phishing-strong;
+  }
+
+  .alert-success {
+    @apply text-sm rounded-xl px-3.5 py-2.5 border bg-safe/10 border-safe/30 text-safe-strong;
+  }
+
+  /* ---------- Tabela (History, Search, Reports) ---------- */
+
+  .table-header {
+    @apply text-left text-xs font-semibold uppercase tracking-wider border-b bg-raised-background text-muted-text border-divider;
+  }
+  .table-row {
+    @apply border-b border-divider hover:bg-accent/5;
+  }
+  .table-cell {
+    @apply px-4 py-3;
+  }
+
+  /* ---------- Navigimi ---------- */
+
+  /* Linqet e navbar-it lart (si per vizitoret ashtu edhe pas kycjes) */
+  .nav-link {
+    @apply px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors;
+    @apply text-muted-text hover:text-main-text hover:bg-raised-background;
+  }
+  .nav-link-active {
+    @apply bg-accent/10 text-accent hover:bg-accent/10 hover:text-accent;
+  }
+
+  /* ---------- Etiketa e vogel e emailit (safe / spam / phishing) ----------
+     Ngjyra e secilës etikete vjen nga src/config/emailLabels.js */
+  .label-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+}

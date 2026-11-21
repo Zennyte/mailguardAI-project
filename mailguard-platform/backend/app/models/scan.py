@@ -52,11 +52,11 @@ class ScanResult(Base):
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
-    # Probabiliteti per cdo klase (safe/spam/phishing)
+
     scores = relationship("ClassificationScore", cascade="all, delete-orphan")
 
 
-# Tabela classification_scores - probabiliteti per cdo klase
+
 class ClassificationScore(Base):
     __tablename__ = "classification_scores"
 

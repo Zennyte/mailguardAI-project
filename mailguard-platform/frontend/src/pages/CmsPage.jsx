@@ -69,7 +69,6 @@ function CmsPage() {
     await loadPages();
   };
 
-  // Shton nje bllok te ri permbajtjeje
   const handleAddBlock = async (event) => {
     event.preventDefault();
     setError("");
@@ -82,7 +81,7 @@ function CmsPage() {
     }
   };
 
-  // Perditeson nje fushe te nje blloku (ne memorie, para ruajtjes)
+  //
   const handleBlockChange = (blockId, field, value) => {
     setSelected({
       ...selected,

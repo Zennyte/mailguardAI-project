@@ -1,0 +1,79 @@
+erDiagram
+    users ||--o{ user_roles : "has"
+    roles ||--o{ user_roles : "assigned in"
+    roles ||--o{ role_permissions : "has"
+    permissions ||--o{ role_permissions : "granted in"
+    users ||--o{ refresh_tokens : "owns"
+    users ||--o{ notifications : "receives"
+    users ||--o{ audit_logs : "performs"
+    users ||--o{ files : "uploads"
+
+    users ||--o{ email_messages : "creates"
+    email_messages ||--o{ email_headers : "has"
+    email_messages ||--o{ email_recipients : "has"
+    email_messages ||--o{ email_links : "contains"
+    email_messages ||--o{ email_attachments : "has"
+
+    users ||--o{ scan_requests : "requests"
+    email_messages ||--o{ scan_requests : "scanned in"
+    scan_requests ||--|| scan_results : "produces"
+    scan_results ||--o{ classification_scores : "has per class"
+    model_versions ||--o{ scan_results : "produced by"
+    scan_results ||--o{ user_feedback : "receives"
+    users ||--o{ user_feedback : "gives"
+
+    users ||--o{ import_jobs : "starts"
+    users ||--o{ export_jobs : "starts"
+    files ||--o{ import_jobs : "source of"
+    files ||--o{ export_jobs : "result of"
+
+    users ||--o{ reports : "generates"
+    reports ||--o{ report_filters : "filtered by"
+
+    cms_pages ||--o{ cms_content_blocks : "built from"
+
+    users {
+        bigint id PK
+        varchar first_name
+        varchar last_name
+        varchar email UK
+        varchar password_hash
+        boolean is_active
+    }
+    roles {
+        bigint id PK
+        varchar name UK
+    }
+    scan_requests {
+        bigint id PK
+        bigint user_id FK
+        bigint email_message_id FK
+        varchar status
+        varchar input_type
+    }
+    scan_results {
+        bigint id PK
+        bigint scan_request_id FK
+        varchar predicted_label
+        numeric confidence_score
+        bigint model_version_id FK
+    }
+    email_messages {
+        bigint id PK
+        bigint user_id FK
+        varchar subject
+        text body_preview
+        varchar source_type
+    }
+    cms_pages {
+        bigint id PK
+        varchar title
+        varchar slug UK
+        boolean is_published
+    }
+    reports {
+        bigint id PK
+        bigint user_id FK
+        varchar report_name
+        varchar report_type
+    }
